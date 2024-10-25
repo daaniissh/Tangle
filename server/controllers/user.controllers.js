@@ -125,11 +125,22 @@ export const getSuggestedUsers = async (req, res) => {
   }
 };
 
+export const getFollowersUnfollowers = async (req, res) => {
+  try {
+    const { username } = req.params;
+    if (!username) return res.status(404).json({ message: "user not found" });
+    const userData = await User.findOne({ username }).select("following followers").populate("following followers");
+   return res.status(200).json(userData);
+  } catch (error) {
+    res.status(400).json({error:"server error"})
+  }
+};
+
 export const updateProfile = async (req, res) => {
   const { fullName, username, email, bio, currentPassword, newPassword, link } =
     req.body;
   let { profileImg, coverImg } = req.body;
-  console.log(profileImg)
+  console.log(profileImg);
   const userId = req.user._id;
   try {
     let user = await User.findById(userId);
