@@ -15,6 +15,22 @@ export const getProfile = async (req, res) => {
     res.status(400).json(error);
   }
 };
+export const getUsers = async (req, res) => {
+  try {
+    const { search } = req.query;
+    const filter = {};
+    if (search) {
+      filter.$or = [
+        { username: { $regex: new RegExp(search, "i") } }, // Case-insensitive title search
+        { firstName: { $regex: new RegExp(search, "i") } }, // Case-insensitive description search
+      ];
+    }
+    const users = await User.find(filter);
+    return res.status(200).json(users);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
 
 export const followOrUnfollow = async (req, res) => {
   try {
@@ -129,10 +145,12 @@ export const getFollowersUnfollowers = async (req, res) => {
   try {
     const { username } = req.params;
     if (!username) return res.status(404).json({ message: "user not found" });
-    const userData = await User.findOne({ username }).select("following followers").populate("following followers");
-   return res.status(200).json(userData);
+    const userData = await User.findOne({ username })
+      .select("following followers")
+      .populate("following followers");
+    return res.status(200).json(userData);
   } catch (error) {
-    res.status(400).json({error:"server error"})
+    res.status(400).json({ error: "server error" });
   }
 };
 

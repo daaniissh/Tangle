@@ -230,6 +230,16 @@ export const getUserPosts = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+export const getSinglePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    if (!postId) return;
+    const post = await Post.findOne({ _id: postId });
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
 export const getSavePost = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
@@ -295,7 +305,6 @@ export const uploadStory = async (req, res) => {
 
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-
     const newPost = new Post({
       user: userId,
       is_story: true,
@@ -359,4 +368,3 @@ export const getUserStory = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-

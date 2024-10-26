@@ -14,6 +14,7 @@ import {
   getSavePost,
   getStory,
   getUserStory,
+  getSinglePost,
 } from "../controllers/post.controller.js";
 import { editPost } from "../controllers/post.controller.js";
 
@@ -24,6 +25,7 @@ router.get("/all", protectRoute, getAllPost);
 router.get("/following", protectRoute, getFollowingPosts);
 router.get("/likes/:id", protectRoute, getLikedPosts);
 router.get("/user/:username", protectRoute, getUserPosts);
+router.get("/post/:postId", protectRoute, getSinglePost);
 
 router.post("/create", protectRoute, createPost);
 
