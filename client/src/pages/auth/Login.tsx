@@ -5,7 +5,7 @@ import { loginSchema, LoginSchema } from "../../schemas/loginSchema";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { LoadingSpinner } from '@/components/Loader/LoadingSpinner';
+import SpinnerIcon from '@/components/Loader/LoadingSpinner';
 const Login = () => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -53,7 +53,7 @@ const Login = () => {
         </Form>
       </div>
       <div className="flex justify-center items-center w-[340px] mt-3  h-[78px] border-insta-border border-[1px]">
-        <p className='text-[15px] font-thin font-instagram' >Don't have account?<a href="" className='text-insta-link font-medium' > Sign Up</a></p>
+        <p className=' text-insta-text text-[15px] font-thin font-instagram' >Don't have account?<a href="" className='text-insta-link font-medium' > Sign Up</a></p>
       </div>
 
     </div>
