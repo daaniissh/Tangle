@@ -14,6 +14,15 @@ module.exports = {
         ms: ["Microsoft Sans Serif", "sans-serif"], // Microsoft Sans Serif
         instagram: ["Poppins", "Helvetica", "Arial", "sans-serif"],
       },
+      keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
+      },
+      animation: {
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
+      },
       colors: {
         insta: {
           primary: "#405DE6",
