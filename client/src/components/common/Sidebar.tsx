@@ -84,6 +84,11 @@ const Sidebar: React.FC<SideBarProps> = ({
     setSearchOpen(false)
   }
 
+  function closeAllComp(){
+    setSearchOpen(false);
+    setIsNotification(false);
+  }
+
   return (
     <>
       {isDesktop && (
@@ -133,6 +138,7 @@ const Sidebar: React.FC<SideBarProps> = ({
               </div>
 
               <li
+              onClick={closeAllComp}
                 className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   } `}
               >
@@ -148,6 +154,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 {!searchOpen && !isNotification && "Search"}
               </li>
               <li
+               onClick={closeAllComp}
                 className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   } `}
               >
@@ -155,6 +162,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 {!searchOpen && !isNotification && "Explore"}
               </li>
               <li
+               onClick={closeAllComp}
                 className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group   ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   } `}
               >
@@ -170,6 +178,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 {!searchOpen && !isNotification && "Notification"}
               </li>
               <li
+               onClick={closeAllComp}
                 className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   } `}
               >
@@ -178,6 +187,7 @@ const Sidebar: React.FC<SideBarProps> = ({
               </li>
 
               <li
+               onClick={closeAllComp}
                 className={`flex dark:hover:bg-insta-darkBorder   dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium  hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   }`}
               >
@@ -196,10 +206,11 @@ const Sidebar: React.FC<SideBarProps> = ({
                 }`}
             >
               <MenuDropDown
+              
                 showStatusBar={showStatusBar}
                 handleCheckedChange={handleCheckedChange}
               >
-                <span>
+                <span  >
                   <li className="dark:hover:bg-insta-darkBorder  dark:text-insta-darkText flex gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                     <Menu className="group-hover:scale-110 duration-150 size-8 dark:group-hover:bg-insta-darkBorder" />
                     {!searchOpen && !isNotification && <h1>More</h1>}
