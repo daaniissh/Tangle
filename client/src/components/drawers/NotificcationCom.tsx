@@ -89,13 +89,43 @@ const NotificationCom = ({
                                   daniish
                                 </h1>
                                 <p className="font-instagram font-normal text-[13px]">
+                                  liked your post.
+                                  <span className="font-poppins text-[13px] ml-1 text-insta-darkPrimary">23h</span>
+                                </p>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 w-10 h-10 mr-1 rounded-xl items-center text-[12px]">
+                            <img className="rounded-[6px]" src="https://res.cloudinary.com/dhcke4e7l/image/upload/v1724823317/zn0rl3rwnltvqfctwxjx.jpg" alt="" />
+                          </div>
+                        </div>
+                      </Link>
+                      <Link
+                        to="/notifications"
+                        className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-1 px-4 mb-2 items-center"
+                      >
+                        <div className="flex flex-row justify-between gap-10 w-full">
+                          <div className="flex gap-3 justify-center items-center">
+                            <Avatar className="group-hover:scale-110 duration-150">
+                              <AvatarImage
+                                className="rounded-full size-11"
+                                src="https://github.com/shadcn.png"
+                              />
+                              <AvatarFallback>DN</AvatarFallback>
+                            </Avatar>
+                            <div className="flex gap-2 items-start max-w-52 break-words">
+                              <span className="flex flex-col">
+                                <h1 className="text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis">
+                                  daniish
+                                </h1>
+                                <p className="font-instagram font-normal text-[13px]">
                                   started following you.
                                   <span className="font-poppins text-[13px] ml-1 text-insta-darkPrimary">23h</span>
                                 </p>
                               </span>
                             </div>
                           </div>
-                          <div className="flex gap-2 items-center text-[12px]">
+                          <div className="flex  items-center text-[12px]">
                             <Button size="sm" className="rounded-xl hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary">Follow</Button>
                           </div>
                         </div>
