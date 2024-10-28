@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
@@ -7,19 +7,49 @@ import SignUp from './pages/auth/Signup.tsx'
 import EmailSend from './pages/auth/EmailSend.tsx'
 import OtpVerfication from './pages/auth/OtpVerfication.tsx'
 import ResetPassword from './pages/auth/ResetPassword.tsx'
+import SideBar from './components/common/Sidebar.tsx'
+import { Moon, Sun } from 'lucide-react'
+import { Switch } from "@/components/ui/switch"
+// import { Sidebar } from 'lucide-react'
+
 function App() {
-const [authUser,setAuthUser] = useState(false)
+  const [authUser, setAuthUser] = useState(true)
+  const [showStatusBar, setShowStatusBar] = useState<boolean>(false);
+  console.log(showStatusBar)
+  useEffect(() => {
+    console.log(showStatusBar)
+    const st = localStorage.getItem('dark-mode');
+    setShowStatusBar(st === 'true')
+ 
+    const darkModeEnabled = localStorage.getItem('dark-mode') === 'true';
+    if (darkModeEnabled) {
+      document.documentElement.classList.add('dark');
+      setShowStatusBar(true);
+    }
+  }, []);
+
+  const handleCheckedChange = () => {
+    setShowStatusBar(prev => {
+      const newStatus = !prev;
+     
+      document.documentElement.classList.toggle('dark', newStatus);
+
+      // Save the current state of dark mode in localStorage
+      localStorage.setItem('dark-mode', newStatus.toString());
+      return newStatus;
+    });
+  };
 
   return (
-    <div className='flex max-w-6xl mx-auto'>
-      {/* {authUser && <Sidebar />} */}
+    <div className='flex  dark:bg-black'>
+      {authUser && <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />}
       <Routes>
         {/* <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login" />} /> */}
         <Route path='/login' element={!authUser ? <Login /> : <Navigate to="/" />} />
         <Route path='/signup' element={!authUser ? <SignUp /> : <Navigate to="/" />} />
-        <Route path='/emailverfication' element={!authUser ? <EmailSend /> : <Navigate to="/" />} />
-        <Route path='/otpverfication' element={!authUser ? <OtpVerfication /> : <Navigate to="/" />} />
-        <Route path='/resetpassword' element={!authUser ? <ResetPassword /> : <Navigate to="/" />} />
+        <Route path='/emailverfication' element={ <EmailSend /> } />
+        <Route path='/otpverfication' element={ <OtpVerfication /> } />
+        <Route path='/resetpassword' element={ <ResetPassword /> } />
         {/* <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />
         <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} /> */}
       </Routes>
