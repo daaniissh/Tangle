@@ -6,18 +6,22 @@ module.exports = {
     "./node_modules/@shadcn/ui/components/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: ["class", "class"], // Enable dark mode with a 'dark' class
+  darkMode: "selector", // Enable dark mode with a 'dark' class
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"], // Poppins font family
-        ms: ["Microsoft Sans Serif", "sans-serif"], // Microsoft Sans Serif
+        poppins: ["Poppins", "sans-serif"],
+        ms: ["Microsoft Sans Serif", "sans-serif"],
         instagram: ["Poppins", "Helvetica", "Arial", "sans-serif"],
       },
       keyframes: {
         "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
+          "0%,70%,100%": {
+            opacity: "1",
+          },
+          "20%,50%": {
+            opacity: "0",
+          },
         },
       },
       animation: {
@@ -40,9 +44,19 @@ module.exports = {
           darkGradientEnd: "#8134AF",
           darkLink: "#8AB4F8",
           darkError: "#F47174",
-          darkBackground: "#121212",
+          darkBackground: "#000",
           darkText: "#E4E6EB",
           darkBorder: "#3A3A3A",
+        },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
         },
       },
       borderRadius: {
@@ -52,5 +66,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwindcss-animate")],
 };
