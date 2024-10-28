@@ -14,7 +14,7 @@ const ResetPassword = () => {
     confirmPassword: z.string().min(6, "Password must be at least 6 characters")
   }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords must match",
-    path: ["confirmPassword"], 
+    path: ["confirmPassword"],
   });
 
   type passSchema = z.infer<typeof passSchema>;
@@ -32,8 +32,8 @@ const ResetPassword = () => {
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <div className='flex justify-center text-1xl mb-6' ><img width="160" height="90" src="./Logo.png" alt="" /></div>
       <div className="sm:w-[400px] w-[340px] h-auto border-insta-border border-[1px] p-4 ">
-     <h1 className='text-center text-2xl font-medium font-poppins text-insta-text p-5' >Reset Password</h1>
-  <div className='bg-insta-border w-full h-[0.5px] mb-7' ></div>
+        <h1 className='text-center text-2xl font-medium font-poppins text-insta-text p-5' >Reset Password</h1>
+        <div className='bg-insta-border w-full h-[0.5px] mb-7' ></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
@@ -62,7 +62,7 @@ const ResetPassword = () => {
                 </FormItem>
               )}
             />
-           
+
             <Button className='w-full h-[35px] font-poppins  hover:bg-insta-darkLink rounded-md bg-insta-link' type="submit">Send OTP</Button>
           </form>
         </Form>
