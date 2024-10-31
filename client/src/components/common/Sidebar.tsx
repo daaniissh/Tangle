@@ -8,6 +8,7 @@ import {
   PlusCircle,
   Menu,
   Heading1,
+  Expand,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -16,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { MenuDropDown } from "../drawers/DropDown";
 import SearchCom from "../drawers/SearchCom";
 import NotificationCom from "../drawers/NotificcationCom";
+import Li from "./Li";
+import Header from "./Header";
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -84,7 +87,7 @@ const Sidebar: React.FC<SideBarProps> = ({
     setSearchOpen(false)
   }
 
-  function closeAllComp(){
+  function closeAllComp() {
     setSearchOpen(false);
     setIsNotification(false);
   }
@@ -94,10 +97,10 @@ const Sidebar: React.FC<SideBarProps> = ({
       {isDesktop && (
         <>
           <div
-            ref={!searchOpen ?  notiRef : searchRef}
-            className={` transition  duration-500 flex-col dark:bg-insta-darkBackground  h-screen border-r-[0.5px] dark:border-insta-darkBorder ${searchOpen || isNotification
-              ? "w-18     max-w-60 dark:border-none p-2 -translate-x-0 "
-              : "=  w-56 p-2 flex max-w-60 flex-col dark:bg-insta-darkBackground justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder"
+            ref={!searchOpen ? notiRef : searchRef}
+            className={` transition fixed  duration-500 z-50 flex-col dark:bg-insta-darkBackground  h-screen border-r-[0.5px] dark:border-insta-darkBorder ${searchOpen || isNotification
+              ? "w-16     max-w-80 dark:border-none p-2  "
+              : "  w-56 p-2 flex max-w-60 flex-col dark:bg-insta-darkBackground  justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder"
               } `}
           >
             <div
@@ -121,73 +124,35 @@ const Sidebar: React.FC<SideBarProps> = ({
               <div ref={searchRef}>
                 {" "}
                 <SearchCom
-                  SearchOpen={SearchOpen}
+
                   searchOpen={searchOpen}
-                  handleCheckedChange={handleCheckedChange}
-                  showStatusBar={showStatusBar}
+
+
                 />
               </div>
               <div ref={notiRef}>
                 {" "}
                 <NotificationCom
-                  // NotificationOpen={NotificationCom}
+
                   isNotification={isNotification}
 
 
                 />
               </div>
+              <Li Icon={Home} onClick={closeAllComp} text="Home" isNotification={isNotification} searchOpen={searchOpen} />
+
+              <Li Icon={Search} className={`${!searchOpen && isNotification && "border-none"} `} is_border="border" onClick={SearchOpen} text="Search" isNotification={isNotification} searchOpen={searchOpen} />
+
+              <Li Icon={Compass} onClick={closeAllComp} text="Explore" isNotification={isNotification} searchOpen={searchOpen} />
+
+              <Li Icon={MessageCircle} onClick={closeAllComp} text="Message" isNotification={isNotification} searchOpen={searchOpen} />
+
+              <Li Icon={Heart} className={`${searchOpen && !isNotification && "border-none"} `} is_border="border" onClick={NotificationOpen} text="Notification" isNotification={isNotification} searchOpen={searchOpen} />
+
+              <Li Icon={PlusCircle} onClick={closeAllComp} text="Create" isNotification={isNotification} searchOpen={searchOpen} />
 
               <li
-              onClick={closeAllComp}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
-                  } `}
-              >
-                <Home className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Home"}
-              </li>
-              <li
-                onClick={SearchOpen}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${!searchOpen && isNotification && "border-none"}  ${searchOpen || isNotification ? "border w-auto" : "border-none w-full"
-                  } `}
-              >
-                <Search className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Search"}
-              </li>
-              <li
-               onClick={closeAllComp}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
-                  } `}
-              >
-                <Compass className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Explore"}
-              </li>
-              <li
-               onClick={closeAllComp}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group   ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
-                  } `}
-              >
-                <MessageCircle className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Message"}
-              </li>
-              <li
-                onClick={NotificationOpen}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen && !isNotification && "border-none"}   ${searchOpen || isNotification ? "border w-auto" : "border-none w-full"
-                  } `}
-              >
-                <Heart className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Notification"}
-              </li>
-              <li
-               onClick={closeAllComp}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
-                  } `}
-              >
-                <PlusCircle className="group-hover:scale-110 duration-150" />
-                {!searchOpen && !isNotification && "Create"}
-              </li>
-
-              <li
-               onClick={closeAllComp}
+                onClick={closeAllComp}
                 className={`flex dark:hover:bg-insta-darkBorder   dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium  hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? " w-auto" : "border-none w-full"
                   }`}
               >
@@ -201,16 +166,16 @@ const Sidebar: React.FC<SideBarProps> = ({
 
             <ul
               className={`${searchOpen || isNotification
-                ? "flex flex-col gap-6 justify-center items-center py-14"
-                : "flex flex-col gap-6 pl-3 py-14 "
+                ? "flex flex-col gap-6 justify-center items-center py-20"
+                : "flex flex-col gap-6 pl-3 py-20 "
                 }`}
             >
               <MenuDropDown
-              
+
                 showStatusBar={showStatusBar}
                 handleCheckedChange={handleCheckedChange}
               >
-                <span  >
+                <span >
                   <li className="dark:hover:bg-insta-darkBorder  dark:text-insta-darkText flex gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                     <Menu className="group-hover:scale-110 duration-150 size-8 dark:group-hover:bg-insta-darkBorder" />
                     {!searchOpen && !isNotification && <h1>More</h1>}
@@ -221,92 +186,23 @@ const Sidebar: React.FC<SideBarProps> = ({
           </div>
         </>
       )}
-      {/* {isDesktop && <><div className='md:flex-[2_2_0] relative w-18 flex max-w-60 flex-col dark:bg-insta-darkBackground justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder' >
-        <div className='w-40 px-7 pt-11' >
-          <img className='dark:filter dark:invert filter invert-0' src="./Logo.png" alt="" />
-        </div>
-        <ul className='flex flex-col gap-6 px-6 py-8 ' >
-          <div ref={searchRef} > <SearchCom SearchOpen={SearchOpen} searchOpen={searchOpen} handleCheckedChange={handleCheckedChange} showStatusBar={showStatusBar} /></div>
-          <li className='flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><Home className='group-hover:scale-110 duration-150' />Home</li>
-          <li onClick={SearchOpen} className='flex dark:hover:bg-insta-darkBorder gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><Search className='group-hover:scale-110 duration-150' />Search</li>
-          <li className='flex dark:hover:bg-insta-darkBorder gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><Compass className='group-hover:scale-110 duration-150' />Explore</li>
-          <li className='flex dark:hover:bg-insta-darkBorder gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><MessageCircle className='group-hover:scale-110 duration-150' />Message</li>
-          <li className='flex dark:hover:bg-insta-darkBorder gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><Heart className='group-hover:scale-110 duration-150' />Notification</li>
-          <li className='flex dark:hover:bg-insta-darkBorder gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group' ><PlusCircle className='group-hover:scale-110 duration-150' />Create</li>
 
-          <li className="flex dark:hover:bg-insta-darkBorder  dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium  hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ">
-            <Avatar className='size-7 group-hover:scale-110 duration-150' >
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <h1>Profile</h1>
-          </li>
-        </ul>
-
-        <ul className='flex flex-col gap-6 px-6 py-14 ' >
-          <MenuDropDown showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} >
-            <span>
-              <li className='dark:hover:bg-insta-darkBorder dark:text-insta-darkText flex gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group'>
-                <Menu className='group-hover:scale-110 duration-150 size-8 dark:group-hover:bg-insta-darkBorder' />
-                More
-              </li>
-            </span>
-          </MenuDropDown>
-        </ul>
-      </div></>} */}
 
       {isTablet && (
-        <div className="w-full h-screen flex flex-col relative">
-          <div className="border-b-[1px] dark:border-insta-darkBorder flex gap-2  border-insta-border w-full items-center justify-between h-16 fixed top-0 z-10">
-            <img
-              src="./sm-logo.png"
-              className="size-8 mx-3 dark:filter dark:invert"
-              alt=""
-            />
-            <div className="relative w-full ">
-              {!show && (
-                <Search className="absolute size-5 text-gray-500 top-[10px] left-2" />
-              )}
-              <Input
-                ref={inputRef}
-                onClick={SearchOpen}
-                className={
-                  show
-                    ? "dark:bg-[#363636] dark:ring-0 dark:border-none dark:outline-none rounded-[8px] pr-8 w-full bg-insta-background"
-                    : "dark:bg-[#363636] dark:ring-0 dark:border-none dark:outline-none rounded-[8px] pr-8 pl-8 w-full bg-insta-background"
-                }
-                placeholder="Search"
-              />
-              {show && (
-                <XCircle className="absolute   size-4 text-gray-400 top-3 right-2" />
-              )}
-            </div>
-            <div ref={searchRef}>
-              {" "}
-              <SearchCom
-                SearchOpen={SearchOpen}
-                searchOpen={searchOpen}
-                handleCheckedChange={handleCheckedChange}
-                showStatusBar={showStatusBar}
-              />
-            </div>
-            <div className="flex dark:hover:bg-insta-darkBorder mr-2 gap-3 font-instagram text-[15px] dark:text-insta-darkText items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
-              <Heart className="group-hover:scale-110 duration-150" />
-            </div>
-          </div>
+        <div className=" flex flex-col relative">
+
+          <Header SearchOpen={SearchOpen} inputRef={inputRef} searchOpen={searchOpen} searchRef={searchRef} show={show} />
           {/* 
           <div className="flex-grow mt-20 mb-20">
           </div> */}
-          <div className="border-t-[0.5px] dark:border-insta-darkBorder border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-16 fixed bottom-0 z-10">
+          <div className="border-t-[0.5px] dark:border-insta-darkBorder bg-white dark:bg-black border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-16 fixed bottom-0 z-10">
             {" "}
             {/* Footer */}
             <ul className="flex flex-row gap-6 px-6 py-4">
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <Home className="group-hover:scale-110 duration-150" />
               </li>
-              <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
-                <Search className="group-hover:scale-110 duration-150" />
-              </li>
+
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <Compass className="group-hover:scale-110 duration-150" />
               </li>
