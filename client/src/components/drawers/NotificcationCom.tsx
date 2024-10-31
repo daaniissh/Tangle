@@ -56,7 +56,7 @@ const NotificationCom = ({
     <>
       {isDesktop && (
         <div
-          className={`absolute w-[400px] h-screen dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${isNotification ? "translate-x-0 left-20" : "-translate-x-full"}`}
+          className={`absolute w-[400px] h-screen dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${isNotification ? "translate-x-0 left-16" : "-translate-x-full"}`}
         >
           <div className="absolute w-full">
             <div className="w-full">
