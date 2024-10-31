@@ -19,16 +19,12 @@ import { useScreenDevice } from "@/hooks/use-screen-device";
 
 type SearchProps = {
   searchOpen: boolean;
-  showStatusBar: boolean;
-  handleCheckedChange: () => void;
-  SearchOpen: () => void;
+
 };
 
 const SearchCom = ({
   searchOpen,
-  handleCheckedChange,
-  showStatusBar,
-  SearchOpen,
+  
 }: SearchProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isDesktop, isTablet } = useScreenDevice();
@@ -58,11 +54,10 @@ const SearchCom = ({
     <>
       {isDesktop && (
         <div
-          className={`absolute  w-[450px] h-screen rounded-tr-xl rounded-br-xl  dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${
-            searchOpen ? "translate-x-0 left-20" : "-translate-x-full"
-          }`}
+          className={`absolute  w-[450px]  h-screen rounded-tr-xl rounded-br-xl  dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${searchOpen ? "translate-x-0 left-16 z-[999999]" : "-translate-x-full z-[9999]"
+            }`}
         >
-          <div className="absolute   w-full  ">
+          <div className="absolute  pl-2  w-full  ">
             <div className="w-full">
               <h1 className="font-semibold dark:text-insta-darkText font-instagram text-2xl px-3 py-8">
                 Search
@@ -128,10 +123,10 @@ const SearchCom = ({
       )}
       {isTablet && (
         <div
-        className={`absolute w-[calc(100%-40px)] h-[380px] rounded-[8px] mt-2 shadow-md dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-[#262626] transform transition-transform duration-300 z-50 ${searchOpen ? "translate-x-0 top-16" : "-translate-y-full hidden"}`}
-        style={{ left: '20px' }} 
-      >
-      
+          className={`absolute w-[calc(100%-40px)] h-[380px] rounded-[8px] mt-2 shadow-md dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-[#262626] transform transition-transform duration-300 z-50 ${searchOpen ? "translate-x-0 top-16" : "-translate-y-full hidden"}`}
+          style={{ left: '20px' }}
+        >
+
           <div className="absolute   w-full  ">
             <div className="w-full">
               <div className="relative w-full pr-3">
