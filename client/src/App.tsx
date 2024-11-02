@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import Login from './pages/auth/Login.tsx'
 import SignUp from './pages/auth/Signup.tsx'
@@ -10,17 +10,24 @@ import ResetPassword from './pages/auth/ResetPassword.tsx'
 import SideBar from './components/common/Sidebar.tsx'
 import { Moon, Sun } from 'lucide-react'
 import { Switch } from "@/components/ui/switch"
+import Notification from './pages/main/Notification.tsx'
+import { useScreenDevice } from './hooks/use-screen-device.tsx'
+import RightPanel from './components/common/RightPannel.tsx'
+import HomePage from './pages/Home/HomePage.tsx'
+import StoryPage from './pages/Home/StoryPage.tsx'
 // import { Sidebar } from 'lucide-react'
 
 function App() {
+  const location = useLocation();
   const [authUser, setAuthUser] = useState(true)
+  const [isStory, setIsStory] = useState(!authUser)
   const [showStatusBar, setShowStatusBar] = useState<boolean>(false);
   console.log(showStatusBar)
   useEffect(() => {
     console.log(showStatusBar)
     const st = localStorage.getItem('dark-mode');
     setShowStatusBar(st === 'true')
- 
+
     const darkModeEnabled = localStorage.getItem('dark-mode') === 'true';
     if (darkModeEnabled) {
       document.documentElement.classList.add('dark');
@@ -31,7 +38,7 @@ function App() {
   const handleCheckedChange = () => {
     setShowStatusBar(prev => {
       const newStatus = !prev;
-     
+
       document.documentElement.classList.toggle('dark', newStatus);
 
       // Save the current state of dark mode in localStorage
@@ -41,19 +48,22 @@ function App() {
   };
 
   return (
-    <div className='flex  dark:bg-black'>
-      {authUser && <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />}
-      <Routes>
-        {/* <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login" />} /> */}
-        <Route path='/login' element={!authUser ? <Login /> : <Navigate to="/" />} />
-        <Route path='/signup' element={!authUser ? <SignUp /> : <Navigate to="/" />} />
-        <Route path='/emailverfication' element={ <EmailSend /> } />
-        <Route path='/otpverfication' element={ <OtpVerfication /> } />
-        <Route path='/resetpassword' element={ <ResetPassword /> } />
-        {/* <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to="/login" />} />
-        <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} /> */}
-      </Routes>
-      {/* {authUser && <RightPanel />} */}
+    <div className='flex  dark:bg-black  '>
+      {authUser &&  location.pathname !== '/story' && <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />}
+       
+        <Routes>
+          <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path='/login' element={!authUser ? <Login /> : <Navigate to="/" />} />
+          <Route path='/signup' element={!authUser ? <SignUp /> : <Navigate to="/" />} />
+          <Route path='/emailverfication' element={<EmailSend />} />
+          <Route path='/otpverfication' element={<OtpVerfication />} />
+          <Route path='/story' element={authUser ? <StoryPage /> : <Navigate to="/login" />} />
+          <Route path='/resetpassword' element={<ResetPassword />} />
+          <Route path='/notifications' element={authUser ? <Notification /> : <Navigate to="/login" />} />
+          {/* <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />  */}
+        </Routes>
+      
+      
       {/* <Toaster /> */}
     </div>
   )
