@@ -98,7 +98,7 @@ const Sidebar: React.FC<SideBarProps> = ({
         <>
           <div
             ref={!searchOpen ? notiRef : searchRef}
-            className={` transition fixed  duration-500 z-50 flex-col dark:bg-insta-darkBackground  h-screen border-r-[0.5px] dark:border-insta-darkBorder ${searchOpen || isNotification
+            className={` transition fixed flex-1  duration-500 z-50 flex-col dark:bg-insta-darkBackground  h-screen border-r-[0.5px] dark:border-insta-darkBorder ${searchOpen || isNotification
               ? "w-16     max-w-80 dark:border-none p-2  "
               : "  w-56 p-2 flex max-w-60 flex-col dark:bg-insta-darkBackground  justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder"
               } `}
@@ -139,11 +139,11 @@ const Sidebar: React.FC<SideBarProps> = ({
 
                 />
               </div>
-              <Li Icon={Home} onClick={closeAllComp} text="Home" isNotification={isNotification} searchOpen={searchOpen} />
+              <Li route="/" Icon={Home} onClick={closeAllComp} text="Home" isNotification={isNotification} searchOpen={searchOpen} />
 
               <Li Icon={Search} className={`${!searchOpen && isNotification && "border-none"} `} is_border="border" onClick={SearchOpen} text="Search" isNotification={isNotification} searchOpen={searchOpen} />
 
-              <Li Icon={Compass} onClick={closeAllComp} text="Explore" isNotification={isNotification} searchOpen={searchOpen} />
+              <Li route="explore" Icon={Compass} onClick={closeAllComp} text="Explore" isNotification={isNotification} searchOpen={searchOpen} />
 
               <Li Icon={MessageCircle} onClick={closeAllComp} text="Message" isNotification={isNotification} searchOpen={searchOpen} />
 
