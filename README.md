@@ -11,4 +11,4 @@ Cirql is a place to visually connect and express yourself, where creativity and 
 ## Project Structure
 
 - `backend` - Express.
-- `frontend-next` - React.js app with npm and ts.
+- `frontend` - React.js app with npm and ts.
