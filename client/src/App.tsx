@@ -15,6 +15,7 @@ import { useScreenDevice } from './hooks/use-screen-device.tsx'
 import RightPanel from './components/common/RightPannel.tsx'
 import HomePage from './pages/Home/HomePage.tsx'
 import StoryPage from './pages/Home/StoryPage.tsx'
+import Explore from './pages/main/Explore.tsx'
 // import { Sidebar } from 'lucide-react'
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path='/story' element={authUser ? <StoryPage /> : <Navigate to="/login" />} />
           <Route path='/resetpassword' element={<ResetPassword />} />
           <Route path='/notifications' element={authUser ? <Notification /> : <Navigate to="/login" />} />
+          <Route path='/explore' element={authUser ? <Explore /> : <Navigate to="/login" />} />
           {/* <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />  */}
         </Routes>
       
