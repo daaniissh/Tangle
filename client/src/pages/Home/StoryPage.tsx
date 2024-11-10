@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
+import Cirql from '@/logs/cirql';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -91,7 +92,7 @@ const StoryPage = () => {
     <div className='w-full flex  flex-col relative items-center overflow-hidden bg-black md:bg-[#1a1a1a] h-screen'>
       <div className="w-full hidden justify-between md:flex items-center h-10">
         <div className="w-32 py-5 mt-5 px-3 items-start justify-start">
-          <img className="filter invert" src="./Logo.png" alt="" />
+         <Cirql className='fill-white' />
         </div>
         <Link to="/" className="text-white px-4 mt-5 cursor-pointer">
           <Plus className='rotate-45 size-10' />
@@ -107,7 +108,7 @@ const StoryPage = () => {
         <div className="flex justify-between relative flex-col h-full w-full">
           <div className="flex-1 h-20 flexmd:mt-auto w-full md:w-auto fixed bg-gradient-to-b from-black/30 to-transparent flex-col">
             <div className="flex justify-center gap-1 mt-1 md:mt-2 w-[400px] md:w-[400px] px-1">
-              {images.map((item) => <Progress value={item.progress} className="bg-[#70716d]/30 w-[380px] h-[2px] mt-2 rounded-[10px]" />)}
+              {images.map((item) => <Progress value={item.progress} className="bg-[#70716d]/20 w-[380px] h-[2px] mt-2 rounded-[10px]" />)}
             </div>
             <div className="mt-2 px-2 flex items-center">
           
