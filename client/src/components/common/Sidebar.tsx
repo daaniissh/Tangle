@@ -19,6 +19,9 @@ import SearchCom from "../drawers/SearchCom";
 import NotificationCom from "../drawers/NotificcationCom";
 import Li from "./Li";
 import Header from "./Header";
+import Cirql_logo_g from "@/logs/cirql-logo-g";
+import Cirql_logo_w from "@/logs/cirql-logo-w";
+import Cirql from "@/logs/cirql";
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -109,11 +112,8 @@ const Sidebar: React.FC<SideBarProps> = ({
                 : "w-28 pl-5 py-1 items-start justify-start"
                 }  rounded-xl cursor-pointer flex  mt-6 `}
             >
-              <img
-                className="dark:filter dark:invert filter invert-0"
-                src={searchOpen || isNotification ? "./sm-logo.png" : "./Logo.png"}
-                alt=""
-              />
+
+              {searchOpen || isNotification ? <Cirql_logo_w /> : <Cirql className="fill-black dark:fill-white" />}
             </div>
             <ul
               className={`${searchOpen || isNotification
