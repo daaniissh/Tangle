@@ -4,11 +4,11 @@
 
 
 
-Quibble is a place for real conversations, where opinions thrive and diverse voices are celebrated. We’re re-imagining what online discussions can be, focusing on genuine engagement and a respectful, ad-free experience.
+Cirql is a place to visually connect and express yourself, where creativity and inspiration thrive. We’re reimagining the way people share their lives, focusing on authentic stories and meaningful connections. It’s a vibrant space where diverse perspectives are celebrated, communities come together, and inspiration flows freely. Join a world of creativity, where moments are shared, passions are explored, and everyone has a voice.
 
 > In Development.
 
 ## Project Structure
 
-- `backend` - Django app maintained with poetry.
-- `frontend-next` - Next.js app with npm.
+- `backend` - Express.
+- `frontend-next` - React.js app with npm and ts.
