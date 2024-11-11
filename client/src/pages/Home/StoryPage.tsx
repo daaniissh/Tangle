@@ -102,7 +102,7 @@ const StoryPage = () => {
         <ChevronLeftCircle className='md:fill-white/30 md:text-black/0 fill-transparent text-transparent md:h-auto md:w-auto h-screen w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer' onClick={handlePrevious} />
         <ChevronRightCircle className='md:fill-white/30 md:text-black/0 fill-transparent md:h-auto md:w-auto text-transparent  h-[90%] w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer' onClick={handleNext} />
       </div>
-      <div className="flex relative w-full md:w-[400px] h-screen rounded-0 mb-5 md:rounded-[8px]">
+      <div className="flex relative w-full md:w-auto h-screen rounded-0 mb-5 md:rounded-[8px]">
 
 
         <div className="flex justify-between relative flex-col h-full w-full">
@@ -130,12 +130,12 @@ const StoryPage = () => {
             </div>
           </div>
 
-          <div className="w-full h-full flex   mb-14 md:rounded-[8px]">
-            <img className='md:rounded-[8px] w-full md:object-cover object-contain' src={images[currentIndex].url} alt="" />
+          <div className="w-[400px] h-full flex    mb-14 md:rounded-[8px]">
+            <img className='md:rounded-[8px] w-full md:object-cover object-contain' src={images[currentIndex].url} alt="story" />
           </div>
 
-          <div className="h-20 w-full md:w-[400px] md:bg-gradient-to-t    md:from-black/30 md:to-transparent flex justify-between fixed text-white md:bottom-7 bottom-0">
-            <div className="flex justify-end items-start px-14 md:px-2 py-6 md:py-auto gap-5 w-full h-screen">
+          <div className="h-20 w-full md:w-[400px] md:bg-gradient-to-t  z-50   md:to-transparent flex justify-between fixed text-white md:bottom-10 bottom-0">
+            <div className="flex justify-end items-start px-5 md:px-2 py-6 md:py-auto gap-5 w-full h-screen">
               <Heart className='cursor-pointer fill-insta-gradientMid text-insta-gradientMid' />
               <Send className='cursor-pointer' />
             </div>
