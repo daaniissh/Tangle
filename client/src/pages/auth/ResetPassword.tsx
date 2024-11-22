@@ -6,11 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { z } from "zod";
 
-<<<<<<< HEAD
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
-=======
-import SpinnerIcon from '@/components/Loader/loading_spinner';
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 const ResetPassword = () => {
 
   const passSchema = z.object({

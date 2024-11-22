@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginSchema } from "../../schemas/LoginSchema";
+import { loginSchema, LoginSchema } from "../../schemas/login_schema";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/Form";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";

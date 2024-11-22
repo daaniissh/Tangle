@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Story from './Story'
-import RightPanel from '@/components/common/right_panel'
+import RightPanel from '@/components/common/RightPanel'
 import { ArrowLeft, ArrowRight, ChevronLeftCircle, ChevronRightCircle, ChevronRightCircleIcon } from 'lucide-react';
 import Posts from './Posts';
 

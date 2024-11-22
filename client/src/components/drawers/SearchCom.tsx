@@ -14,7 +14,7 @@ import { MenuDropDown } from "./DropDown";
 import { Input } from "../ui/Input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
-import { DropdownMenuSeparator } from "../ui/dropdown_menu";
+import { DropdownMenuSeparator } from "../ui/DropdownMenu";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 
 type SearchProps = {
