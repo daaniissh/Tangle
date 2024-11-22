@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 import { Input } from "@/components/ui/Input";
 import { MenuDropDown } from "../drawers/DropDown";
-import SearchCom from "../drawers/SearchCom";
+import SearchCom from "../drawers/search_com";
 import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
@@ -168,7 +168,6 @@ const Sidebar: React.FC<SideBarProps> = ({
                   {!searchOpen && !isNotification && "Create"}
 
                 </span>
-
 
 
 

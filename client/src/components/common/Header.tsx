@@ -2,9 +2,9 @@ import { Heart, Search, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import { Input } from '../ui/Input'
-import SearchCom from '../drawers/SearchCom'
+import SearchCom from '../drawers/search_com'
 import { Link, useLocation } from 'react-router-dom'
-import SubHeader from './sub_header'
+import SubHeader from './SubHeader'
 
 type HeaderProps = {
   searchOpen: boolean;

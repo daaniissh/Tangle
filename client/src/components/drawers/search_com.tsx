@@ -1,16 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {
-  Compass,
-  Heart,
-  Home,
-  Menu,
-  MessageCircle,
-  PlusCircle,
   Search,
   XCircle,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { MenuDropDown } from "./DropDown";
 import { Input } from "../ui/Input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
