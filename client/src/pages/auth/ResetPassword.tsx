@@ -1,12 +1,12 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/Form";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import { z } from "zod";
 
-import SpinnerIcon from '@/components/Loader/LoadingSpinner';
+import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 const ResetPassword = () => {
 
   const passSchema = z.object({

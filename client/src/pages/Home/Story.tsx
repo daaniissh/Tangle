@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import React from 'react'
 import { Link } from 'react-router-dom'
 type Pros = {

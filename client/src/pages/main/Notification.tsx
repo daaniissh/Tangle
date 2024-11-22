@@ -1,6 +1,6 @@
-import { SearchSkelton } from '@/components/skelton/SearchSkelton'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { SearchSkelton } from '@/components/skeletons/SearchSkeleton'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
+import { Button } from '@/components/ui/Button'
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import RightPanelSkeleton from '../skelton/RightPanelSkeleton'
+import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar'
 import { Button } from '../ui/button'
 
 const RightPanel = () => {

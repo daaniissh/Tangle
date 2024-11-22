@@ -13,7 +13,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { MenuDropDown } from "./DropDown";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
-import { SearchSkelton } from "../skelton/SearchSkelton";
+import { SearchSkelton } from "../skeletons/SearchSkeleton";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
 import { useScreenDevice } from "@/hooks/use-screen-device";
 

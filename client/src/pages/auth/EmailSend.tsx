@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 
-import SpinnerIcon from '@/components/Loader/LoadingSpinner';
+import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 const EmailSend = () => {
 
   const emailSchema = z.object({

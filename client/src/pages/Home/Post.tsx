@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
 import React, { useState } from 'react'
 

@@ -4,7 +4,7 @@ import { Input } from '../ui/input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
-import Cirql_logo_w from '@/logs/cirql-logo-w'
+import Cirql_logo_w from '@/logos/cirql_logo_w'
 type HeaderProps = {
   searchOpen: boolean;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;

@@ -11,17 +11,17 @@ import {
   Expand,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { useScreenDevice } from "@/hooks/use-screen-device";
 import { Input } from "@/components/ui/input";
 import { MenuDropDown } from "../drawers/DropDown";
 import SearchCom from "../drawers/SearchCom";
-import NotificationCom from "../drawers/NotificcationCom";
+import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
-import Cirql_logo_g from "@/logs/cirql-logo-g";
-import Cirql_logo_w from "@/logs/cirql-logo-w";
-import Cirql from "@/logs/cirql";
+import Cirql_logo_g from "@/logos/cirql_logo_g";
+import Cirql_logo_w from "@/logos/cirql_logo_w";
+import Cirql from "@/logos/Cirql"
 
 interface SideBarProps {
   showStatusBar: boolean;

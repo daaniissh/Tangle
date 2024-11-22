@@ -1,4 +1,4 @@
-import { IconProps } from '../../interfaces/icon';
+import { IconProps } from '../../interfaces/Icon';
 
 export default function SpinnerIcon(props: IconProps) {
   return (
