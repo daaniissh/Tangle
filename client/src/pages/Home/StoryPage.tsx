@@ -1,14 +1,7 @@
-<<<<<<< HEAD
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Progress } from '@/components/ui/Progress';
-=======
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Progress } from '@/components/ui/progress';
-<<<<<<< HEAD
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
-import Cirql from '@/logos/cirql';
-=======
->>>>>>> parent of 02338e3 (feat(#logo): integrated new Cirql logo, optimized mobile display, and fixed progress bar (#3))
+
+import Cirql from '@/logos/Cirql';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

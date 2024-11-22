@@ -10,19 +10,11 @@ import {
   XCircle,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-<<<<<<< HEAD:client/src/components/drawers/SearchCom.tsx
 import { MenuDropDown } from "./DropDown";
 import { Input } from "../ui/Input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
 import { DropdownMenuSeparator } from "../ui/DropdownMenu";
-=======
-import { MenuDropDown } from "./dropdown";
-import { Input } from "../ui/input";
-import { Link } from "react-router-dom";
-import { SearchSkelton } from "../skeltons/search_skeleton";
-import { DropdownMenuSeparator } from "../ui/dropdown_menu";
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c:client/src/components/drawers/search_com.tsx
 import { useScreenDevice } from "@/hooks/use_screen_device";
 
 type SearchProps = {

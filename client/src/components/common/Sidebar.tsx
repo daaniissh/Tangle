@@ -156,7 +156,7 @@ const Sidebar: React.FC<SideBarProps> = ({
 
               <Li Icon={Heart} className={`${searchOpen && !isNotification && "border-none"} `} is_border="border" onClick={NotificationOpen} text="Notification" isNotification={isNotification} searchOpen={searchOpen} />
 
-              <Create>
+   
 
                 <span
 
@@ -169,7 +169,7 @@ const Sidebar: React.FC<SideBarProps> = ({
 
                 </span>
 
-              </Create>
+
 
 
               <li

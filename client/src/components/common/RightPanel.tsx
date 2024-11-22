@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-<<<<<<<< HEAD:client/src/components/common/RightPanel.tsx
+
 import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar'
-========
-import RightPanelSkeleton from '../skeltons/right_panel_skeleton'
-import { Link } from 'react-router-dom'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
->>>>>>>> f58bf532e96780d60f90a57cac022b18d982480c:client/src/components/common/right_panel.tsx
+
+
 
 
 const RightPanel = () => {
@@ -33,14 +30,14 @@ const RightPanel = () => {
                   daniish
                 </h1>
                 <p className="font-instagram font-normal text-insta-darkPrimary text-[13px]">
-                     danish
-                     
-                    </p>
+                  danish
+
+                </p>
               </span>
             </div>
           </div>
           <div className="flex items-center text-[12px]">
-            <span  className="rounded-xl hover:text-insta-darkLink px-5 font-bold cursor-pointer dark:text-insta-primary dark:hover:text-insta-link text-insta-primary">account</span>
+            <span className="rounded-xl hover:text-insta-darkLink px-5 font-bold cursor-pointer dark:text-insta-primary dark:hover:text-insta-link text-insta-primary">account</span>
           </div>
         </div>
       </div>
@@ -69,13 +66,13 @@ const RightPanel = () => {
                     </h1>
                     <p className="font-instagram font-normal text-[13px]">
                       messi
-              
+
                     </p>
                   </span>
                 </div>
               </div>
               <div className="flex items-center text-[12px]">
-                <span  className="rounded-xl hover:text-insta-darkLink px-5 dark:text-insta-primary dark:hover:text-insta-link font-bold text-insta-primary">Follow</span>
+                <span className="rounded-xl hover:text-insta-darkLink px-5 dark:text-insta-primary dark:hover:text-insta-link font-bold text-insta-primary">Follow</span>
               </div>
             </div>
           </Link>
