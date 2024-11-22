@@ -1,10 +1,10 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginSchema } from "../../schemas/loginSchema";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { loginSchema, LoginSchema } from "../../schemas/LoginSchema";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/Form";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import { z } from "zod";
 
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';

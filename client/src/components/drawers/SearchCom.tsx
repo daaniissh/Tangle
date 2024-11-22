@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { MenuDropDown } from "./DropDown";
-import { Input } from "../ui/input";
+import { Input } from "../ui/Input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";

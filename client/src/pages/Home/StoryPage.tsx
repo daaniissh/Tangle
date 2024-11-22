@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Progress } from '@/components/ui/Progress';
-import Cirql from '@/logos/Cirql';
+import Cirql from '@/logos/cirql';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
