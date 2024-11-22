@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar'
-import { Button } from '../ui/Button'
+
 
 const RightPanel = () => {
   const [isLoading, setLoading] = useState(true)
   return (
-    <div className='hidden dark:bg-black  w-[360px] top-10 h-auto xl:block my-8 mx-16'>
+    <div className='hidden dark:bg-black  w-96
+    
+    
+    top-10 h-auto xl:block my-8 mx-16'>
       <div className="mb-5 px-2">
         <div className="flex flex-row justify-between gap-10 w-full">
           <div className="flex gap-3 justify-center items-center">

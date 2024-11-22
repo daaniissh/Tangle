@@ -11,17 +11,21 @@ import {
   Expand,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
-import { useScreenDevice } from "@/hooks/use-screen-device";
+import { useScreenDevice } from "@/hooks/use_screen_device";
 import { Input } from "@/components/ui/Input";
 import { MenuDropDown } from "../drawers/DropDown";
-import SearchCom from "../drawers/SearchCom";
+import SearchCom from "../drawers/search_com";
 import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
 import Cirql_logo_g from "@/logos/cirql_logo_g";
 import Cirql_logo_w from "@/logos/cirql_logo_w";
-import Cirql from "@/logos/cirql"
+import Cirql from "@/logos/cirql";
+import { Create } from "../upload/create";
+
+
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -149,7 +153,21 @@ const Sidebar: React.FC<SideBarProps> = ({
 
               <Li Icon={Heart} className={`${searchOpen && !isNotification && "border-none"} `} is_border="border" onClick={NotificationOpen} text="Notification" isNotification={isNotification} searchOpen={searchOpen} />
 
-              <Li Icon={PlusCircle} onClick={closeAllComp} text="Create" isNotification={isNotification} searchOpen={searchOpen} />
+              <Create>
+
+                <span
+
+                  onClick={closeAllComp}
+                  className={`flex transition duration-200  dark:hover:bg-insta-darkBorder  gap-3 font-instagram  dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group  ${searchOpen || isNotification ? ` w-auto` : "border-none w-full"
+                    } `}
+                >
+                  <PlusCircle className="group-hover:scale-110 duration-150" />
+                  {!searchOpen && !isNotification && "Create"}
+
+                </span>
+
+              </Create>
+
 
               <li
                 onClick={closeAllComp}

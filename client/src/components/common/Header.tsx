@@ -1,9 +1,9 @@
 import { Heart, Search, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { Input } from '../ui/Input'
-import SearchCom from '../drawers/SearchCom'
+import SearchCom from '../drawers/search_com'
 import { Link, useLocation } from 'react-router-dom'
-import SubHeader from './SubHeader'
+import SubHeader from './sub_header'
 import Cirql_logo_w from '@/logos/cirql_logo_w'
 type HeaderProps = {
   searchOpen: boolean;

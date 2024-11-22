@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
 
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown_menu"
 import { Label } from "@radix-ui/react-label";
 import { Switch } from "@/components/ui/Switch"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
