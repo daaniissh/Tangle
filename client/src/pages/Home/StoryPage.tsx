@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Progress } from '@/components/ui/Progress';
+=======
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
+>>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 import Cirql from '@/logos/cirql';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';

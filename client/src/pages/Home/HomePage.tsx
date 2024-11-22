@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Story from './Story'
+<<<<<<< HEAD
 import RightPanel from '@/components/common/RightPanel'
+=======
+import RightPanel from '@/components/common/right_panel'
+>>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 import { ArrowLeft, ArrowRight, ChevronLeftCircle, ChevronRightCircle, ChevronRightCircleIcon } from 'lucide-react';
 import Posts from './Posts';
 

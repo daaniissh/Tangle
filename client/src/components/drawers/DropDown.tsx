@@ -22,10 +22,17 @@ import {
   DropdownMenuSeparator,
 
   DropdownMenuTrigger,
+<<<<<<< HEAD
 } from "@/components/ui/DropdownMenu"
 import { Label } from "@radix-ui/react-label";
 import { Switch } from "@/components/ui/Switch"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+=======
+} from "@/components/ui/dropdown_menu"
+
+import { Switch } from "@/components/ui/switch"
+
+>>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 type DropdownMenuDemoProps = {
   children: React.ReactNode;
   showStatusBar: boolean;

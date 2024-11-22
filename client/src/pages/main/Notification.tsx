@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { SearchSkelton } from '@/components/skeletons/SearchSkeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
+=======
+import { SearchSkelton } from '@/components/skeltons/search_skeleton'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+>>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
