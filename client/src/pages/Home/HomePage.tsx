@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Story from './Story'
-import RightPanel from '@/components/common/RightPannel'
+import RightPanel from '@/components/common/right_panel'
 import { ArrowLeft, ArrowRight, ChevronLeftCircle, ChevronRightCircle, ChevronRightCircleIcon } from 'lucide-react';
 import Posts from './Posts';
 
@@ -10,7 +10,7 @@ const HomePage = () => {
 
   // Scroll to the right
   const scrollRight = () => {
-    scrollableDivRef.current?.scrollBy({ left: 600, behavior: 'smooth' });
+    scrollableDivRef.current?.scrollBy({ left: 400, behavior: 'smooth' });
   };
 
   // Scroll to the left
@@ -43,22 +43,12 @@ const HomePage = () => {
 
           <ChevronLeftCircle className={`${isArrowHide ? "opacity-1" : "opacity-0"} fill-white lg:block hidden  top-8  absolute z-50 left-5  text-black/20 cursor-pointer `} onClick={scrollLeft} />
 
-          <div ref={scrollableDivRef} className="flex  w-full mt-16 md:border-none border-b-2 md:px-1 !scroll-smooth   border-insta-border/20 lg:mt-0 items-center   justify-start  lg:max-w-[650px] h-28  overflow-x-scroll scrollbar-hide">
+          <div ref={scrollableDivRef} className="flex  w-full  md:border-none border-b-2 md:px-1    border-insta-border/20 lg:mt-0       h-28  overflow-x-scroll scrollbar-hide">
 
 
             <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de143.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg' />
-
+   
+        
           </div>
           <div className="flex justify-center">
             <Posts />

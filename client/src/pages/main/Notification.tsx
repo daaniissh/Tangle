@@ -1,4 +1,4 @@
-import { SearchSkelton } from '@/components/skelton/SearchSkelton'
+import { SearchSkelton } from '@/components/skeltons/search_skeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 

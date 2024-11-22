@@ -1,11 +1,11 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginSchema } from "../../schemas/loginSchema";
+import { loginSchema, LoginSchema } from "../../schemas/login_schema";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import SpinnerIcon from '@/components/Loader/LoadingSpinner';
+import SpinnerIcon from '@/components/Loader/loading_spinner';
 const Login = () => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
