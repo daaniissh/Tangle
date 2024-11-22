@@ -10,12 +10,12 @@ import {
   XCircle,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { MenuDropDown } from "./dropdown";
+import { MenuDropDown } from "./DropDown";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
-import { SearchSkelton } from "../skeltons/search_skeleton";
-// import { DropdownMenuSeparator } from "../ui/dropdown-";
-import { useScreenDevice } from "@/hooks/use_screen_device";
+import { SearchSkelton } from "../skelton/SearchSkelton";
+import { DropdownMenuSeparator } from "../ui/dropdown-menu";
+import { useScreenDevice } from "@/hooks/use-screen-device";
 import { Button } from "../ui/button";
 
 type NotificationProps = {

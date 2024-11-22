@@ -7,13 +7,13 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input_otp"
+} from "@/components/ui/input-otp"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 
-import SpinnerIcon from '@/components/Loader/loading_spinner';
+import SpinnerIcon from '@/components/Loader/LoadingSpinner';
 const OtpVerfication = () => {
   const [otpValue, setOtpValue] = useState<string>("")
   const [err, setErr] = useState<string>("")

@@ -10,9 +10,9 @@ const Story = ({username,img}:Pros) => {
  
       <Link
         to="/story"
-        className="mr-5 cursor-pointer dark:text-insta-darkText h-auto flex"
+        className="w-full cursor-pointer dark:text-insta-darkText h-auto flex    items-center"
       >
-        <div className="flex gap-1 items-center  flex-col justify-center">
+        <div className="flex gap-[3px] items-center  flex-col justify-center    w-20 ">
           <div className="flex  justify-center items-center   bg-gradient-to-tr from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[2px] rounded-full ">
           <div className="  bg-white p-[1px]  rounded-full ">
             <Avatar className="w-16 h-16  duration-150">

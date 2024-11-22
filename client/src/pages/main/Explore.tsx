@@ -1,4 +1,4 @@
-import ExplorePost from '@/components/common/explore_post'
+import ExplorePost from '@/components/common/ExplorePost'
 
 
 const Explore = () => {
