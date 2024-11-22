@@ -11,7 +11,7 @@ import {
   Expand,
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-<<<<<<< HEAD
+
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
 import { useScreenDevice } from "@/hooks/use_screen_device";
@@ -21,25 +21,11 @@ import SearchCom from "../drawers/SearchCom";
 import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
-=======
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useScreenDevice } from "@/hooks/use_screen_device";
-import { Input } from "@/components/ui/input";
-import { MenuDropDown } from "../drawers/dropdown";
-import SearchCom from "../drawers/search_com";
-import NotificationCom from "../drawers/notification_com";
-import Li from "./li";
-import Header from "./header";
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 import Cirql_logo_g from "@/logos/cirql_logo_g";
 import Cirql_logo_w from "@/logos/cirql_logo_w";
-import Cirql from "@/logos/cirql";
+import Cirql from "@/logos/Cirql";
 import { Create } from "../upload/create";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -130,8 +116,11 @@ const Sidebar: React.FC<SideBarProps> = ({
                 : "w-28 pl-5 py-1 items-start justify-start"
                 }  rounded-xl cursor-pointer flex  mt-6 `}
             >
-
-              {searchOpen || isNotification ? <Cirql_logo_w /> : <Cirql className="fill-black dark:fill-white" />}
+              <img
+                className="dark:filter dark:invert filter invert-0"
+                src={searchOpen || isNotification ? "./sm-logo.png" : "./Logo.png"}
+                alt=""
+              />
             </div>
             <ul
               className={`${searchOpen || isNotification

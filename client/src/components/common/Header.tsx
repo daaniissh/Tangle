@@ -1,17 +1,11 @@
 import { Heart, Search, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
-<<<<<<< HEAD
+D
 import { Input } from '../ui/Input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
-import SubHeader from './SubHeader'
-=======
-import { Input } from '../ui/input'
-import SearchCom from '../drawers/search_com'
-import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './sub_header'
->>>>>>> f58bf532e96780d60f90a57cac022b18d982480c
-import Cirql_logo_w from '@/logos/cirql_logo_w'
+
 type HeaderProps = {
   searchOpen: boolean;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
@@ -39,8 +33,11 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
   return (
     <>
       {activeLink !== "notifications" ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2  border-insta-border w-full items-center justify-between h-16  fixed top-0 z-50" >
-       
-       <Cirql_logo_w className='m-2'  />
+        <img
+          src="./sm-logo.png"
+          className="size-8 mx-3 dark:filter dark:invert"
+          alt=""
+        />
         <div className="relative w-full ">
           {!show && (
             <Search className="absolute size-5 text-gray-500 top-[10px] left-2" />
