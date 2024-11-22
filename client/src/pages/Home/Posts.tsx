@@ -1,6 +1,6 @@
 import React from 'react'
 import Post from './Post'
-import PostSkeleton from '@/components/skelton/PostSkeleton'
+import PostSkeleton from '@/components/skeltons/post_skeleton'
 
 const Posts = () => {
   return (
