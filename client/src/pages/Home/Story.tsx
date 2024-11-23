@@ -22,9 +22,9 @@ const Story = ({username,img,id,name}:Pros) => {
               <AvatarImage
                 draggable="false"
                 className="rounded-full select-none  object-cover"
-                src={img != "" ? img : "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
+                src={img}
               />
-              {/* <AvatarFallback className='capitalize' >{name.charAt(1)}</AvatarFallback> */}
+              <AvatarFallback className='capitalize' >{name.charAt(1)}</AvatarFallback>
             </Avatar>
             </div>
           </div>
