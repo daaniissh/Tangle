@@ -2,7 +2,7 @@ import { Heart, Search, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import { Input } from '../ui/Input'
-import SearchCom from '../drawers/search_com'
+import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
 
@@ -32,7 +32,7 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
   };
   return (
     <>
-      {activeLink !== "notifications" ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2  border-insta-border w-full items-center justify-between h-16  fixed top-0 z-50" >
+      {activeLink !== "notifications" ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-16" >
         <img
           src="./sm-logo.png"
           className="size-8 mx-3 dark:filter dark:invert"

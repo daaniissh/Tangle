@@ -1,11 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Story from './Story'
-import RightPanel from '@/components/common/RightPanel'
-import { ArrowLeft, ArrowRight, ChevronLeftCircle, ChevronRightCircle, ChevronRightCircleIcon } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import Story from './Story';
+import RightPanel from '@/components/common/RightPanel';
+import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import Posts from './Posts';
+import { stories } from '@/lib/mock/story';
 
 const HomePage = () => {
-  const [isArrowHide, setIsArrowHide] = useState(false)
+  const [isArrowHide, setIsArrowHide] = useState(false);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   // Scroll to the right
@@ -15,7 +16,6 @@ const HomePage = () => {
 
   // Scroll to the left
   const scrollLeft = () => {
-    console.log("Scrolling right");
     scrollableDivRef.current?.scrollBy({ left: -600, behavior: 'smooth' });
   };
 
@@ -34,35 +34,55 @@ const HomePage = () => {
       scrollDiv?.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
   return (
-    <>
-      <div className=' select-none flex md:overflow-auto overflow-x-scroll justify-between w-full flex-row    min-h-screen'>
+    <div className="flex justify-between   z-0 h-screen w-full overflow-x- md:px-2  overflow-y-auto">
+      {/* Left Section: Stories + Posts */}
+      <div className="flex flex-col mt-14 md:mt-0   w-full max-w-[850px] ">
+        {/* Scrollable Stories Section */}
+        <div className="relative md:border-0 px-2 border-b border-insta-darkPrimary/50 flex md:justify-center  w-full mt-4">
+          {/* <ChevronLeftCircle
+            className={`${isArrowHide ? 'opacity-1' : 'opacity-1'} absolute left-4 top-8 z-50 text-black/20 cursor-pointer`}
+            onClick={scrollLeft}
+          /> */}
+          <div
+            ref={scrollableDivRef}
+            className="flex  overflow-x-auto max-w-[650px] scrollbar-hide md:gap-5 gap-1 py-[1px]  md:py-2"
+          >
 
-        <div className="lg:ml-80 flex flex-col justify-center relative w-full lg:w-[650px] ">
-          <ChevronRightCircle className=' fill-white lg:block hidden   absolute z-50 top-8 right-5  text-black/20 cursor-pointer' onClick={scrollRight} />
+            {stories.map((story) => (<Story
+              username={story.username}
+              name={story.name}
+              id={story.id}
+              img={story.profileImg}
+            />))}
 
-          <ChevronLeftCircle className={`${isArrowHide ? "opacity-1" : "opacity-0"} fill-white lg:block hidden  top-8  absolute z-50 left-5  text-black/20 cursor-pointer `} onClick={scrollLeft} />
 
-          <div ref={scrollableDivRef} className="flex  w-full  md:border-none border-b-2 md:px-1    border-insta-border/20 lg:mt-0       h-28  overflow-x-scroll scrollbar-hide">
-
-
-            <Story username='dani' img='https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de143.jpg' />
-   
-        
+            {/* Add more Story components here */}
           </div>
-          <div className="flex justify-center">
-            <Posts />
-
-          </div>
-
+          <ChevronRightCircle
+            className="absolute right-4 top-8 z-50 text-black/20 cursor-pointer"
+            onClick={scrollRight}
+          />
         </div>
 
-        <RightPanel />
-
+        {/* Posts Section */}
+        <div className="w-full  flex justify-center px-2 ">
+          <Posts />
+        </div>
       </div>
 
-    </>
-  )
-}
+      {/* Right Section: Right Panel */}
+      <div className="hidden lg:flex     flex-shrink-0">
+        <RightPanel />
+      </div>
+    </div>
 
-export default HomePage
+
+
+
+
+  );
+};
+
+export default HomePage;

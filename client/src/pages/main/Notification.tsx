@@ -35,7 +35,7 @@ const Notification = () => {
                           <h1 className="text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis">
                             daniish
                           </h1>
-                          <p className="font-instagram font-normal text-[13px]">
+                          <p className="font-instagram font-normal text-xs md:text-[13px]">
                             liked your post.
                             <span className="font-poppins text-[13px] ml-1 text-insta-darkPrimary">23h</span>
                           </p>
@@ -62,10 +62,10 @@ const Notification = () => {
                       </Avatar>
                       <div className="flex gap-2 items-start max-w-52 break-words">
                         <span className="flex flex-col">
-                          <h1 className="text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis">
+                          <h1 className="text-base font-[600] whitespace-nowrap  text-ellipsis">
                             daniish
                           </h1>
-                          <p className="font-instagram font-normal text-[13px]">
+                          <p className="font-instagram font-normal text-xs md:text-[13px]">
                             started following you.
                             <span className="font-poppins text-[13px] ml-1 text-insta-darkPrimary">23h</span>
                           </p>

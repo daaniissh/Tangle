@@ -3,29 +3,31 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 type Pros = {
   username: string,
-  img:string
+  img:string,
+  name:string,
+  id:number
 }
-const Story = ({username,img}:Pros) => {
+const Story = ({username,img,id,name}:Pros) => {
   return (
  
       <Link
-        to="/story"
-        className="mr-5 cursor-pointer dark:text-insta-darkText h-auto flex"
+        to={`/story/${username}/${id}`}
+        className=" cursor-pointer dark:text-insta-darkText h-auto flex"
       >
         <div className="flex gap-1 items-center  flex-col justify-center">
           <div className="flex  justify-center items-center   bg-gradient-to-tr from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[2px] rounded-full ">
-          <div className="  bg-white p-[1px]  rounded-full ">
-            <Avatar className="w-16 h-16  duration-150">
+          <div className=" dark:bg-black  bg-white p-[1px]  rounded-full ">
+            <Avatar className="md:w-16 md:h-16 w-14 h-14  duration-150">
               <AvatarImage
                 draggable="false"
-                className="rounded-full select-none  object-fill"
+                className="rounded-full select-none  object-cover"
                 src={img}
               />
-              <AvatarFallback>DN</AvatarFallback>
+              <AvatarFallback className='capitalize' >{name.charAt(1)}</AvatarFallback>
             </Avatar>
             </div>
           </div>
-          <h3 className=' text-[12px] font-normal font-poppins truncate w-[70px] text-center' >{username}</h3>
+          <h3 className=' text-[12px] font-normal font-poppins truncate w-[70px] text-center' >{name}</h3>
         </div>
       </Link>
 

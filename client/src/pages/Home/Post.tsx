@@ -7,10 +7,10 @@ const Post = () => {
   const text = "Somethin’ spooky settlin’ in ‘round these parts this fine Halloween. Locals startin’ to call it some kinda…Undead Nightmare Reckon some tips’ll help ya. Just click on the #RedDeadRedemption link in that there bio"
 
   return (
-    <div className="w-full md:w-8/12 mx-auto mt-2 dark:border-b   dark:border-gray-600/50 rounded-lg overflow-hidden">
+    <div className="w-full md:w-8/12 mx-auto mt-2 md:dark:border-b   md:dark:border-gray-600/50 rounded-lg overflow-hidden">
 
       {/* Post Header */}
-      <div className="flex items-center py-2 px-2 md:px-0">
+      <div className="flex items-center py-2  md:px-0">
         <div className="  bg-gradient-to-tr from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[1.5px]  rounded-full ">
           <div className="  bg-white p-[1px]  rounded-full ">
             <Avatar className="w-8 h-8 cursor-pointer">
@@ -30,11 +30,11 @@ const Post = () => {
       </div>
 
       {/* Post Image */}
-      <div className="flex justify-center rounded-[6px] border-[0.5px] border-insta-darkPrimary/20">
+      <div className="flex justify-center rounded-[6px] z-0 border-[0.5px] border-insta-darkPrimary/20">
         <img
           draggable="false"
-          className="w-[1080px] h-auto object-cover md:rounded-[6px]"
-          src="https://i.pinimg.com/564x/cb/7f/2a/cb7f2a7ce16db8ab86fe8612883cbe78.jpg"
+          className="w-[1080px] h-auto object-cover rounded-[2px] md:rounded-[6px]"
+          src="https://i.pinimg.com/736x/4e/c5/f8/4ec5f8be7802fd9676c341f6cbab1d8d.jpg"
           alt="Post Image"
         />
       </div>
