@@ -37,6 +37,7 @@ const HomePage = () => {
 
   return (
     <div className="flex justify-between   z-0 h-screen w-full overflow-x- md:px-2  overflow-y-auto">
+             
       {/* Left Section: Stories + Posts */}
       <div className="flex flex-col mt-14 md:mt-0   w-full max-w-[850px] ">
         {/* Scrollable Stories Section */}

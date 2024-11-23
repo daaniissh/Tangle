@@ -14,6 +14,7 @@ const Story = ({username,img,id,name}:Pros) => {
         to={`/story/${username}/${id}`}
         className=" cursor-pointer dark:text-insta-darkText h-auto flex"
       >
+
         <div className="flex gap-1 items-center  flex-col justify-center">
           <div className="flex  justify-center items-center   bg-gradient-to-tr from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[2px] rounded-full ">
           <div className=" dark:bg-black  bg-white p-[1px]  rounded-full ">
@@ -21,9 +22,9 @@ const Story = ({username,img,id,name}:Pros) => {
               <AvatarImage
                 draggable="false"
                 className="rounded-full select-none  object-cover"
-                src={img}
+                src={img != "" ? img : "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
               />
-              <AvatarFallback className='capitalize' >{name.charAt(1)}</AvatarFallback>
+              {/* <AvatarFallback className='capitalize' >{name.charAt(1)}</AvatarFallback> */}
             </Avatar>
             </div>
           </div>
