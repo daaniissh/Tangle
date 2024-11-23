@@ -11,7 +11,7 @@ const HomePage = () => {
 
   // Scroll to the right
   const scrollRight = () => {
-    scrollableDivRef.current?.scrollBy({ left: 400, behavior: 'smooth' });
+    scrollableDivRef.current?.scrollBy({ left: 600, behavior: 'smooth' });
   };
 
   // Scroll to the left
@@ -36,20 +36,29 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="flex justify-between   z-0 h-screen w-full overflow-x- md:px-2  overflow-y-auto">
-             
+    <div className="flex justify-between  scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white  dark:scrollbar-thumb-gray-800  z-0 h-screen w-full overflow-x- md:px-2  overflow-y-auto">
+
       {/* Left Section: Stories + Posts */}
       <div className="flex flex-col mt-14 md:mt-0   w-full max-w-[850px] ">
         {/* Scrollable Stories Section */}
-        <div className="relative md:border-0 px-2 border-b border-insta-darkPrimary/50 flex md:justify-center  w-full mt-4">
-          {/* <ChevronLeftCircle
-            className={`${isArrowHide ? 'opacity-1' : 'opacity-1'} absolute left-4 top-8 z-50 text-black/20 cursor-pointer`}
-            onClick={scrollLeft}
-          /> */}
+        <div className="relative md:-0 md:mx-5 -b -insta-darkPrimary/50 flex md:justify-center  w-full mt-4">
+
+          <div className="absolute w-10/12 hidden px-8 bottom-2 md:flex justify-between items-center h-full  ">
+            <ChevronLeftCircle
+              className={`${isArrowHide ? 'opacity-1' : 'opacity-0'} fill-white  top-8 z-50 text-black/20 cursor-pointer`}
+              onClick={scrollLeft}
+            />
+
+            <ChevronRightCircle
+              className=" fill-white top-8 z-50 text-black/20 cursor-pointer"
+              onClick={scrollRight}
+            />
+          </div>
           <div
             ref={scrollableDivRef}
-            className="flex  overflow-x-auto max-w-[650px] scrollbar-hide md:gap-5 gap-1 py-[1px]  md:py-2"
+            className="flex relative px-1 md:px-auto overflow-x-auto max-w-[650px] scrollbar-hide md:gap-5 gap-1 py-[1px]  md:py-2"
           >
+
 
             {stories.map((story) => (<Story
               username={story.username}
@@ -59,16 +68,13 @@ const HomePage = () => {
             />))}
 
 
-            {/* Add more Story components here */}
           </div>
-          <ChevronRightCircle
-            className="absolute right-4 top-8 z-50 text-black/20 cursor-pointer"
-            onClick={scrollRight}
-          />
+
+
         </div>
 
         {/* Posts Section */}
-        <div className="w-full  flex justify-center px-2 ">
+        <div className="w-full  flex justify-center  ">
           <Posts />
         </div>
       </div>

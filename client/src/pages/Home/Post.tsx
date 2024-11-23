@@ -10,7 +10,7 @@ const Post = () => {
     <div className="w-full md:w-8/12 mx-auto mt-2 md:dark:border-b   md:dark:border-gray-600/50 rounded-lg overflow-hidden">
 
       {/* Post Header */}
-      <div className="flex items-center py-2  md:px-0">
+      <div className="flex items-center py-3 md:py-2 px-3 md:px-0">
         <div className="  bg-gradient-to-tr from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[1.5px]  rounded-full ">
           <div className="  bg-white p-[1px]  rounded-full ">
             <Avatar className="w-8 h-8 cursor-pointer">

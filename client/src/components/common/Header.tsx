@@ -5,6 +5,8 @@ import { Input } from '../ui/Input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
+import Cirql_logo_w from '@/logos/cirql_logo_w'
+import CirqlG from '@/logos/Cirql-g'
 
 type HeaderProps = {
   searchOpen: boolean;
@@ -33,11 +35,7 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
   return (
     <>
       {activeLink !== "notifications" ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-16" >
-        <img
-          src="./sm-logo.png"
-          className="size-8 mx-3 dark:filter dark:invert"
-          alt=""
-        />
+        <CirqlG className='w-14 px-2' />
         <div className="relative w-full ">
           {!show && (
             <Search className="absolute size-5 text-gray-500 top-[10px] left-2" />

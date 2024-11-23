@@ -17,6 +17,8 @@ import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
 import Cirql from "@/logos/Cirql";
+import Cirql_logo_g from "@/logos/cirql_logo_g";
+import Cirql_logo_w from "@/logos/cirql_logo_w";
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -105,7 +107,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                   : "w-28 pl-5 py-1 items-start justify-start"
               } rounded-xl cursor-pointer flex mt-6`}
             >
-              <Cirql />
+             {isNotification || searchOpen ? <Cirql_logo_w  /> : <Cirql className="dark:fill-white fill-black" />}
             </div>
             <ul
               className={`${
@@ -177,7 +179,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 }`}
               >
                 <Avatar className="size-7 group-hover:scale-110 duration-150">
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src="https://i.pinimg.com/736x/bd/da/77/bdda77020d3a6ef4b71a8bbc108606b7.jpg" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 {!searchOpen && !isNotification && <h1>Profile</h1>}
@@ -214,7 +216,7 @@ const Sidebar: React.FC<SideBarProps> = ({
             searchRef={searchRef}
             show={show}
           />
-          <div className="border-t-[0.5px] dark:border-insta-darkBorder bg-white dark:bg-black border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-16 fixed bottom-0 z-50">
+          <div className="border-t-[1px] dark:border-insta-darkBorder bg-white dark:bg-black border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-16 fixed bottom-0 z-50">
             <ul className="flex flex-row gap-6 px-6 py-4">
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <Home className="group-hover:scale-110 duration-150" />
@@ -223,10 +225,22 @@ const Sidebar: React.FC<SideBarProps> = ({
                 <Compass className="group-hover:scale-110 duration-150" />
               </li>
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
-                <MessageCircle className="group-hover:scale-110 duration-150" />
+                <PlusCircle className="group-hover:scale-110 duration-150" />
               </li>
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
-                <Heart className="group-hover:scale-110 duration-150" />
+                <MessageCircle className="group-hover:scale-110 duration-150" />
+              </li>
+              <li
+                onClick={closeAllComp}
+                className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${
+                  searchOpen || isNotification ? "w-auto" : "border-none w-full"
+                }`}
+              >
+                <Avatar className="size-7 group-hover:scale-110 duration-150">
+                  <AvatarImage src="https://i.pinimg.com/736x/65/d4/47/65d44778290c3b35b1daae5a9439ade5.jpg" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+            
               </li>
             </ul>
           </div>

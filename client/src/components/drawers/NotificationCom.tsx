@@ -63,14 +63,14 @@ const NotificationCom = ({
     <>
       {isDesktop && (
         <div
-          className={`absolute w-[400px] h-screen dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${isNotification ? "translate-x-0 left-16" : "-translate-x-full"}`}
+          className={`absolute w-[450px] h-screen dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${isNotification ? "translate-x-0 left-16" : "-translate-x-full"}`}
         >
           <div className="absolute w-full">
             <div className="w-full">
               <h1 className="font-[700] dark:text-insta-darkText font-instagram text-2xl px-3 py-5">
                 Notifications
               </h1>
-              <div className="relative h-[700px] overflow-auto w-full pr-3">
+              <div className="relative h-[700px] overflow-auto scrollbar-track-transparent scrollbar-thumb-transparent scrollbar-thin  w-full pr-3">
 
                 <div className="w-full h-[600px] max-h-[900px]"> {/* Enable vertical scrolling */}
                   {/* notifications */}
@@ -133,7 +133,7 @@ const NotificationCom = ({
                             </div>
                           </div>
                           <div className="flex  items-center text-[12px]">
-                            <Button size="sm" className="rounded-xl hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary">Follow</Button>
+                            <Button size="sm" className="rounded-lg hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary">Follow</Button>
                           </div>
                         </div>
                       </Link>
