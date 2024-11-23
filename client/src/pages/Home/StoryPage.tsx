@@ -1,23 +1,21 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
 import { Progress } from '@/components/ui/Progress';
+import { stories } from '@/lib/mock/story';
 
 import Cirql from '@/logos/Cirql';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+type Story = {
+  url: string;
+  progress: number;
+};
 
 const StoryPage = () => {
-  const [images, setImages] = useState([
-    {
-      url: "https://i.pinimg.com/564x/7b/17/85/7b1785c3af74470b5aac228a142d88f2.jpg",
-      progress: 0, // Initial progress for the first image
-    },
-    {
-      url: "https://i.pinimg.com/736x/ba/40/1b/ba401b5ab0b197f1d38460c1bdeb6887.jpg",
-      progress: 0, // Initial progress for the second image
-    },
-    // Add more image objects here
-  ]);
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
+  const user = stories.find((story)=>story.id.toString() === id)
+  const [images, setImages] = useState<Story[] | undefined>(user?.stories);
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,32 +23,47 @@ const StoryPage = () => {
     const duration = 20000; // 20 seconds for each image
     const interval = 100; // Update every 100 milliseconds
     const increment = (interval / duration) * 100; // Calculate how much to increment
-
+  
     const timer = setInterval(() => {
       setImages((prev) => {
-        const newImages = [...prev];
-
+        const newImages = prev ? [...prev] : [];
         const currentImage = newImages[currentIndex];
-
-        if (currentImage.progress >= 100 && currentIndex == 0) {
-
-          clearInterval(timer); // Stop when progress reaches 100%
-          handleNext(); // Move to next image
+  
+        if (!currentImage) return newImages; // Guard against undefined images
+  
+        // Increment the current image's progress
+        currentImage.progress += increment;
+  
+        // Check if it's the last image or if there's only one image
+        if (
+          (currentIndex === newImages.length - 1 && currentImage.progress >= 100) || 
+          (newImages.length === 1 && currentImage.progress >= 100)
+        ) {
+          clearInterval(timer); // Stop the interval
+          newImages.forEach((image) => (image.progress = 0)); // Reset progress for all images
+          navigate("/"); // Navigate to "/"
+          return newImages;
+        }
+  
+        // If the current image is the first one and reaches 100% progress
+        if (currentIndex === 0 && currentImage.progress >= 100) {
+          clearInterval(timer); // Stop the interval
+          handleNext(); // Move to the next image
           return newImages; // Return unchanged images
         }
-
-
-        currentImage.progress += increment; // Increment the current image's progress
+  
         return newImages; // Update state
       });
     }, interval);
-
+  
     return () => clearInterval(timer); // Cleanup on unmount
-  }, [currentIndex]); // Run effect on currentIndex change
+  }, [currentIndex, images.length]); // Run effect on currentIndex or images change
+  
 
   const handleNext = () => {
+
     setImages((prevImages) => {
-      const newImages = [...prevImages]; // Create a copy of the current images
+      const newImages = prevImages ? [...prevImages] : []; // Create a copy of the current images
       newImages[currentIndex].progress = 100; // Reset progress of the current image to 0
       return newImages; // Return the updated images array
     });
@@ -72,12 +85,12 @@ const StoryPage = () => {
         const oldIndex = newIndex + 1;
 
         setImages((prevImages) => {
-          const newImages = [...prevImages]; // Create a copy of the current images
+          const newImages = prevImages ? [...prevImages] : []; // Create a copy of the current images
           newImages[newIndex].progress = 0; // Reset progress of the new current image to 0
           return newImages; // Return the updated images array
         });
         setImages((prevImages) => {
-          const newImages = [...prevImages]; // Create a copy of the current images
+          const newImages = prevImages ? [...prevImages]: []; // Create a copy of the current images
           newImages[oldIndex].progress = 0; // Reset progress of the new current image to 0
           return newImages; // Return the updated images array
         });
@@ -109,20 +122,20 @@ const StoryPage = () => {
         <div className="flex justify-between relative flex-col h-full w-full">
           <div className="flex-1 h-20 flexmd:mt-auto w-full md:w-auto fixed bg-gradient-to-b from-black/30 to-transparent flex-col">
             <div className="flex justify-center gap-1 mt-1 md:mt-2 w-[400px] md:w-[400px] px-1">
-              {images.map((item) => <Progress value={item.progress} className="bg-[#70716d]/30 w-[380px] h-[2px] mt-2 rounded-[10px]" />)}
+              {images?.map((item) => <Progress value={item.progress} className="bg-[#70716d]/30 w-[380px] h-[2px] mt-2 rounded-[10px]" />)}
             </div>
             <div className="mt-2 px-2 flex items-center">
           
               <Avatar className="scale-75 duration-150">
                 <AvatarImage
                   className="rounded-full select-none object-fill"
-                  src={"https://i.pinimg.com/736x/0a/2f/68/0a2f68448ab64c7fb67e75ef410de163.jpg"}
+                  src={user?.profileImg}
                 />
-                <AvatarFallback>DN</AvatarFallback>
+                <AvatarFallback className='capitalize text-white font-bold' >{user?.name.charAt(1)}</AvatarFallback>
               </Avatar>
               <span className="flex flex-row z-50  justify-between w-full items-center">
                 <h1 className="text-[14px] font-[400] cursor-pointer ml-1 whitespace-nowrap overflow-hidden text-white text-ellipsis">
-                  daniish <span className="font-poppins text-center text-[14px] ml-[5px] text-gray-700 shadow">1h</span>
+                  {user?.name} <span className="font-poppins text-center text-[14px] ml-[5px] text-gray-700 shadow">1h</span>
                 </h1>
                 <Link to="/" className="text-white px-4 block md:hidden  cursor-pointer">
                   <Plus className='rotate-45 size-10' />

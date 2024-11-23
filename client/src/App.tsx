@@ -8,11 +8,9 @@ import EmailSend from './pages/auth/EmailSend.tsx'
 import OtpVerfication from './pages/auth/OtpVerfication.tsx'
 import ResetPassword from './pages/auth/ResetPassword.tsx'
 import SideBar from './components/common/Sidebar.tsx'
-import { Moon, Sun } from 'lucide-react'
-import { Switch } from "@/components/ui/switch"
+
 import Notification from './pages/main/Notification.tsx'
-import { useScreenDevice } from './hooks/use-screen-device.tsx'
-import RightPanel from './components/common/RightPannel.tsx'
+
 import HomePage from './pages/Home/HomePage.tsx'
 import StoryPage from './pages/Home/StoryPage.tsx'
 import Explore from './pages/main/Explore.tsx'
@@ -49,8 +47,8 @@ function App() {
   };
 
   return (
-    <div className='flex  dark:bg-black  '>
-      {authUser &&  location.pathname !== '/story' && <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />}
+    <div className='flex   dark:bg-black overflow-hidden  '>
+      {authUser &&  !location.pathname.includes("/story")  && <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />}
        
         <Routes>
           <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login" />} />
@@ -58,7 +56,7 @@ function App() {
           <Route path='/signup' element={!authUser ? <SignUp /> : <Navigate to="/" />} />
           <Route path='/emailverfication' element={<EmailSend />} />
           <Route path='/otpverfication' element={<OtpVerfication />} />
-          <Route path='/story' element={authUser ? <StoryPage /> : <Navigate to="/login" />} />
+          <Route path='/story/:username/:id' element={authUser ? <StoryPage /> : <Navigate to="/login" />} />
           <Route path='/resetpassword' element={<ResetPassword />} />
           <Route path='/notifications' element={authUser ? <Notification /> : <Navigate to="/login" />} />
           <Route path='/explore' element={authUser ? <Explore /> : <Navigate to="/login" />} />

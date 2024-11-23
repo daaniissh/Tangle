@@ -4,7 +4,7 @@ import PostSkeleton from '@/components/skeletons/PostSkeleton'
 
 const Posts = () => {
   return (
-    <div className=' w-full min-h-screen mb-20  overflow-x-hidden justify-center flex-col flex ' >
+    <div className=' md:w-10/12 min-h-screen mb-20 z-0  overflow-x-hidden justify-center flex-col flex ' >
       <Post/>
       <Post/>
       {/* <PostSkeleton/> */}
