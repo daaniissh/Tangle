@@ -17,8 +17,9 @@ import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
 import Cirql from "@/logos/Cirql";
-import Cirql_logo_g from "@/logos/cirql_logo_g";
-import Cirql_logo_w from "@/logos/cirql_logo_w";
+import Cirql_logo_g from "@/logos/Cirql_logo_g";
+import Cirql_logo_w from "@/logos/Cirql_logo_w";
+import { Link } from "react-router-dom";
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -172,7 +173,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 <PlusCircle className="group-hover:scale-110 duration-150" />
                 {!searchOpen && !isNotification && "Create"}
               </span>
-              <li
+              <Link to="/profile/danishi"
                 onClick={closeAllComp}
                 className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${
                   searchOpen || isNotification ? "w-auto" : "border-none w-full"
@@ -183,7 +184,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 {!searchOpen && !isNotification && <h1>Profile</h1>}
-              </li>
+              </Link>
             </ul>
             <ul
               className={`${
@@ -216,7 +217,7 @@ const Sidebar: React.FC<SideBarProps> = ({
             searchRef={searchRef}
             show={show}
           />
-          <div className="border-t-[1px] dark:border-insta-darkBorder bg-white dark:bg-black border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-16 fixed bottom-0 z-50">
+          <div className="border-t-[1px] dark:border-insta-darkBorder bg-white dark:bg-black border-insta-border dark:text-insta-darkText flex justify-center items-center w-full h-12 fixed bottom-0 z-50">
             <ul className="flex flex-row gap-6 px-6 py-4">
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <Home className="group-hover:scale-110 duration-150" />
