@@ -5,7 +5,7 @@ import { Input } from '../ui/Input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
-import Cirql_logo_w from '@/logos/cirql_logo_w'
+import Cirql_logo_w from '@/logos/Cirql_logo_w'
 import CirqlG from '@/logos/Cirql-g'
 
 type HeaderProps = {
@@ -21,20 +21,23 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
 
   useEffect(() => {
     // Check if the current path is '/home' and set active link accordingly
-    if (location.pathname === '/notifications') {
-      console.log(location.pathname)
-      setActiveLink("notifications");
-    } else {
-      setActiveLink("/");
-    }
+
+    setActiveLink(location.pathname);
+
+
   }, [location.pathname]);
   const handleClick = (link: string) => {
     setActiveLink(link);
     console.log(link)
   };
+  const keywords = ["notification", "profile", "edit","post"];
+
+  const isActive = keywords.some((keyword) => activeLink.includes(keyword));
+  const matchingKeywords = keywords.filter((itm) => activeLink.includes(itm));
+  const name = matchingKeywords.join(", ");
   return (
     <>
-      {activeLink !== "notifications" ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-16" >
+      {!isActive ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-14" >
         <CirqlG className='w-14 px-2' />
         <div className="relative w-full ">
           {!show && (
@@ -66,7 +69,7 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
           onClick={() => handleClick('notification')} className="flex dark:hover:bg-insta-darkBorder mr-2 gap-3 font-instagram text-[15px] dark:text-insta-darkText items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
           <Heart className="group-hover:scale-110 duration-150" />
         </Link>
-      </div > : <SubHeader name={activeLink} onClick={handleClick} />}
+      </div > : <SubHeader name={name} />}
     </>
   )
 }

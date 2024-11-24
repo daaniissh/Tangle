@@ -13,7 +13,7 @@ const RightPanel = () => {
   const [isLoading, setLoading] = useState(true)
 
   return (
-    <div className="hidden dark:bg-black  h-auto xl:block my-8 w-80 ">
+    <div className="hidden dark:bg-black   h-auto xl:block my-8 w-80 ">
       {/* User Profile Section */}
       <div className="mb-5 px-2">
         <div className="flex justify-between items-center w-full">
@@ -49,14 +49,14 @@ const RightPanel = () => {
         </h1>
         <ul className="flex w-full flex-col ">
           {users.map((user:Data)=>(
-             <li>
+             <li className='' >
             <Link
               to="/notifications"
-              className="w-full cursor-pointer dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-darkBorder transition"
+              className="w-full cursor-pointer  dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-darkBorder transition"
             >
-              <div className="flex justify-between items-center w-full">
+              <div className="flex justify-between   items-center w-full">
                 <div className="flex gap-3 items-center">
-                  <Avatar className="transition-transform duration-150 group-hover:scale-110">
+                  <Avatar className="transition-transform  duration-150 group-hover:scale-110">
                     <AvatarImage
                       className="rounded-full object-cover w-11 h-11"
                       src={user.image}
