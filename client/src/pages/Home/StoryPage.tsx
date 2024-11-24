@@ -41,7 +41,7 @@ const StoryPage = () => {
         ) {
           clearInterval(timer); // Stop the interval
           newImages.forEach((image) => (image.progress = 0)); // Reset progress for all images
-          navigate("/"); // Navigate to "/"
+          navigate(-1); // Navigate to "/"
           return newImages;
         }
 
@@ -100,6 +100,11 @@ const StoryPage = () => {
       return prevIndex; // Stay on the first image
     });
   };
+  const handleClose = () => {
+  
+      navigate(-1); // Navigate to home if no previous history
+ 
+  };
 
 
   return (
@@ -109,9 +114,9 @@ const StoryPage = () => {
         <div className="w-32 py-5 mt-5 px-3 items-start justify-start">
           <Cirql className="fill-white w-20" />
         </div>
-        <Link to="/" className="text-white z-50 cursor-pointer">
+        <div onClick={handleClose} className="text-white z-50 cursor-pointer">
           <Plus className='rotate-45 size-10' />
-        </Link>
+        </div>
       </div>
 
       <div className="md:w-2/5 w-full   mx-auto absolute py-10 md:py-auto flex justify-between  items-center md:px-10 h-full">
