@@ -42,11 +42,13 @@ const ImageSelect = ({ onSubmit, gotoForm }: FormProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center   justify-center p-4 space-y-4">
+
+    <div className="flex flex-col items-center    justify-center p-4 space-y-4">
       {/* Image Preview */}
       <div className="flex flex-col gap-4 justify-center items-center text-white  h-96 md:w-auto   rounded-md">
-      <Images strokeWidth={1} className="size-20" />
-        <h2 className="text-xl font-normal" >Drag photos  here</h2>
+      <Images strokeWidth={1} className="size-20 text-black dark:text-white" />
+        <h2 className="text-xl font-normal dark:text-white text-black" >Drag photos  here</h2>
+
         <div className="flex gap-4">
           <button
             onClick={handleClick}

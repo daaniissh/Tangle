@@ -1,6 +1,8 @@
-import PostDetails from '@/components/common/PostDeatils'
+
+
+import ShareDialog from '@/components/common/Share'
 import UserAvatar from '@/components/common/UserAvatar'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
+
 import { type Post } from '@/lib/mock/post'
 import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
 import React, { useState } from 'react'
@@ -37,7 +39,7 @@ const Post = ({data}:any) => {
           <div className="flex gap-4 items-center justify-center">
             <Heart  className={`${isLiked && "fill-red-700 text-red-700"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`} />
           <Link to={`/post/${username}/${id}`} ><MessageCircle className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" /></Link>  
-            <Send className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" />
+            <ShareDialog username={username} id={id} ><Send className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" /></ShareDialog>
           </div>
           <Bookmark className={`${isSaved && "fill-white text-white"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`} />
         </div>

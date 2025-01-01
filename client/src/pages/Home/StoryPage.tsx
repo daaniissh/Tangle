@@ -1,5 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar';
-import { Progress } from '@/components/ui/Progress';
+
+import ShareDialog from '@/components/common/Share';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Progress } from '@/components/ui/progress';
 import { stories } from '@/lib/mock/story';
 
 import Cirql from '@/logos/Cirql';
@@ -101,9 +103,9 @@ const StoryPage = () => {
     });
   };
   const handleClose = () => {
-  
-      navigate(-1); // Navigate to home if no previous history
- 
+
+    navigate(-1); // Navigate to home if no previous history
+
   };
 
 
@@ -162,10 +164,10 @@ const StoryPage = () => {
           </div>
 
 
-          <div className=" w-full  absolute   z-50    flex justify-between  text-white bottom-0">
-            <div className="flex justify-end items-center py-4  px-5 md:px-2  gap-5 w-full ">
+          <div className=" w-full   absolute   z-50   right-0 flex justify-between  text-white bottom-0">
+            <div className="flex justify-end items-center md:px-4 py-5 px-10  gap-5 w-full ">
               <Heart className='cursor-pointer fill-insta-gradientMid text-insta-gradientMid' />
-              <Send className='cursor-pointer' />
+              <ShareDialog username={user?.username} id={user?.id} ><button> <Send className='cursor-pointer ' /> </button></ShareDialog>
             </div>
           </div>
         </div>

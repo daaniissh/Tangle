@@ -84,7 +84,9 @@ const ImageCrop = ({ formsState, onSubmit, gotoForm }: FormProps) => {
 
       <div className="flex flex-wrap w-full px-1 gap-4 items-center z-50 justify-between">
         <div className=""></div>
-        <div className="text-white flex gap-2 text-base font-bold" onChange={onAspectRationChange}>
+
+        <div className="dark:text-white  flex gap-2 text-base font-bold" onChange={onAspectRationChange}>
+
           <input type="radio" value={1 / 1} name="ratio" /> 1:1
           <input type="radio" value={4 / 5} name="ratio" /> 4:5
           <input type="radio" value={9 / 16} name="ratio" /> 9:16
