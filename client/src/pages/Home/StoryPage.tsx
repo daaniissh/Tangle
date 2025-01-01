@@ -108,7 +108,7 @@ const StoryPage = () => {
 
 
   return (
-    <div className='w-full flex  flex-col relative items-center overflow-hidden bg-black md:bg-[#1a1a1a] h-screen'>
+    <div className='w-full flex  flex-col relative items-center  overflow-hidden bg-black md:bg-[#1a1a1a] h-screen'>
 
       <div className=" w-full fixed z-50 px-2 pt-2 hidden justify-between md:flex items-center h-10">
         <div className="w-32 py-5 mt-5 px-3 items-start justify-start">
@@ -129,7 +129,7 @@ const StoryPage = () => {
 
 
         <div className="flex  mt-2 w-full   justify-between  flex-col h-full ">
-          <div className="absolute w-full h-20 flex  md:mt-auto   bg-gradient-to-b from-black/60 md:rounded-[8px]  to-transparent flex-col">
+          <div className="absolute w-full h-20 px-8 md:px-0 flex  md:mt-auto   bg-gradient-to-b from-black/60 md:rounded-[8px]  to-transparent flex-col">
             <div className="flex justify-center gap-1 mt-1 w-full px-1">
               {images?.map((item) => <Progress value={item.progress} className="bg-[#70716d]/80 w-full h-[2px] mt-2 rounded-[10px]" />)}
             </div>

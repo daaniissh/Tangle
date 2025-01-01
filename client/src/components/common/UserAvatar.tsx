@@ -1,13 +1,13 @@
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Link } from 'react-router-dom';
 type AvatarProps = {
   username?: string
-  image: string;
+  image?: string;
   isStory?: boolean;
   storyId?: number;
   className?: string;
-  createdAt?: string | undefined;
+  createdAt?: string | null;
   padding?:string;
 
 }
@@ -21,9 +21,9 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
             <Avatar className={`${className} cursor-pointer`}>
               <AvatarImage
                 className="rounded-full select-none object-cover"
-                src={image}
+                src={image ? image : ""}
               />
-              <AvatarFallback>{username?.charAt(1)}</AvatarFallback>
+              <AvatarFallback className='' >{username?.charAt(0)}</AvatarFallback>
             </Avatar>
           </Link>
         </div> : <div className="    rounded-full ">
@@ -32,7 +32,7 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
               className="rounded-full select-none object-cover"
               src={image ? image : ""}
             />
-            <AvatarFallback className='capitalize' >{username?.charAt(1)}</AvatarFallback>
+            <AvatarFallback className='capitalize border border-gray-600' >{username?.charAt(0)}</AvatarFallback>
           </Avatar>
         </div>}
         <div className="ml-2 flex-1">

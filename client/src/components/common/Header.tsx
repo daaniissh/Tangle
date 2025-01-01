@@ -5,7 +5,6 @@ import { Input } from '../ui/Input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
-import Cirql_logo_w from '@/logos/Cirql_logo_w'
 import CirqlG from '@/logos/Cirql-g'
 
 type HeaderProps = {

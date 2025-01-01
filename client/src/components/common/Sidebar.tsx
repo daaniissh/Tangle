@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { 
-  Home, 
-  Search, 
-  Compass, 
-  MessageCircle, 
-  Heart, 
-  PlusCircle, 
-  Menu 
+import {
+  Home,
+  Search,
+  Compass,
+  MessageCircle,
+  Heart,
+  PlusCircle,
+  Menu
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 import { MenuDropDown } from "../drawers/DropDown";
 import SearchCom from "../drawers/SearchCom";
@@ -17,9 +17,11 @@ import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
 import Cirql from "@/logos/Cirql";
-import Cirql_logo_g from "@/logos/Cirql_logo_g";
 import Cirql_logo_w from "@/logos/Cirql_logo_w";
 import { Link } from "react-router-dom";
+
+import Create from "../modals/create/Comps";
+import { PostDialog } from "../modals/create/Form";
 
 interface SideBarProps {
   showStatusBar: boolean;
@@ -30,6 +32,7 @@ const Sidebar: React.FC<SideBarProps> = ({
   handleCheckedChange,
   showStatusBar,
 }) => {
+
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
   const [isNotification, setIsNotification] = useState<boolean>(false);
   const { isDesktop, isTablet } = useScreenDevice();
@@ -88,34 +91,37 @@ const Sidebar: React.FC<SideBarProps> = ({
     setSearchOpen(false);
     setIsNotification(false);
   }
+  function CreatePost() {
+
+    closeAllComp()
+
+  }
 
   return (
     <>
+   
       {isDesktop && (
         <div className="w-72">
           <div
             ref={!searchOpen ? notiRef : searchRef}
-            className={`transition flex-1 duration-500 z-50 flex-col dark:bg-insta-darkBackground h-screen border-r-[0.5px] dark:border-insta-darkBorder ${
-              searchOpen || isNotification
-                ? "w-16 fixed dark:border-none p-2"
-                : "px-5 flex flex-col dark:bg-insta-darkBackground justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder"
-            }`}
+            className={`transition flex-1 duration-500 z-50 flex-col dark:bg-insta-darkBackground h-screen border-r-[0.5px] dark:border-insta-darkBorder ${searchOpen || isNotification
+              ? "w-16 fixed dark:border-none p-2"
+              : "px-5 flex flex-col dark:bg-insta-darkBackground justify-start h-screen border-r-[0.5px] dark:border-insta-darkBorder"
+              }`}
           >
             <div
-              className={`${
-                searchOpen || isNotification
-                  ? "w-full justify-center items-center"
-                  : "w-28 pl-5 py-1 items-start justify-start"
-              } rounded-xl cursor-pointer flex mt-6`}
+              className={`${searchOpen || isNotification
+                ? "w-full justify-center items-center"
+                : "w-28 pl-5 py-1 items-start justify-start"
+                } rounded-xl cursor-pointer flex mt-6`}
             >
-             {isNotification || searchOpen ? <Cirql_logo_w  /> : <Cirql className="dark:fill-white fill-black" />}
+              {isNotification || searchOpen ? <Cirql_logo_w /> : <Cirql className="dark:fill-white fill-black" />}
             </div>
             <ul
-              className={`${
-                searchOpen || isNotification
-                  ? "flex items-center justify-center w-full flex-col gap-6 py-8"
-                  : "flex flex-col pr-2 gap-6 items-start justify-start pl-3 py-8"
-              }`}
+              className={`${searchOpen || isNotification
+                ? "flex items-center justify-center w-full flex-col gap-6 py-8"
+                : "flex flex-col pr-2 gap-6 items-start justify-start pl-3 py-8"
+                }`}
             >
               <div ref={searchRef}>
                 <SearchCom searchOpen={searchOpen} />
@@ -164,20 +170,20 @@ const Sidebar: React.FC<SideBarProps> = ({
                 isNotification={isNotification}
                 searchOpen={searchOpen}
               />
+              <PostDialog>
               <span
-                onClick={closeAllComp}
-                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder gap-3 font-instagram dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${
-                  searchOpen || isNotification ? `w-auto` : "border-none w-full"
-                }`}
+                onClick={CreatePost}
+                className={`flex transition duration-200 dark:hover:bg-insta-darkBorder gap-3 font-instagram dark:text-insta-darkText text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? `w-auto` : "border-none w-full"
+                  }`}
               >
                 <PlusCircle className="group-hover:scale-110 duration-150" />
                 {!searchOpen && !isNotification && "Create"}
               </span>
+              </PostDialog>
               <Link to="/profile/danishi"
                 onClick={closeAllComp}
-                className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${
-                  searchOpen || isNotification ? "w-auto" : "border-none w-full"
-                }`}
+                className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? "w-auto" : "border-none w-full"
+                  }`}
               >
                 <Avatar className="size-7 group-hover:scale-110 duration-150">
                   <AvatarImage src="https://i.pinimg.com/736x/bd/da/77/bdda77020d3a6ef4b71a8bbc108606b7.jpg" />
@@ -187,11 +193,10 @@ const Sidebar: React.FC<SideBarProps> = ({
               </Link>
             </ul>
             <ul
-              className={`${
-                searchOpen || isNotification
-                  ? "flex flex-col gap-6 justify-center items-center py-20"
-                  : "flex flex-col gap-6 pl-3 py-20"
-              }`}
+              className={`${searchOpen || isNotification
+                ? "flex flex-col gap-6 justify-center items-center py-20"
+                : "flex flex-col gap-6 pl-3 py-20"
+                }`}
             >
               <MenuDropDown
                 showStatusBar={showStatusBar}
@@ -225,23 +230,24 @@ const Sidebar: React.FC<SideBarProps> = ({
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <Compass className="group-hover:scale-110 duration-150" />
               </li>
+              <PostDialog>
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <PlusCircle className="group-hover:scale-110 duration-150" />
               </li>
+              </PostDialog>
               <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <MessageCircle className="group-hover:scale-110 duration-150" />
               </li>
               <li
                 onClick={closeAllComp}
-                className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${
-                  searchOpen || isNotification ? "w-auto" : "border-none w-full"
-                }`}
+                className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? "w-auto" : "border-none w-full"
+                  }`}
               >
                 <Avatar className="size-7 group-hover:scale-110 duration-150">
                   <AvatarImage src="https://i.pinimg.com/736x/65/d4/47/65d44778290c3b35b1daae5a9439ade5.jpg" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-            
+
               </li>
             </ul>
           </div>

@@ -1,11 +1,10 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Bookmark, Heart, MessageCircle, Send, X } from "lucide-react";
 import Comment from "./Comment";
-import SubHeader from "./SubHeader";
-import { Post, PostData } from "@/lib/mock/post";
+import {  PostData } from "@/lib/mock/post";
 import UserAvatar from "./UserAvatar";
 
 interface PostDetailsProps {
@@ -16,7 +15,7 @@ interface PostDetailsProps {
   postId?: string;
 }
 
-const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, username, postId }) => {
+const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId }) => {
   const postData = PostData.find((data) => data.id === Number(postId))
 
   if (!isDialogOpen) return null; // Don't render if the dialog is not open
