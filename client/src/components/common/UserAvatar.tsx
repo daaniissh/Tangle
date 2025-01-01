@@ -21,7 +21,7 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
             <Avatar className={`${className} cursor-pointer`}>
               <AvatarImage
                 className="rounded-full select-none object-cover"
-                src={image ? image : ""}
+                src={image ? image : "https://i.pinimg.com/736x/02/b7/38/02b73833c6f2dbf01da2749654cb8adb.jpg"}
               />
               <AvatarFallback className='' >{username?.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -30,7 +30,7 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
           <Avatar className="w-8 h-8 cursor-pointer">
             <AvatarImage
               className="rounded-full select-none object-cover"
-              src={image ? image : ""}
+              src={image ? image : "https://i.pinimg.com/736x/02/b7/38/02b73833c6f2dbf01da2749654cb8adb.jpg"}
             />
             <AvatarFallback className='capitalize border border-gray-600' >{username?.charAt(0)}</AvatarFallback>
           </Avatar>
