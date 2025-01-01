@@ -19,6 +19,10 @@ import ProfilePage from './pages/main/Profile.tsx'
 import ProfileEdit from './pages/main/ProfileEdit.tsx'
 import PostDetails from './components/common/PostDeatils.tsx'
 import PostPage from './pages/main/Postpage.tsx'
+import Create from './components/modals/create/Comps.tsx'
+import { Button } from './components/ui/Button.tsx'
+import { PostDialog } from './components/modals/create/Form.tsx'
+
 // import { Sidebar } from 'lucide-react'
 
 function App() {
@@ -26,9 +30,13 @@ function App() {
   const [authUser, setAuthUser] = useState(true)
   const [isStory, setIsStory] = useState(!authUser)
   const [showStatusBar, setShowStatusBar] = useState<boolean>(false);
-  console.log(showStatusBar)
+
+
+  
+
+
   useEffect(() => {
-    console.log(showStatusBar)
+    
     const st = localStorage.getItem('dark-mode');
     setShowStatusBar(st === 'true')
 
@@ -52,11 +60,13 @@ function App() {
   };
 
   return (
+    <>
+
     <div className="flex dark:bg-black overflow-hidden">
+    
       {authUser && !location.pathname.includes("/story") && (
         <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />
       )}
-     
 
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
@@ -76,6 +86,8 @@ function App() {
         <Route path="/explore" element={authUser ? <Explore /> : <Navigate to="/login" />} />
       </Routes>
     </div>
+    
+    </>
 
   )
 }

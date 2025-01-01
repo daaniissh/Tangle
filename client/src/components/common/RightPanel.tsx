@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { users } from '@/lib/mock/user';
 type Data = {
   username: string;
@@ -16,7 +16,7 @@ const RightPanel = () => {
     <div className="hidden dark:bg-black   h-auto xl:block my-8 w-80 ">
       {/* User Profile Section */}
       <div className="mb-5 px-2">
-        <div className="flex justify-between items-center w-full">
+        <Link to="/profile/danish" className="flex  justify-between items-center w-full">
           <div className="flex gap-3 items-center">
             <Avatar className="transition-transform duration-150 group-hover:scale-110">
               <AvatarImage
@@ -34,12 +34,12 @@ const RightPanel = () => {
               </p>
             </div>
           </div>
-          <div className="text-xs">
+          <Link to="/edit/username" className="text-xs">
             <span className="px-3 py-1 rounded-lg cursor-pointer font-semibold dark:text-insta-primary hover:text-insta-darkLink dark:hover:text-insta-link">
               Account
             </span>
-          </div>
-        </div>
+          </Link>
+        </Link>
       </div>
 
       {/* Suggested for You Section */}
@@ -51,8 +51,8 @@ const RightPanel = () => {
           {users.map((user:Data)=>(
              <li className='' >
             <Link
-              to="/notifications"
-              className="w-full cursor-pointer  dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-darkBorder transition"
+              to="/profile/user"
+              className="w-full cursor-pointer  dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-text/50 transition"
             >
               <div className="flex justify-between   items-center w-full">
                 <div className="flex gap-3 items-center">
@@ -73,7 +73,7 @@ const RightPanel = () => {
                   </div>
                 </div>
                 <div className="text-xs">
-                  <span className="px-3 py-1 rounded-lg font-semibold cursor-pointer text-insta-primary dark:text-insta-link hover:text-insta-darkLink dark:hover:text-insta-link">
+                  <span className="px-3 py-1 rounded-lg font-semibold cursor-pointer  text-insta-primary dark:text-insta-link hover:text-insta-darkLink ">
                     Follow
                   </span>
                 </div>

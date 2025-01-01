@@ -1,10 +1,8 @@
 import { type Comment } from '@/lib/mock/post'
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
-import React from 'react'
 import UserAvatar from './UserAvatar'
 
 const Comment = ({ data }: any) => {
-  const { content, profileImg, timeAgo, username }: Comment = data
+  const { content, profileImg, username }: Comment = data
   return (
     <div className="flex w-full h-auto space-x-3 items-start">
 
