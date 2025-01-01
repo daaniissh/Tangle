@@ -27,7 +27,9 @@ const CreateHeader: React.FC<CreateHeaderProps> = ({ form, gotoForm }) => {
   
 
   return (
+
     <div className="absolute flex items-center border-b dark:border-none justify-between rounded-t-lg bg-white dark:bg-black dark:text-white z-50 top-0 w-full h-12 px-4">
+
       <div className="flex items-center">
         {form == 'SelectImage' ? <></> : <MoveLeft onClick={prevForm} className='cursor-pointer' />}
       </div>
