@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/Dialog"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
-
-export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string , id?: number }) {
-
+import copy from 'copy-text-to-clipboard';
+export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string, id?: number }) {
+  function CopyLink() {
+    copy(`http://localhost:5173/post/${username}/${id}`);
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -39,7 +41,7 @@ export default function ShareDialog({ children, username, id }: { children: Reac
               readOnly
             />
           </div>
-          <Button type="submit" size="sm" className="px-3">
+          <Button onClick={CopyLink} type="submit" size="sm" className="px-3">
             <span className="sr-only">Copy</span>
             <Copy />
           </Button>

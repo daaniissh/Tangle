@@ -9,9 +9,6 @@ const Explore = () => {
       <ExplorePost comments='144' img='https://i.pinimg.com/564x/4b/b3/c9/4bb3c97b54b93dcae6580aeadbe54a1d.jpg' likes='12.4k' />
       <ExplorePost comments='144' img='https://i.pinimg.com/736x/34/ab/7b/34ab7b5a86415959d0585a199392b396.jpg' likes='12.4k' />
     
-      <ExplorePost comments='144' img='https://i.pinimg.com/564x/4b/b3/c9/4bb3c97b54b93dcae6580aeadbe54a1d.jpg' likes='12.4k' />
-      <ExplorePost comments='144' img='https://i.pinimg.com/564x/4b/b3/c9/4bb3c97b54b93dcae6580aeadbe54a1d.jpg' likes='12.4k' />
-      <ExplorePost comments='144' img='https://i.pinimg.com/736x/34/ab/7b/34ab7b5a86415959d0585a199392b396.jpg' likes='12.4k' />
     </div>
   </div>
 </div>

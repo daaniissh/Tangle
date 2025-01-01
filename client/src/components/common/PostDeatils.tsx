@@ -6,6 +6,7 @@ import { Bookmark, Heart, MessageCircle, Send, X } from "lucide-react";
 import Comment from "./Comment";
 import {  PostData } from "@/lib/mock/post";
 import UserAvatar from "./UserAvatar";
+import ShareDialog from "./Share";
 
 interface PostDetailsProps {
   children?: ReactNode;
@@ -81,7 +82,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                     <div className="flex gap-4 items-center justify-center">
                       <Heart  className={`${postData?.isLiked && "fill-red-700 text-red-700"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`}/>
                       <MessageCircle className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" />
-                      <Send className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" />
+                     <ShareDialog id={postData?.id} username={postData?.username} ><button> <Send className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary" /></button></ShareDialog>
                     </div>
                     <Bookmark className={`${postData?.isSaved && "fill-white text-white"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`}/>
                   </div>

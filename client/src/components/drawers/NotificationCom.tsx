@@ -78,7 +78,7 @@ const NotificationCom = ({
                     <ul className="h-full  mt-3">
 
                       <Link
-                        to="/notifications"
+                        to="/"
                         className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-1 px-4 mb-2 items-center"
                       >
                         <div className="flex flex-row justify-between gap-10 w-full">
@@ -108,7 +108,7 @@ const NotificationCom = ({
                         </div>
                       </Link>
                       <Link
-                        to="/notifications"
+                        to="/"
                         className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-1 px-4 mb-2 items-center"
                       >
                         <div className="flex flex-row justify-between gap-10 w-full">
