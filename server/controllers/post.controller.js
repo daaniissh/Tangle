@@ -151,7 +151,10 @@ export const likeUnlikePost = async (req, res) => {
 export const getAllPost = async (req, res) => {
   console.log("get");
   try {
-    const post = await Post.find({ is_story: false })
+    const post = await Post.find({
+      is_story: false,
+      img: { $exists: true, $ne: "" },
+    })
       .sort({ createdAt: -1 })
       .populate({ path: "user", select: "-password" })
       .populate({
@@ -234,7 +237,10 @@ export const getSinglePost = async (req, res) => {
   try {
     const { postId } = req.params;
     if (!postId) return;
-    const post = await Post.findOne({ _id: postId });
+    const post = await Post.findOne({ _id: postId }).populate({
+      path: "user",
+      select: "-password",
+    });
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json(error.message);
@@ -312,9 +318,12 @@ export const uploadStory = async (req, res) => {
       img,
       video,
       expiresAt,
-    });
+    })
 
     await newPost.save();
+
+    await User.findByIdAndUpdate(userId, { is_story: true });
+
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ error: error.message });
