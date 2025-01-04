@@ -227,7 +227,7 @@ export const forgotPassword = async (req, res) => {
     req.session.otp = otp;
     req.session.email = email;
 
-    return res.status(200).json({ message: "OTP sent to your email", otp });
+    return res.status(200).json({ message: "OTP sent to your email" });
   } catch (error) {
     console.error("Error sending email:", error);
     return res
