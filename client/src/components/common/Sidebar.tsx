@@ -124,7 +124,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 }`}
             >
               <div ref={searchRef}>
-                <SearchCom searchOpen={searchOpen} />
+                <SearchCom onClick={closeAllComp} searchOpen={searchOpen}  />
               </div>
               <div ref={notiRef}>
                 <NotificationCom isNotification={isNotification} />
