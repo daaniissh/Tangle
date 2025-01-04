@@ -5,7 +5,7 @@ type AvatarProps = {
   username?: string
   image?: string;
   isStory?: boolean;
-  storyId?: number;
+  storyId?: number | string;
   className?: string;
   createdAt?: string | null;
   padding?:string;
@@ -16,13 +16,13 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
   return (
     <>
       <div className={`flex  items-center   md:py-1  md:px-0 ${padding} `}>
-        {isStory ? <div className="  bg-gradient-to-tr  from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[1px] rounded-full ">
+        {isStory ? <div className="  bg-gradient-to-tr  from-insta-gradientStart via-insta-gradientMid to-insta-gradientEnd p-[2.5px] rounded-full ">
           <Link to={`/story/${username}/${storyId}`} className="  bg-white dark:bg-black   rounded-full ">
-            <Avatar className={`${className} cursor-pointer`}>
+            <Avatar className={`${className} w-8 h-8 cursor-pointer`}>
               <AvatarImage
                 className="rounded-full select-none object-cover"
 
-                src={image ? image : "https://i.pinimg.com/736x/02/b7/38/02b73833c6f2dbf01da2749654cb8adb.jpg"}
+                src={image ? image : "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
 
               />
               <AvatarFallback className='' >{username?.charAt(0)}</AvatarFallback>
@@ -32,7 +32,7 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
           <Avatar className="w-8 h-8 cursor-pointer">
             <AvatarImage
               className="rounded-full select-none object-cover"
-              src={image ? image : "https://i.pinimg.com/736x/02/b7/38/02b73833c6f2dbf01da2749654cb8adb.jpg"}
+              src={image ? image : "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
             />
             <AvatarFallback className='capitalize border border-gray-600' >{username?.charAt(0)}</AvatarFallback>
           </Avatar>
