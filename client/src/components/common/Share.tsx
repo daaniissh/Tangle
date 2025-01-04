@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
 import copy from 'copy-text-to-clipboard';
-export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string, id?: number }) {
+export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string, id?: number | string }) {
   function CopyLink() {
     copy(`http://localhost:5173/post/${username}/${id}`);
   }
