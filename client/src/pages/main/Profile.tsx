@@ -9,7 +9,7 @@ const ProfilePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'posts' | 'saved'>('posts');
 
   return (
-    <div className="min-h-  max-h-screen  scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white  dark:scrollbar-thumb-stone-800   w-full overflow-y-scroll  bg-white text-black dark:bg-black dark:text-white flex flex-col  items-center md:mt-0 py-8 mt-10">
+    <div className="min-h-screen  max-h-screen  scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white  dark:scrollbar-thumb-stone-800   w-full overflow-y-scroll  bg-white text-black dark:bg-black dark:text-white flex flex-col  items-center md:mt-0 py-8 mt-10">
       {/* Profile Header */}
       <div className="w-full max-w-xl  text-center">
         <div className="relative mb-4">
