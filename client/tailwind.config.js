@@ -15,17 +15,13 @@ module.exports = {
         instagram: ["Poppins", "Helvetica", "Arial", "sans-serif"],
       },
       keyframes: {
-        "caret-blink": {
-          "0%,70%,100%": {
-            opacity: "1",
-          },
-          "20%,50%": {
-            opacity: "0",
-          },
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
         },
       },
       animation: {
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
+        blink: "blink 3s infinite",
       },
       colors: {
         insta: {
@@ -66,5 +62,9 @@ module.exports = {
       // },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("tailwindcss-animate"),require('tailwind-scrollbar')],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar"),
+  ],
 };
