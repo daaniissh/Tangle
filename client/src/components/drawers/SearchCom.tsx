@@ -11,10 +11,11 @@ import { AuthUser } from "@/types/QueryTypes/queary";
 
 type SearchProps = {
   searchOpen: boolean;
-  inpMobile?: string 
+  inpMobile?: string
+  onClick?: () => void | undefined,
 };
 
-const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
+const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { isDesktop, isTablet } = useScreenDevice();
   const [show, setShow] = useState(false);
@@ -71,7 +72,7 @@ const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
         if (!response.ok) {
           throw new Error(data.error || "Something went wrong");
         }
-       console.log(data,"==dataaa")
+        console.log(data, "==dataaa")
         setSearchResults(data);
       } catch (error) {
         console.error("Search error:", error);
@@ -85,6 +86,8 @@ const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
 
   // Handle recent search addition
   const handleRecent = (user: AuthUser) => {
+    onClick!()
+    setInp("")
     const updatedRecentSearches = [user, ...recentSearches.filter((u) => u._id !== user._id)].slice(0, 10);  // Limit to 10
     setRecentSearches(updatedRecentSearches);
     localStorage.setItem("recentSearches", JSON.stringify(updatedRecentSearches));
@@ -96,10 +99,14 @@ const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
     localStorage.removeItem("recentSearches");
   };
 
-  const searchData = (inp?.length < 1 ||  inpMobile!?.length < 1)  // Safe check for inpMobile
+  const searchData = inp?.length < 1 // Safe check for inpMobile
+    ? JSON.parse(localStorage.getItem("recentSearches") || "[]")  // Fallback to empty array
+    : searchResults;
+  const searchDataM = inpMobile!?.length < 1 // Safe check for inpMobile
     ? JSON.parse(localStorage.getItem("recentSearches") || "[]")  // Fallback to empty array
     : searchResults;
 
+  console.log(searchData, "===search")
 
   return (
     <>
@@ -146,6 +153,7 @@ const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
                   </div>
                 )}
                 <div className="w-full h-[600px] h-max-[900px]">
+                  
                   {!loading ? (
                     <ul className="h-full mt-3">
                       {searchData?.map((item: AuthUser) => (
@@ -185,37 +193,47 @@ const SearchCom = ({ searchOpen, inpMobile }: SearchProps) => {
       )}
       {isTablet && (
         <div
-          className={`absolute w-[calc(100%-40px)] h-[380px] rounded-[8px] mt-2 shadow-md dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-[#262626] transform transition-transform duration-300 z-50 ${searchOpen ? "translate-x-0 top-16" : "-translate-y-full hidden"}`}
-          style={{ left: '20px' }}
-        >
-
-          <div className="absolute   w-full  ">
+        className={`absolute w-[calc(100%-40px)] rounded-[8px] mt-2 shadow-md dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-[#262626] transform transition-transform duration-300 z-50 ${searchOpen ? "translate-x-0 top-16" : "-translate-y-full hidden"}`}
+        style={{ left: '20px' }}
+      >
+          <div className="relative  w-full max-h-full overflow-y-auto    ">
             <div className="w-full">
               <div className="relative w-full pr-3">
-                <div className="w-full flex    h-max-[900px]">
+              {!debouncedQuery && (
+                  <div className="w-full flex justify-between px-4 py-1">
+                    <h2 className="dark:text-white font-bold">Recent</h2>
+                    <span onClick={handleClearAll} className="text-insta-link text-sm font-bold cursor-pointer">
+                      Clear all
+                    </span>
+                  </div>
+                )}
+                <div className="w-full flex   ">
+                  
                   {/* users */}
                   {!loading ? (
-                    <ul className="h-full mt-3">
-                      {searchData?.map((item: AuthUser) => (
-                        <li key={item?._id} className="w-full">
+                    <ul className="h-full mt-3 w-full">
+                      {searchDataM?.map((item: AuthUser) => (
+                        <li>
                           <Link
                             onClick={() => handleRecent(item)}
                             to={`profile/${item?.username}`}
-                            className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-3 px-4 items-center"
+                            className="w-full mb-2 cursor-pointer rounded-sm h-14 flex justify-start items-center gap-3 px-4 mx-2 dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border"
                           >
-                            <Avatar className="group-hover:scale-110 duration-150">
+                            <Avatar className="group-hover:scale-110 transition-transform duration-150">
                               <AvatarImage
-                                className="rounded-full size-11"
+                                className="rounded-full w-11 h-11"
                                 src={item?.profileImg || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
                               />
-                              <AvatarFallback>{item?.username?.[0]?.toUpperCase()}</AvatarFallback>
+                              <AvatarFallback>DN</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col">
-                              <h1 className="text-[14px] font-[600]">{item?.username}</h1>
-                              <div className="flex gap-2 text-xs">
-                                <p className="capitalize">{item?.fullName}</p>
-                                <span>•</span>
-                                <p>{item?.followers?.length} followers</p>
+                              <h1 className="text-sm font-semibold">{item?.username}</h1>
+                              <div className="flex items-center gap-2 text-xs">
+                                {
+                                  item.fullName && <> <p className="capitalize">{item.fullName}</p>
+                                    <span>•</span></>
+                                }
+                                <p>{item.followers.length} followers</p>
                               </div>
                             </div>
                           </Link>
