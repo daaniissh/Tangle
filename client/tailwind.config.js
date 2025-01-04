@@ -19,9 +19,27 @@ module.exports = {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.5" },
         },
+        shake: {
+          '0%': { transform: 'translateX(-10px)' },
+          '10%': { transform: 'rotate(10deg)' },
+          '15%': { transform: 'translate7(40px)' },
+          '25%': { transform: 'translateX(10px)' },
+          '38%': { transform: 'translateY(40px)' },
+          '46%': { transform: 'rotate(-10deg)' },
+
+          '50%': { transform: 'translateX(-10px)' },
+          '60%': { transform: 'translateY(40px)' },
+          '75%': { transform: 'translateX(10px)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+        upAndHide: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-400px)', opacity: 0 },
+        },
       },
       animation: {
         blink: "blink 3s infinite",
+        shakeAndHide: 'shake 1s ease-in-out, upAndHide 1s 0.5s forwards',
       },
       colors: {
         insta: {
