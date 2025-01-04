@@ -17,7 +17,7 @@ type HeaderProps = {
 const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderProps) => {
   const location = useLocation();
   const [activeLink, setActiveLink] = useState("");
-
+  const [inp, setInp] = useState<string | undefined>("");
   useEffect(() => {
     // Check if the current path is '/home' and set active link accordingly
 
@@ -29,14 +29,15 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
     setActiveLink(link);
     console.log(link)
   };
-  const keywords = ["notification", "profile", "edit","post"];
+  const keywords = ["notification", "profile", "edit", "post"];
 
   const isActive = keywords.some((keyword) => activeLink.includes(keyword));
   const matchingKeywords = keywords.filter((itm) => activeLink.includes(itm));
   const name = matchingKeywords.join(", ");
   return (
     <>
-      {!isActive ? <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-14" >
+      {!isActive ?
+       <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-14" >
         <CirqlG className='w-14 px-2' />
         <div className="relative w-full ">
           {!show && (
@@ -45,6 +46,7 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
           <Input
             ref={inputRef}
             onClick={SearchOpen}
+            onChange={(e) => setInp(e.target.value || "")}
             className={
               show
                 ? "dark:bg-[#363636] dark:ring-0 dark:border-none dark:outline-none rounded-[8px] pr-8 w-full bg-insta-background"
@@ -59,6 +61,7 @@ const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderPro
         <div ref={searchRef}>
 
           <SearchCom
+            inpMobile={inp}
 
             searchOpen={searchOpen}
 
