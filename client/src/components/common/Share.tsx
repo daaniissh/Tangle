@@ -1,4 +1,4 @@
-import { Copy } from "lucide-react"
+import { Check, Copy } from "lucide-react"
 
 import { Button } from "@/components/ui/Button"
 import {
@@ -14,10 +14,25 @@ import {
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
 import copy from 'copy-text-to-clipboard';
+import { useState } from "react"
 export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string, id?: number | string }) {
-  function CopyLink() {
-    copy(`http://localhost:5173/post/${username}/${id}`);
+  const [loading, setLoading] = useState(false)
+  const CopyLink = async () => {
+    try {
+
+      await copy(`http://localhost:5173/post/${username}/${id}`);
+      await setLoading(true)
+    } catch (error) {
+      setLoading(false)
+
+    } finally {
+      setLoading(true)
+      setTimeout(() => {
+        setLoading(false)
+      }, 1000);
+    }
   }
+  console.log(loading, "loading")
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -43,7 +58,7 @@ export default function ShareDialog({ children, username, id }: { children: Reac
           </div>
           <Button onClick={CopyLink} type="submit" size="sm" className="px-3">
             <span className="sr-only">Copy</span>
-            <Copy />
+            {loading ? <Check /> : <Copy />}
           </Button>
         </div>
         <DialogFooter className="sm:justify-start">
