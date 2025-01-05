@@ -8,11 +8,11 @@ type AvatarProps = {
   storyId?: number | string;
   className?: string;
   createdAt?: string | null;
-  padding?:string;
+  padding?: string;
 
 }
-const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,padding }: AvatarProps) => {
-  
+const UserAvatar = ({ createdAt, image, isStory, className, username, storyId, padding }: AvatarProps) => {
+
   return (
     <>
       <div className={`flex  items-center   md:py-1  md:px-0 ${padding} `}>
@@ -40,7 +40,8 @@ const UserAvatar = ({ createdAt, image, isStory,className, username, storyId,pad
         <div className="ml-2 flex-1">
           <Link to={`/profile/${username}`} className={`${className} cursor-pointer whitespace-nowrap overflow-hidden text-black dark:text-white text-ellipsis`}>
             {username}
-            {createdAt && <span className="font-poppins text-xs ml-1 text-gray-400">1h</span>}
+            {createdAt && <span className="text-sm text-gray-400 ml-1" >•</span>}
+            {createdAt && <span className="font-poppins text-xs ml-1 text-gray-400">{createdAt}</span>}
           </Link>
         </div>
       </div>
