@@ -23,7 +23,11 @@ export interface Search {
   followers: string[]; // Array of user IDs (assumed as strings)
   profileImg: string; // URL or empty string
 }
-
+export type CommentPost = {
+  text: string;
+  _id: string;
+  user: AuthUser;
+};
 interface Post {
   _id: string;
   user: AuthUser;
