@@ -85,6 +85,28 @@ function App() {
     retry: false
 
   })
+  const { } = useQuery<post[]>({
+    queryKey: ["following"] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/following`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+        if (data.error) return null
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+    },
+    retry: false
+
+  })
 
   useEffect(() => {
 
