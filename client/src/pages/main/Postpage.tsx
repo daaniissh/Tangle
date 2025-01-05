@@ -19,7 +19,7 @@ const PostPage = () => {
   };
   const { isTablet, isDesktop } = useScreenDevice()
   return (
-    <div>
+    <div  >
       {/* Render your dialog component */}
       {isDesktop && <PostDetails
         isDialogOpen={true} // Open the dialog when this component renders
@@ -27,7 +27,8 @@ const PostPage = () => {
         username={username}
         postId={postId}
       />}
-      {isTablet && <PostMobilePage username={username}
+      {isTablet && 
+      <PostMobilePage username={username}
         postId={postId} />}
     </div>
   );
