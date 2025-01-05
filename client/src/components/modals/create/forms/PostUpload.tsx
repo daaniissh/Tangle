@@ -79,7 +79,7 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
         <div className="flex-1 px-2   flex flex-col">
           <div className="text-white flex-1  flex justify- flex-col mt-5 md:mt-8 ">
 
-            <div className="py-2"><UserAvatar image={authUser?.profileImg} username='da11nsh' className='text-sm' /></div>
+            <div className="py-2"><UserAvatar image={authUser?.profileImg} username={authUser?.username} className='text-sm' /></div>
             <div
               aria-label="Write a caption..."
               className="w-full h-52   outline-none dark:text-white text-stone-800 py-2 px-5 bg-gray-200 dark:bg-[#121212] rounded-xl placeholder:text-white editable-placeholder"
