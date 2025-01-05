@@ -31,11 +31,11 @@ export function PhotoActionDialog() {
         </button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-sm  !rounded-2xl dark:!border-none dark:!bg-neutral-900">
+      <DialogContent className="sm:max-w-sm !px-0 py-4  !rounded-2xl dark:!border-none dark:!bg-[#262626]">
         <div className="space-y-1">
           <div className="w-full border-b dark:border-insta-darkPrimary/50">
             {/* The label triggers the file input */}
-            <label htmlFor="file" className="w-[90%]  cursor-pointer absolute   ">
+            <label htmlFor="file" className="w-full  cursor-pointer absolute   ">
               <Button variant="link" className="!text-blue-500  w-full">
                 Upload Photo
               </Button>
