@@ -2,10 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-.editable-placeholder[contenteditable="true"]:empty:before {
-  content: attr(aria-placeholder);
-  color: #fff;
-  position: absolute;
-  top: 10px; /* Adjust this for proper alignment */
-  left: 10px;
-}

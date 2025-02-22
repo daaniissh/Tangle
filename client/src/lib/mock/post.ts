@@ -26,6 +26,7 @@ export type Post = {
   timeAgo: string;
 };
 
+
 export const PostData: Post[] = [
   {
     id: 1,

@@ -56,6 +56,41 @@ export const deletePost = async (req, res) => {
     res.json({ error: error.message });
   }
 };
+export const deleteComment = async (req, res) => {
+  console.log("delete");
+  try {
+    // Find the post containing the comment
+    const post = await Post.findOne({ "comments._id": req.params.id });
+
+    if (!post) {
+      return res.status(404).json({ error: "Comment not found" });
+    }
+
+    // Find the specific comment
+    const comment = post.comments.id(req.params.id);
+
+    // Check if the user is authorized to delete the comment
+    if (comment.user.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ error: "User not authorized to delete this comment" });
+    }
+
+    // Remove the comment from the array
+    // comment.remove();
+    post.comments = post.comments.filter(
+      (comment) => comment._id.toString() !== req.params.id
+    );
+
+    // Save the updated post
+    await post.save();
+
+    res.json({ message: "Deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+ 
 export const editPost = async (req, res) => {
   try {
     console.log(req.params.id);
@@ -151,7 +186,10 @@ export const likeUnlikePost = async (req, res) => {
 export const getAllPost = async (req, res) => {
   console.log("get");
   try {
-    const post = await Post.find({ is_story: false })
+    const post = await Post.find({
+      is_story: false,
+      img: { $exists: true, $ne: "" },
+    })
       .sort({ createdAt: -1 })
       .populate({ path: "user", select: "-password" })
       .populate({
@@ -195,6 +233,7 @@ export const getFollowingPosts = async (req, res) => {
     const feedPosts = await Post.find({
       user: { $in: following },
       is_story: false,
+      img: { $exists: true, $ne: "" },
     })
       .sort({
         createdAt: -1,
@@ -234,7 +273,15 @@ export const getSinglePost = async (req, res) => {
   try {
     const { postId } = req.params;
     if (!postId) return;
-    const post = await Post.findOne({ _id: postId });
+    const post = await Post.findOne({ _id: postId })
+      .populate({
+        path: "user",
+        select: "-password",
+      })
+      .populate({
+        path: "comments.user",
+        select: "-password",
+      });
     res.status(200).json(post);
   } catch (error) {
     res.status(500).json(error.message);
@@ -315,6 +362,9 @@ export const uploadStory = async (req, res) => {
     });
 
     await newPost.save();
+
+    await User.findByIdAndUpdate(userId, { is_story: true });
+
     res.status(201).json(newPost);
   } catch (error) {
     res.status(500).json({ error: error.message });

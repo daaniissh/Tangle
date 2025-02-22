@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import { FormProps } from '../types'
 import UserAvatar from '@/components/common/UserAvatar'
 import { Button } from '@/components/ui/Button'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { QueryKey } from '@/types/QueryKey/key'
+import SpinnerIcon from '@/components/loaders/LoadingSpinner'
+import { AuthUser } from '@/types/QueryTypes/queary'
 
 
 const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) => {
@@ -10,15 +14,54 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
 
     setCaption(e.currentTarget.textContent || "");
   };
+
+  const APIURL = import.meta.env.VITE_API_URL;
+
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] as QueryKey });
+  const queryClient = useQueryClient();
+
+  const { mutate: CreatePost, isPending, error } = useMutation({
+    mutationFn: async ({ image, caption }: { image: string, caption: string }) => {
+      try {
+        const res = await fetch(`${APIURL}/posts/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: caption, img: image }),
+          credentials: 'include',
+        })
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+
+      } catch (error) {
+        console.log(error)
+
+      }
+    },
+    onSuccess: () => {
+      // setText("");
+      // setImg(null);
+      // toast.success("Post created successfully");
+      setIsOpen(false)
+      gotoForm('SelectImage')
+      queryClient.invalidateQueries({ queryKey: ["posts"] as QueryKey });
+    },
+  })
   const SharePost = () => {
 
+    CreatePost({
+      caption,
+      image: formsState?.CropImage?.image as string
+    });
 
     onSubmit({ caption, image: formsState.CropImage.image as string, file: formsState.CropImage.file });
 
-    setIsOpen(false)
 
-    gotoForm('SelectImage')
-   
+
 
   };
   return (
@@ -36,7 +79,7 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
         <div className="flex-1 px-2   flex flex-col">
           <div className="text-white flex-1  flex justify- flex-col mt-5 md:mt-8 ">
 
-            <div className="py-2"><UserAvatar username='da11nsh' className='text-sm' /></div>
+            <div className="py-2"><UserAvatar image={authUser?.profileImg} username={authUser?.username} className='text-sm' /></div>
             <div
               aria-label="Write a caption..."
               className="w-full h-52   outline-none dark:text-white text-stone-800 py-2 px-5 bg-gray-200 dark:bg-[#121212] rounded-xl placeholder:text-white editable-placeholder"
@@ -61,7 +104,7 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
 
           </div>
           <div className="mt-5">
-            <Button onClick={SharePost} className='!bg-insta-primary !text-white w-full' >Share</Button>
+            <Button onClick={SharePost} className='!bg-insta-primary !text-white w-full' >{isPending ? <SpinnerIcon /> : "Share"}</Button>
           </div>
 
         </div>

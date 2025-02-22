@@ -19,10 +19,10 @@ export const getUsers = async (req, res) => {
   try {
     const { search } = req.query;
     const filter = {};
-    if (search) {
+    if (search.length != 0) {
       filter.$or = [
-        { username: { $regex: new RegExp(search, "i") } }, // Case-insensitive title search
-        { firstName: { $regex: new RegExp(search, "i") } }, // Case-insensitive description search
+        { username: { $regex: new RegExp(search, "i") } }, // Case-insensitive username search
+        { fullName: { $regex: new RegExp(search, "i") } }, // Case-insensitive fullname search
       ];
     }
     const users = await User.find(filter);

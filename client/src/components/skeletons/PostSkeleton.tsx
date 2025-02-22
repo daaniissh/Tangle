@@ -10,7 +10,7 @@ const PostSkeleton = () => {
 					<Skeleton className='skeleton h-2 w-24 rounded-full'></Skeleton>
 				</div>
 			</div>
-			<Skeleton className='skeleton h-80 w-full'></Skeleton>
+			<Skeleton className='skeleton h-[500px] w-full'></Skeleton>
      
 		</div>
 	);

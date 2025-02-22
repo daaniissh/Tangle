@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     },
     fullName: {
       type: String,
-      required:true,
+      required: true,
     },
     password: {
       type: String,
@@ -35,33 +35,40 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
-    profileImg:{
-      type:String,
-      default:"",
+    profileImg: {
+      type: String,
+      default: "",
     },
-    coverImg:{
-      type:String,
-      default:"",
+    coverImg: {
+      type: String,
+      default: "",
     },
-    bio:{
-      type:String,
-      default:"",
+    bio: {
+      type: String,
+      default: "",
     },
-    link:{
-      type:String,
-      default:"",
+    link: {
+      type: String,
+      default: "",
     },
-    likedPosts:[
+    is_story: {
+      type: Boolean,
+      default: false,
+    },
+    likedPosts: [
       {
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Post",
-        default:[]
-      }
-    ]
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+        default: [],
+      },
+    ],
+
+    createdAt: { type: Date, default: Date.now },
+    expiresAt: { type: Date },
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User",userSchema)
+const User = mongoose.model("User", userSchema);
 
-export default User
+export default User;

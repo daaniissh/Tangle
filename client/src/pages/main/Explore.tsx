@@ -1,19 +1,41 @@
 import ExplorePost from '@/components/common/SmallPost'
+import SpinnerIcon from '@/components/loaders/LoadingSpinner';
+import { QueryKey } from '@/types/QueryKey/key';
+import { AuthUser, Post } from '@/types/QueryTypes/queary';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
 
 const Explore = () => {
-  return (
-<div className="flex justify-center w-full min-h-screen overflow-y-scroll h-screen scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white dark:scrollbar-thumb-gray-800 mb-20 md:mb-0">
-  <div className="w-full px-2 mt-10  md:px-5 max-w-5xl">
-    <div className="grid gap-1 grid-cols-3 auto-rows-fr ">
-      <ExplorePost comments='144' img='https://i.pinimg.com/564x/4b/b3/c9/4bb3c97b54b93dcae6580aeadbe54a1d.jpg' likes='12.4k' />
-      <ExplorePost comments='144' img='https://i.pinimg.com/736x/34/ab/7b/34ab7b5a86415959d0585a199392b396.jpg' likes='12.4k' />
-    
-    </div>
-  </div>
-</div>
+
+  const APIURL = import.meta.env.VITE_API_URL;
 
   
+  const { data: allPosts,isLoading } = useQuery<AuthUser>({ queryKey: ["posts"] as QueryKey });
+ const Posts = Array.isArray(allPosts) ? allPosts : [];
+  if (isLoading) {
+    return (
+      <div className="flex  justify-center w-full min-h-screen items-center overflow-y-scroll h-screen">
+        <SpinnerIcon className='size-10 dark:text-white' />
+      </div>
+
+    )
+  }
+
+  return (
+    <div className="flex justify-center w-full min-h-screen overflow-y-scroll mt-10 md:mt-0 h-screen scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white dark:scrollbar-thumb-gray-800 mb-20 md:mb-0">
+      <div className="w-full px-2 mt-10  md:px-5 max-w-5xl">
+        <div className="grid gap-1 grid-cols-3 auto-rows-fr ">
+          {Posts.map((post: Post) => (
+            <ExplorePost key={post._id} link={`${post.user.username}/${post._id}`} comments={post.comments.length.toString()} img={post.img} likes={post.likes.length.toString()} />
+          ))}
+
+
+        </div>
+      </div>
+    </div>
+
+
   )
 }
 

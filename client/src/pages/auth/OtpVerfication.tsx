@@ -8,31 +8,53 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/InputOtp"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/Form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { z } from "zod";
+
 
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
+import { useMutation } from '@tanstack/react-query';
+import { OTPResponse } from '@/types/api/auth';
+import { useNavigate } from 'react-router-dom';
+type OTP = {
+  otpValue: string;
+};
 const OtpVerfication = () => {
   const [otpValue, setOtpValue] = useState<string>("")
   const [err, setErr] = useState<string>("")
+  const Navigate = useNavigate()
+  const APIURL = import.meta.env.VITE_API_URL;
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: async ({ otpValue }: OTP) => {
+      try {
+        const res = await fetch(`${APIURL}/auth/otp`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ otpNumber: otpValue, error }),
+          credentials: 'include',
+        })
 
-  // const otpSChema = z.object({
-  //   otp: z
-  //     .string()
-  //     .length(6, "OTP must be exactly 6 digits")
-  //     .regex(/^[0-9]+$/, "OTP can only contain numeric digits"),
-  // });
 
-  // type otpSChema = z.infer<typeof otpSChema>;
+        const data: OTPResponse = await res.json();
 
-  // const form = useForm<otpSChema>({
-  //   resolver: zodResolver(otpSChema),
-  // });
+        if (!res.ok || 'error' in data) {
+          throw new Error(data.error || 'An unknown error occurred');
+        }
 
-  // Form submit handler
-
+        console.log('User created:', data.user);
+        return data
+      } catch (error) {
+        throw error
+      }
+    },
+    onSuccess: () => {
+      // toast.success("Account created successfully")
+      Navigate("/resetpassword")
+    }
+  })
   const handleOtp = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (otpValue === "") {
@@ -42,6 +64,7 @@ const OtpVerfication = () => {
       }, 2000);
     }
     console.log(otpValue);
+    mutate({ otpValue })
   };
   const REGEXP_ONLY_DIGITS_AND_CHARS = "^[0-9]+$"
   return (
@@ -71,7 +94,7 @@ const OtpVerfication = () => {
 
 
 
-          <Button className='w-full h-[35px] font-poppins  hover:bg-insta-darkLink rounded-md bg-insta-link' type="submit">Send OTP</Button>
+          <Button className='w-full h-[35px] font-poppins  hover:bg-insta-darkLink rounded-md bg-insta-link' type="submit">{isPending ? <SpinnerIcon /> : "Confirm"}</Button>
           <p className='!text-left font-instagram text-[12px] font-medium cursor-pointer text-insta-link' >Resend OTP</p>
         </form>
 

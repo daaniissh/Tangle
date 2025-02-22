@@ -1,174 +1,255 @@
-
 import ShareDialog from '@/components/common/Share';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
+import { Post } from '@/lib/mock/post';
 import { stories } from '@/lib/mock/story';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 import Cirql from '@/logos/Cirql';
+import { QueryKey } from '@/types/QueryKey/key';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-type Story = {
-  url: string;
-  progress: number;
-};
+import { AuthUser, PostDetails } from '@/types/QueryTypes/queary';
+import { formatPostDate } from '@/lib/utils/dateFunction';
+import { Button } from '@/components/ui/Button';
+import useFollow from '@/hooks/useFollow';
+import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 
-const StoryPage = () => {
-  const { id } = useParams();
+const StoryPage = ({ socket }) => {
+
+
+  const { id, username } = useParams();
   const navigate = useNavigate();
-  const user = stories.find((story) => story.id.toString() === id)
-  const [images, setImages] = useState<Story[] | undefined>(user?.stories);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const duration = 20000; // 20 seconds for each image
-    const interval = 100; // Update every 100 milliseconds
-    const increment = (interval / duration) * 100; // Calculate how much to increment
-
-    const timer = setInterval(() => {
-      setImages((prev) => {
-        const newImages = prev ? [...prev] : [];
-        const currentImage = newImages[currentIndex];
-
-        if (!currentImage) return newImages; // Guard against undefined images
-
-        // Increment the current image's progress
-        currentImage.progress += increment;
-
-        // Check if it's the last image or if there's only one image
-        if (
-          (currentIndex === newImages.length - 1 && currentImage.progress >= 100) ||
-          (newImages.length === 1 && currentImage.progress >= 100)
-        ) {
-          clearInterval(timer); // Stop the interval
-          newImages.forEach((image) => (image.progress = 0)); // Reset progress for all images
-          navigate(-1); // Navigate to "/"
-          return newImages;
-        }
-
-        // If the current image is the first one and reaches 100% progress
-        if (currentIndex === 0 && currentImage.progress >= 100) {
-          clearInterval(timer); // Stop the interval
-          handleNext(); // Move to the next image
-          return newImages; // Return unchanged images
-        }
-
-        return newImages; // Update state
-      });
-    }, interval);
-
-    return () => clearInterval(timer); // Cleanup on unmount
-  }, [currentIndex, images.length]); // Run effect on currentIndex or images change
+  const user = stories.find((story) => story.id.toString() === id);
+  const APIURL = import.meta.env.VITE_API_URL;
 
 
-  const handleNext = () => {
 
-    setImages((prevImages) => {
-      const newImages = prevImages ? [...prevImages] : []; // Create a copy of the current images
-      newImages[currentIndex].progress = 100; // Reset progress of the current image to 0
-      return newImages; // Return the updated images array
-    });
-    setCurrentIndex((prevIndex) => {
-      // Check if we are not at the last image before incrementing
-      if (prevIndex < images.length - 1) {
-        return prevIndex + 1; // Move to the next image
-      }
-      return prevIndex; // Stay on the last image
-    }); // Loop back to the start
-
-  };
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => {
-      // Only decrement if we are not at the first image
-      if (prevIndex > 0) {
-        const newIndex = prevIndex - 1; // Move to the previous image
-        const oldIndex = newIndex + 1;
-
-        setImages((prevImages) => {
-          const newImages = prevImages ? [...prevImages] : []; // Create a copy of the current images
-          newImages[newIndex].progress = 0; // Reset progress of the new current image to 0
-          return newImages; // Return the updated images array
+  // Fetch progress from the backend and store it in progressValues
+  const { data: storyData, refetch } = useQuery({
+    queryKey: ["userStory"] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/story/${username}`, {
+          method: 'GET',
+          credentials: 'include',
         });
-        setImages((prevImages) => {
-          const newImages = prevImages ? [...prevImages] : []; // Create a copy of the current images
-          newImages[oldIndex].progress = 0; // Reset progress of the new current image to 0
-          return newImages; // Return the updated images array
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    retry: false
+  });
+
+
+
+
+  const { mutate: deletePost, isPending: isDeleting } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const res = await fetch(`${APIURL}/posts/story/${id}`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          console.log("error");
+        }
+        return data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    onSuccess: () => {
+      navigate("/");  // Navigate to home after deleting post
+    },
+  });
+  const { mutate: likePost, isPending: isLiking, data: likeData } = useMutation({
+    mutationFn: async (postId) => {
+      try {
+        const res = await fetch(`${APIURL}/posts/like/${postId}`, {
+          method: "POST",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log(data, "===user data");
+        return data;
+      } catch (error) { }
+    },
+    onSuccess: (updatedLikes) => {
+
+      refetch()
+    },
+  });
+
+  const handleLikePost = async (id) => {
+    console.log(likeData, "like====")
+    if (isLiking) return;
+    if (likeData == "like" || likeData == undefined) {
+      // Only send notification when likeData is "like"
+      console.log("like====")
+      try {
+        await socket.emit("sendNotification", {
+          from: authUser?._id,
+          to: storyData?._id,
+          type: "like",
         });
 
-        return newIndex; // Update currentIndex to the new index
+
+
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
       }
-      return prevIndex; // Stay on the first image
-    });
-  };
-  const handleClose = () => {
+    }
 
-    navigate(-1); // Navigate to home if no previous history
-
+    likePost(id);
   };
 
-
+  const nextButtonRef = useRef(null);
+  const prevButtonRef = useRef(null);
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
+  const { follow, isFollowing } = useFollow()
+  const owner = authUser?._id === storyData?._id;
+  const alreadyFollowed = authUser?.following?.includes(storyData?._id)
   return (
-    <div className='w-full flex  flex-col relative items-center  overflow-hidden bg-black md:bg-[#1a1a1a] h-screen'>
-
-      <div className=" w-full fixed z-50 px-2 pt-2 hidden justify-between md:flex items-center h-10">
+    <div className="w-full flex flex-col relative items-center overflow-hidden bg-black md:bg-[#1a1a1a] h-screen">
+      <div className="w-full fixed z-50 px-2 pt-2 hidden justify-between md:flex items-center h-10">
         <div className="w-32 py-5 mt-5 px-3 items-start justify-start">
           <Cirql className="fill-white w-20" />
         </div>
-        <div onClick={handleClose} className="text-white z-50 cursor-pointer">
-          <Plus className='rotate-45 size-10' />
-        </div>
+        <Link to="/" className="text-white z-50 cursor-pointer">
+          <Plus className="rotate-45 size-10" />
+        </Link>
       </div>
 
-      <div className="md:w-2/5 w-full   mx-auto absolute py-10 md:py-auto flex justify-between  items-center md:px-10 h-full">
-
-        <ChevronLeftCircle className=' z-50 md:fill-white/30 md:text-black/0 fill-transparent text-transparent md:h-auto md:w-auto h-screen w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer' onClick={handlePrevious} />
-        <ChevronRightCircle className=' z-50 my-10 md:fill-white/30 md:text-black/0 fill-transparent md:h-auto md:w-auto text-transparent  h-[40%] w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer' onClick={handleNext} />
+      <div className="md:w-2/5 w-full mx-auto absolute py-10 md:py-auto flex justify-between items-center md:px-10 h-full">
+        <ChevronLeftCircle
+          ref={prevButtonRef}
+          className="z-50 md:fill-white/50 md:text-black/0 fill-transparent text-transparent md:h-auto md:w-auto h-screen w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer"
+        />
+        <ChevronRightCircle
+          ref={nextButtonRef}
+          className="z-50 my-10 md:fill-white/50 md:text-black/0 fill-transparent md:h-auto md:w-auto text-transparent h-[40%] w-24 transition delay-100 md:hover:fill-white md:hover:text-black cursor-pointer"
+        />
       </div>
 
-      <div className="flex  py-2 relative  md:w-auto h-screen rounded-0 mb-5 md:rounded-[8px]">
-
-
-        <div className="flex  mt-2 w-full   justify-between  flex-col h-full ">
-          <div className="absolute w-full h-20 px-8 md:px-0 flex  md:mt-auto   bg-gradient-to-b from-black/60 md:rounded-[8px]  to-transparent flex-col">
+      <div className="flex py-2 relative md:w-auto h-screen rounded-0 mb-5 md:rounded-[8px]">
+        <div className="flex md:mt-2 w-full justify-between flex-col h-full">
+          <div className="absolute w-full h-20 px-8 md:px-0 flex md:mt-auto z-50 bg-gradient-to-b from-black/50 to-transparent flex-col">
             <div className="flex justify-center gap-1 mt-1 w-full px-1">
-              {images?.map((item) => <Progress value={item.progress} className="bg-[#70716d]/80 w-full h-[2px] mt-2 rounded-[10px]" />)}
-            </div>
-            <div className="mt-2 px-2  flex items-center">
-
-              <Avatar className="scale-75 duration-150">
-                <AvatarImage
-                  className="rounded-full select-none object-fill"
-                  src={user?.profileImg ? user?.profileImg : "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
+              {storyData?.usersStories?.map((item, idx) => (
+                <Progress
+                  value={100}
+                  className="bg-[#70716d]/80 w-full h-[2px] mt-2 rounded-[10px]"
+                  key={idx}
                 />
-                <AvatarFallback className='capitalize text-white font-bold' >{user?.name.charAt(1)}</AvatarFallback>
-              </Avatar>
-              <span className="flex flex-row z-40  justify-between w-full items-center">
-                <h1 className="text-[14px] font-[400] cursor-pointer ml-1 whitespace-nowrap overflow-hidden text-white text-ellipsis">
-                  {user?.name} <span className="font-poppins text-center text-[14px] ml-[5px] text-gray-700 shadow">1h</span>
-                </h1>
-                <Link to="/" className="text-white px-4 block md:hidden   cursor-pointer">
-                  <Plus className='rotate-45 size-10' />
-                </Link>
-              </span>
+              ))}
+            </div>
+
+            <div className="mt-2 px-2 z-50 flex items-center">
+              <Link to={`/profile/${storyData?.username}`} className='w-full flex' >
+                <Avatar className="scale-75 duration-150">
+                  <AvatarImage
+                    className="rounded-full select-none object-fill"
+                    src={storyData?.profileImg || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
+                  />
+                  <AvatarFallback className="capitalize text-white font-bold">
+                    {user?.name.charAt(1)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="flex flex-row z-50 justify-between w-full items-center">
+                  <h1 className="text-base font-[400] cursor-pointer ml-1 whitespace-nowrap overflow-hidden text-white text-ellipsis">
+                    {storyData?.username}
+                  </h1>
+                  <Link to="/" className="text-white px-4 block md:hidden cursor-pointer">
+                    <Plus className="rotate-45 size-10" />
+                  </Link>
+                </span>
+              </Link>
+              {!alreadyFollowed && !owner && <Button onClick={() => follow(storyData?._id)} className=' hover:bg-insta-darkLink px-4  dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary' > {isFollowing ? <SpinnerIcon /> : "Follow"} </Button>}
             </div>
           </div>
 
-          <div className=" h-full w-[450px]  flex justify-center items-center md:rounded-[8px] overflow-hidden">
-            <img
-              className="md:rounded-[8px] w-full  h-full object-cover"
-              src={images[currentIndex].url}
-              alt="story"
-            />
-          </div>
-
-
-          <div className=" w-full   absolute   z-50   right-0 flex justify-between  text-white bottom-0">
-            <div className="flex justify-end items-center md:px-4 py-5 px-10  gap-5 w-full ">
-              <Heart className='cursor-pointer fill-insta-gradientMid text-insta-gradientMid' />
-              <ShareDialog username={user?.username} id={user?.id} ><button> <Send className='cursor-pointer ' /> </button></ShareDialog>
-            </div>
+          <div className="h-full w-[450px] flex justify-center items-center md:rounded-[8px] overflow-hidden">
+            <Swiper
+              className="!z-30"
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              navigation={{
+                nextEl: nextButtonRef.current,
+                prevEl: prevButtonRef.current,
+              }}
+              spaceBetween={0}
+              slidesPerView={1}
+              loop={false}
+              onSlideChange={(swiper) => {
+                setActiveIndex(swiper.activeIndex);
+                resetProgressOnSlideChange(swiper); // Reset progress when going to previous slide
+              }}
+              speed={0}
+              onBeforeInit={(swiper) => {
+                swiper.params.navigation.nextEl = nextButtonRef.current;
+                swiper.params.navigation.prevEl = prevButtonRef.current;
+              }}
+            >
+              {storyData?.usersStories
+                ?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                .map((item: PostDetails) => {
+                  const isLiked = item?.likes?.includes(authUser?._id);
+                  return (<SwiperSlide className="w-full rounded-[8px]">
+                    <div className="absolute bg-gradient-to-t from-black/50 to-transparent
+   z-50 left-0 bottom-1 flex justify-between w-full">
+                      {owner && (
+                        <Button
+                          onClick={() => deletePost(item._id)}
+                          variant="ghost"
+                          className="text-white font-semibold mx-2 cursor-pointer"
+                        >
+                          Delete
+                        </Button>
+                      )}
+                      <div className="flex justify-end items-center md:px-4 py-5 px-10 gap-5 w-full ">
+                        <Heart
+                          onClick={() => handleLikePost(item._id)}
+                          className={`${isLiked && "fill-red-700 text-red-700"
+                            } w-5 h-5 md:w-6 md:h-6 text-white cursor-pointer hover:text-white/50`}
+                        />
+                        <ShareDialog story username={storyData?.username} id={storyData?._id}>
+                          <button>
+                            <Send className="cursor-pointer text-white" />
+                          </button>
+                        </ShareDialog>
+                      </div>
+                    </div>
+                    <img
+                      draggable="false"
+                      className="w-full select-none object-cover h-screen rounded-lg md:object-cover"
+                      src={item.img}
+                      alt="Story 1"
+                    />
+                    <div className="absolute w-full bg-black/50 text-white font-medium bottom-24 flex justify-center">
+                      <p className="text-center">{item.text}</p>
+                    </div>
+                  </SwiperSlide>)
+                })}
+            </Swiper>
           </div>
         </div>
       </div>

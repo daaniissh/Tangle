@@ -1,4 +1,5 @@
 import { generateTokenAndSetCookies } from "../lib/utils/tokens.js";
+import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
@@ -117,11 +118,24 @@ export const getMe = async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId).select("-password");
+    
+    const now = new Date();
+
+    const userPosts = await Post.find({ user: userId, is_story: true });
+
+    const activeStoryExists = userPosts.some(post => post.expiresAt > now);
+    
+    if (!activeStoryExists) {
+
+      await User.findByIdAndUpdate(userId, { $set: { is_story: false } });
+    }
+    
     res.status(200).json(user);
   } catch (error) {
     console.log("Error in getMe controller", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
+
 };
 
 export const forgotPassword = async (req, res) => {
@@ -227,7 +241,7 @@ export const forgotPassword = async (req, res) => {
     req.session.otp = otp;
     req.session.email = email;
 
-    return res.status(200).json({ message: "OTP sent to your email", otp });
+    return res.status(200).json({ message: "OTP sent to your email" });
   } catch (error) {
     console.error("Error sending email:", error);
     return res
