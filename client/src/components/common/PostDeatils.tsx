@@ -18,6 +18,8 @@ import { formatPostDate } from "@/lib/utils/dateFunction";
 import LikeHeart from "./LikeHeart";
 import MoreOptions from "./MoreOptions";
 import useFollow from "@/hooks/useFollow";
+import { io } from "socket.io-client";
+
 
 
 interface PostDetailsProps {
@@ -28,15 +30,18 @@ interface PostDetailsProps {
   postId?: string;
 }
 
-const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId }) => {
+const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId, socket }) => {
   const queryClient = useQueryClient();
 
   if (!isDialogOpen) return null;
   const APIURL = import.meta.env.VITE_API_URL;
+
+
   const [isAnima, setIsAnime] = useState(false);
   const [comment, setComment] = useState("");
+  const [isLike, setIslike] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const { follow, isFollowing } = useFollow()
+  const { follow, isFollowing, followData } = useFollow()
   console.log(postId, "====postID");
 
   const inpRef = useRef()
@@ -64,7 +69,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
     retry: false,
   });
 
-  const { mutate: likePost, isPending: isLiking } = useMutation({
+  const { mutate: likePost, isPending: isLiking, data: likeData } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`${APIURL}/posts/like/${postId}`, {
@@ -82,18 +87,14 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
     },
     onSuccess: (updatedLikes) => {
       refetch();
-      if (updatedLikes.length === 0) {
+      if (updatedLikes?.length === 0) {
         setIsAnime(false);
       }
+      if (updatedLikes == "like") {
+        setIslike(true)
+      }
       console.log("Liked post", updatedLikes);
-      queryClient.setQueryData(["posts", postId], (oldData: any) => {
-        return oldData.map((p: any) => {
-          if (p._id === postId) {
-            return { ...p, likes: updatedLikes };
-          }
-          return p;
-        });
-      });
+
     },
   });
 
@@ -113,18 +114,10 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
         return data;
       } catch (error) { }
     },
-    onSuccess: (updateSave) => {
+    onSuccess: () => {
       refetch();
 
-      console.log("Liked post", updateSave);
-      queryClient.setQueryData(["posts", postId], (oldData: any) => {
-        return oldData.map((p: any) => {
-          if (p._id === postId) {
-            return { ...p, likes: updateSave };
-          }
-          return p;
-        });
-      });
+
     },
   });
 
@@ -246,6 +239,9 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
 
 
   });
+
+
+
   const postOwner = authUser?.username == post?.user?.username;
   const isLiked = post?.likes?.includes(authUser?._id);
   const amIFollowing = authUser?.following.includes(post?.user?._id.toString()!);
@@ -256,8 +252,32 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
 
   const formattedDate = formatPostDate(post?.createdAt.toString()!)
 
+
+  // useEffect(() => {
+  //   if (authUser?._id) {
+  //     socket.emit("addUser", authUser._id); // Emit once when authUser is available
+  //   }
+  // }, [authUser]);
+
+
   const handleLikePost = async () => {
+    console.log(likeData, "like====")
     if (isLiking) return;
+    if (likeData == "like" || likeData == undefined) {
+      // Only send notification when likeData is "like"
+      try {
+        await socket.emit("sendNotification", {
+          from: authUser?._id,
+          to: post?.user?._id,
+          type: "like",
+        });
+        setIslike(false)
+
+
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
+      }
+    }
     setIsAnime(false);
     likePost();
   };
@@ -265,26 +285,49 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
   const handleDouble = async () => {
     if (!isLiked) {
       setLocalLike(localLike);
-      if (isLiking) return;
-      setIsAnime(true);
-      try {
-        likePost();
-      } catch (error) {
-        console.log("Error while liking the post", error);
+      if (likeData == "like" || likeData == undefined) {
+        setIsAnime(true);
+        try {
+          await socket.emit("sendNotification", {
+            from: authUser?._id,
+            to: post?.user?._id,
+            type: "like",
+          });
+          likePost();
+        } catch (error) {
+          console.log("Error while liking the post", error);
+        }
       }
     }
   };
+  async function commentOnPost() {
 
+    commentPost()
+    await socket.emit("sendNotification", {
+      from: authUser?._id,
+      to: post?.user?._id,
+      type: "comment",
+    });
+  }
+  async function followUser() {
+    follow(post?.user?._id.toString()!)
+    console.log(followData?.type, "===follow")
+    if (followData.type == undefined || followData.type === "follow") {
+
+      await socket.emit("sendNotification", {
+        from: authUser?._id,
+        to: post?.user?._id,
+        type: "follow",
+      });
+    }
+  }
   function handleEdit() {
     setIsEdit(true);
     setEditInp(post?.text!);
 
   }
-  function handleDelete(id: string) {
-    deleteComment(id)
 
-  }
-  function handleChangeEdit(e) {
+  function handleChangeEdit(e: any) {
     setEditInp(e.target.value)
     if (editInp?.length !== post?.text?.length) {
       setBtn(false)
@@ -292,10 +335,13 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
       setBtn(true)
     }
   }
-  function submitEdit(e) {
+
+  function submitEdit() {
     editPost()
 
   }
+
+
 
   return (
     <div className="bg-gray-100 dark:bg-black dark:text-white">
@@ -358,10 +404,10 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                       isStory={post?.user?.is_story}
                       username={post?.user?.username}
                     />
-                   {!postOwner && <div className="flex gap-2  ">
+                    {!postOwner && <div className="flex gap-2  ">
                       <span className="text-sm" >•</span>
-                      <span onClick={()=>follow(post?.user?._id.toString()!)} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
-                        {isFollowing && <SpinnerIcon/>}
+                      <span onClick={followUser} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
+                        {isFollowing && <SpinnerIcon />}
                         {!isFollowing && amIFollowing && "Unfollow"}
                         {!isFollowing && !amIFollowing && "Follow"}
                       </span>
@@ -459,7 +505,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                     placeholder="Add a comment..."
                     className="flex-1 bg-gray-100 dark:bg-black dark:text-white rounded-lg px-4 py-2 outline-none"
                   />
-                  <Button disabled={isCommenting} onClick={() => commentPost()} variant="ghost" className="ml-3 text-insta-link">
+                  <Button disabled={isCommenting} onClick={commentOnPost} variant="ghost" className="ml-3 text-insta-link">
                     {isCommenting ? <SpinnerIcon /> : "Post"}
                   </Button>
                 </div>

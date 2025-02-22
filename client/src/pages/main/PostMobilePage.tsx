@@ -25,14 +25,14 @@ interface PostDetailsProps {
   username?: string;
   postId?: string;
 }
-const PostMobilePage = ({ postId }: any) => {
+const PostMobilePage = ({ postId, socket }: any) => {
   const queryClient = useQueryClient();
 
 
   const APIURL = import.meta.env.VITE_API_URL;
   const [isAnima, setIsAnime] = useState(false);
   const [comment, setComment] = useState("");
-  const { follow, isFollowing } = useFollow()
+  const { follow, isFollowing,followData } = useFollow()
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate()
   console.log(postId, "====postID");
@@ -61,7 +61,7 @@ const PostMobilePage = ({ postId }: any) => {
     retry: false,
   });
 
-  const { mutate: likePost, isPending: isLiking } = useMutation({
+  const { mutate: likePost, isPending: isLiking, data: likeData } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`${APIURL}/posts/like/${postId}`, {
@@ -82,15 +82,7 @@ const PostMobilePage = ({ postId }: any) => {
       if (updatedLikes.length === 0) {
         setIsAnime(false);
       }
-      console.log("Liked post", updatedLikes);
-      queryClient.setQueryData(["posts", postId], (oldData: any) => {
-        return oldData.map((p: any) => {
-          if (p._id === postId) {
-            return { ...p, likes: updatedLikes };
-          }
-          return p;
-        });
-      });
+
     },
   });
 
@@ -155,6 +147,7 @@ const PostMobilePage = ({ postId }: any) => {
     mutationFn: async () => {
       try {
         if (!comment) return
+
         const res = await fetch(`${APIURL}/posts/comment/${postId}`, {
           method: "POST",
           credentials: "include",
@@ -176,6 +169,7 @@ const PostMobilePage = ({ postId }: any) => {
     },
     onSuccess: (data) => {
       setComment("");
+      if(!comment) return
       refetch()
 
 
@@ -254,7 +248,23 @@ const PostMobilePage = ({ postId }: any) => {
   const formattedDate = formatPostDate(postData?.createdAt.toString()!)
 
   const handleLikePost = async () => {
+    console.log(likeData, "like====")
     if (isLiking) return;
+    if (likeData == undefined || likeData == "like") {
+      // Only send notification when likeData is "like"
+      try {
+        await socket.emit("sendNotification", {
+          from: authUser?._id,
+          to: postData?.user?._id,
+          type: "like",
+        });
+
+
+
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
+      }
+    }
     setIsAnime(false);
     likePost();
   };
@@ -268,8 +278,15 @@ const PostMobilePage = ({ postId }: any) => {
     setEditInp(postData?.text!);
 
   }
-  function handleDelete(id: string) {
-    deleteComment(id)
+  async function handleComment() {
+    
+    commentPost()
+    if(!comment) return
+    await socket.emit("sendNotification", {
+      from: authUser?._id,
+      to: postData?.user?._id,
+      type: "comment",
+    });
 
   }
   function handleChangeEdit(e) {
@@ -284,15 +301,34 @@ const PostMobilePage = ({ postId }: any) => {
     editPost()
 
   }
-  const bind = useDoubleTap((event) => {
+  async function followUser() {
+    follow(postData?.user?._id.toString()!)
+    console.log(followData?.type, "===follow")
+    if (followData.type == undefined || followData.type === "follow") {
+
+      await socket.emit("sendNotification", {
+        from: authUser?._id,
+        to: postData?.user?._id,
+        type: "follow",
+      });
+    }
+  }
+  const bind = useDoubleTap(async (event) => {
+    console.log(likeData, "like====")
     if (!isLiked) {
       setLocalLike(localLike);
-      if (isLiking) return;
-      setIsAnime(true);
-      try {
-        likePost();
-      } catch (error) {
-        console.log("Error while liking the post", error);
+      if (likeData == "like" || likeData == undefined) {
+        setIsAnime(true);
+        try {
+          await socket.emit("sendNotification", {
+            from: authUser?._id,
+            to: postData?.user?._id,
+            type: "like",
+          });
+          likePost();
+        } catch (error) {
+          console.log("Error while liking the post", error);
+        }
       }
     }
   });
@@ -316,7 +352,7 @@ const PostMobilePage = ({ postId }: any) => {
           />
           {!postOwner && <div className="flex gap-2  ">
             <span className="text-sm md:block hidden" >•</span>
-            <span onClick={() => follow(postData?.user?._id.toString()!)} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
+            <span onClick={followUser} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
               {isFollowing && <SpinnerIcon />}
               {!isFollowing && amIFollowing && "Unfollow"}
               {!isFollowing && !amIFollowing && "Follow"}
@@ -372,7 +408,7 @@ const PostMobilePage = ({ postId }: any) => {
               </button>
             </ShareDialog>
           </div>
-          <Bookmark onClick={() => savePost()} className={`${postData?.is_save &&"dark:fill-white fill-black text-black dark:text-white"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`} />
+          <Bookmark onClick={() => savePost()} className={`${postData?.is_save && "dark:fill-white fill-black text-black dark:text-white"} w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:text-insta-darkPrimary`} />
         </div>
 
         <p className="text-xs md:text-sm font-bold">{postData?.likes?.length} Likes</p>
@@ -421,7 +457,7 @@ const PostMobilePage = ({ postId }: any) => {
             placeholder="Add a comment..."
             className="flex-1 bg-gray-100 dark:bg-black dark:text-white rounded-lg px-4 py-2 outline-none"
           />
-          <Button disabled={isCommenting} onClick={() => commentPost()} variant="ghost" className="ml-3 text-insta-link">
+          <Button disabled={isCommenting} onClick={handleComment} variant="ghost" className="ml-3 text-insta-link">
             {isCommenting ? <SpinnerIcon /> : "Post"}
           </Button>
         </div>

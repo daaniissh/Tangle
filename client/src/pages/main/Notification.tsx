@@ -1,106 +1,81 @@
+import CommentPost from '@/components/drawers/NotificationsTypesComp/CommentPost'
+import FollowPost from '@/components/drawers/NotificationsTypesComp/FollowPost'
+import LikePost from '@/components/drawers/NotificationsTypesComp/LikePost'
 import { SearchSkelton } from '@/components/skeletons/SearchSkeleton'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
 import { Button } from '@/components/ui/Button'
+import { QueryKey } from '@/types/QueryKey/key'
+import { NotificationType } from '@/types/QueryTypes/queary'
+import { useQuery } from '@tanstack/react-query'
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Notification = () => {
   const [loading, setLoading] = useState(true)
-  return (
-    <div className="w-full h-screen mt-16 lg:mt-auto  flex justify-center">
-  {/* Main Container */}
-  <div className="w-full h-screen flex justify-center dark:border-r-insta-darkBorder bg-white dark:bg-black">
-    <div className="w-full flex flex-col items-center">
-      <div className="w-full">
-        {/* Notification Container */}
-        <div className="flex justify-center overflow-auto max-h-[800px] w-full">
-          <div className="w-[500px]"> 
-            {/* Loading Check */}
-            {loading ? (
-              <ul className="mt-3 w-full flex flex-col items-center ">
-                {/* Notification Item */}
-                <Link
-                  to="/notifications"
-                  className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-2 px-4 mb-2 items-center"
-                >
-                  <div className="flex justify-between items-center w-full">
-                    {/* Left Content - Avatar and Message */}
-                    <div className="flex gap-3 items-center">
-                      <Avatar className="group-hover:scale-110 transition duration-150">
-                        <AvatarImage
-                          className="rounded-full w-11 h-11"
-                          src="https://github.com/shadcn.png"
-                        />
-                        <AvatarFallback>DN</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col gap-1 items-start max-w-[200px]">
-                        <h1 className="text-[16px] font-semibold truncate">
-                          daniish
-                        </h1>
-                        <p className="text-xs md:text-[13px] font-normal">
-                          liked your post.{" "}
-                          <span className="ml-1 text-insta-darkPrimary">23h</span>
-                        </p>
-                      </div>
-                    </div>
-                    {/* Right Content - Thumbnail */}
-                    <div className="w-10 h-10 rounded-md">
-                      <img
-                        className="rounded-md w-full h-full object-cover"
-                        src="https://res.cloudinary.com/dhcke4e7l/image/upload/v1724823317/zn0rl3rwnltvqfctwxjx.jpg"
-                        alt="Post thumbnail"
-                      />
-                    </div>
-                  </div>
-                </Link>
+  const APIURL = import.meta.env.VITE_API_URL;
 
-                {/* Another Notification Item */}
-                <Link
-                  to="/notifications"
-                  className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-2 px-4 mb-2 items-center"
-                >
-                  <div className="flex justify-between items-center w-full">
-                    {/* Left Content - Avatar and Message */}
-                    <div className="flex gap-3 items-center">
-                      <Avatar className="group-hover:scale-110 transition duration-150">
-                        <AvatarImage
-                          className="rounded-full w-11 h-11"
-                          src="https://github.com/shadcn.png"
-                        />
-                        <AvatarFallback>DN</AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col gap-1 items-start max-w-[200px]">
-                        <h1 className="text-[16px] font-semibold truncate">
-                          daniish
-                        </h1>
-                        <p className="text-xs md:text-[13px] font-normal">
-                          started following you.{" "}
-                          <span className="ml-1 text-insta-darkPrimary">23h</span>
-                        </p>
-                      </div>
-                    </div>
-                    {/* Right Content - Follow Button */}
-                    <div>
-                      <Button
-                        size="sm"
-                        className="rounded-lg px-4 py-1  dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary hover:bg-insta-darkLink"
-                      >
-                        Follow
-                      </Button>
-                    </div>
-                  </div>
-                </Link>
-              </ul>
-            ) : (
-              <SearchSkelton />
-            )}
+  const { data, isPending, refetch, isLoading } = useQuery({
+    queryKey: ["notifications"] as QueryKey,
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${APIURL}/notifications`, {
+          method: "GET",
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch notifications");
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+        throw error;
+      }
+    },
+    // refetchInterval: 10000,
+  })
+  return (
+    <div className="w-full h-screen mt-10 mb-10 lg:mt-auto flex justify-center">
+      {/* Main Container */}
+      <div className="w-full h-screen flex justify-center dark:border-r-insta-darkBorder bg-white dark:bg-black">
+        <div className="w-full flex flex-col items-center">
+          <div className="w-full">
+            {/* Notification Container */}
+            <div className="flex justify-center overflow-auto  h-[calc(100vh-100px)] max-h-screen w-full">
+              <div className="w-full">
+                {/* Loading Check */}
+                {!isLoading ? (
+                  <ul className="h-full mt-3">
+                    {data
+                      ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                      .map((item: NotificationType) => {
+                        switch (item.type) {
+                          case 'like':
+                            return <li key={item._id}><LikePost likePost={item} /></li>;
+                          case 'follow':
+                            return <li key={item._id}><FollowPost FollowPost={item} /></li>;
+                          case 'comment':
+                            return <li key={item._id}><CommentPost commentPost={item} /></li>;
+                          default:
+                            return null;
+                        }
+                      })}
+                  </ul>
+                ) : (
+                  <ul className="mt-0">
+                    {[...Array(10)].map((_, index) => (
+                      <li key={`like-skeleton-${index}`}><SearchSkelton /></li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
 
 
   )

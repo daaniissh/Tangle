@@ -1,4 +1,3 @@
-// tailwind.config.js
 module.exports = {
   content: [
     "./index.html",
@@ -26,7 +25,6 @@ module.exports = {
           '25%': { transform: 'translateX(10px)' },
           '38%': { transform: 'translateY(40px)' },
           '46%': { transform: 'rotate(-10deg)' },
-
           '50%': { transform: 'translateX(-10px)' },
           '60%': { transform: 'translateY(40px)' },
           '75%': { transform: 'translateX(10px)' },
@@ -36,10 +34,15 @@ module.exports = {
           '0%': { transform: 'translateY(0)' },
           '100%': { transform: 'translateY(-400px)', opacity: 0 },
         },
+        gradient: {
+          '0%, 100%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+        },
       },
       animation: {
         blink: "blink 3s infinite",
         shakeAndHide: 'shake 1s ease-in-out, upAndHide 1s 0.5s forwards',
+        gradient: 'gradient 2s ease infinite', // Add the gradient animation
       },
       colors: {
         insta: {
@@ -60,7 +63,7 @@ module.exports = {
           darkError: "#F47174",
           darkBackground: "#000",
           darkText: "#E4E6EB",
-          darkBorder: "#3A3A3A",
+          darkBorder: "#1c1c1c",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -73,15 +76,9 @@ module.exports = {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
-      // borderRadius: {
-      //   lg: "var(--radius)",
-      //   md: "calc(var(--radius) - 2px)",
-      //   sm: "calc(var(--radius) - 4px)",
-      // },
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
   ],

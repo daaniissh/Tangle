@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    socketId: { type: String, default: null },
     password: {
       type: String,
       required: true,
@@ -37,7 +38,8 @@ const userSchema = new mongoose.Schema(
     ],
     profileImg: {
       type: String,
-      default: "",
+      default:
+        "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg",
     },
     coverImg: {
       type: String,
@@ -56,6 +58,14 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     likedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+        default: [],
+      },
+    ],
+    usersStories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
+    savedPosts: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post",

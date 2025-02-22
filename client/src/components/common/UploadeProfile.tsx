@@ -12,19 +12,31 @@ import {
 import { useState } from "react";
 import { Input } from "../ui/Input";
 
-export function PhotoActionDialog() {
+export function PhotoActionDialog({ setProfileImg }) {
   const [fileName, setFileName] = useState('');
+  const [op, setOp] = useState(false)
 
   // Handle file change
   const handleFileChange = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      setFileName(file.name); // Show selected file name
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Get the Base64 string and set it in state
+        setProfileImg(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setOp(false)
     }
   };
-
+  function handleRemoveProfile() {
+    setProfileImg(
+      "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"
+    );
+    setOp(false)
+  }
   return (
-    <Dialog>
+    <Dialog open={op} onOpenChange={(open) => setOp(open)} >
       <DialogTrigger asChild>
         <button className="text-blue-500 dark:text-blue-400 hover:underline">
           Change profile photo
@@ -46,18 +58,18 @@ export function PhotoActionDialog() {
               type="file"
               className="opacity-0 cursor-pointer"
               onChange={handleFileChange}
-             
+
             />
           </div>
 
           <div className="w-full border-b dark:border-insta-darkPrimary/50">
-            <Button variant="link" className="!text-red-500 w-full">
+            <Button onClick={handleRemoveProfile} variant="link" className="!text-red-500 w-full">
               Remove Current Photo
             </Button>
           </div>
 
           <DialogClose asChild>
-            <Button variant="link" className="!text-gray-500 w-full">
+            <Button onClick={() => setOp(false)} variant="link" className="!text-gray-500 w-full">
               Cancel
             </Button>
           </DialogClose>

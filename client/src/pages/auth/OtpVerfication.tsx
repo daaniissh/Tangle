@@ -69,11 +69,10 @@ const OtpVerfication = () => {
   const REGEXP_ONLY_DIGITS_AND_CHARS = "^[0-9]+$"
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
-      <div className='flex justify-center text-1xl mb-6' ><img width="160" height="90" src="./Logo.png" alt="" /></div>
+      {/* <div className='flex justify-center text-1xl mb-6' ><img width="160" height="90" src="./Logo.png" alt="" /></div> */}
       <div className="sm:w-[400px] w-[340px] h-auto border-insta-border border-[1px] p-4 ">
-        <p className=" text-insta-text mb-5 leading-[20px] text-center font-medium text-[14px] font-instagram">
-          OTP has been sent to your registered email :
-          <span className='text-stone-500' > debugmedia@gmail.com</span>
+        <p className=" text-insta-text mb-5 leading-[20px] dark:text-white text-center font-medium text-[14px] font-instagram">
+          OTP has been sent to your registered email 
         </p>
         <div className='bg-insta-border w-full h-[0.5px] mb-4' ></div>
 

@@ -28,12 +28,21 @@ import SpinnerIcon from './components/loaders/LoadingSpinner.tsx'
 import CirqlG from './logos/Cirql-g.tsx'
 import Cirql from './logos/Cirql.tsx'
 import { PostDetails as post } from './types/QueryTypes/queary'
+import { io } from 'socket.io-client'
+import ProgressLoader from './components/progressLoader/ProgressLoader.tsx'
 
 // import { Sidebar } from 'lucide-react'
 
+
 function App() {
   const location = useLocation();
+ 
 
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setSocket(io("http://localhost:3000"));
+  }, []);
 
   const [showStatusBar, setShowStatusBar] = useState<boolean>(false);
 
@@ -85,6 +94,29 @@ function App() {
     retry: false
 
   })
+
+  const { } = useQuery<post[]>({
+    queryKey: ["story"] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/story`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+        if (data.error) return null
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+    },
+    retry: false
+
+  })
   const { } = useQuery<post[]>({
     queryKey: ["following"] as QueryKey,
     queryFn: async () => {
@@ -109,6 +141,13 @@ function App() {
   })
 
   useEffect(() => {
+
+    socket?.emit("addUser", authUser?._id);  // Emit immediately on connect
+  }, [authUser,socket]);
+
+  useEffect(() => {
+
+
 
     const st = localStorage.getItem('dark-mode');
     setShowStatusBar(st === 'true')
@@ -150,15 +189,16 @@ function App() {
 
   return (
     <>
+  
 
       <div className="flex dark:bg-black overflow-hidden">
 
         {authUser && !location.pathname.includes("/story") && (
-          <SideBar showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />
+          <SideBar socket={socket} showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} />
         )}
 
         <Routes>
-          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path="/" element={authUser ? <HomePage socket={socket} /> : <Navigate to="/login" />} />
 
           <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
           <Route path="edit/:username" element={authUser ? <ProfileEdit showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} /> : <Navigate to="/login" />} />
@@ -169,8 +209,8 @@ function App() {
           <Route path="/otpverification" element={<OtpVerification />} />
           <Route path="/resetpassword" element={<ResetPassword />} />
 
-          <Route path="/story/:username/:id" element={authUser ? <StoryPage /> : <Navigate to="/login" />} />
-          <Route path="post/:username/:postId" element={<PostPage />} />
+          <Route path="/story/:username/:id" element={authUser ? <StoryPage socket={socket} /> : <Navigate to="/login" />} />
+          <Route path="post/:username/:postId" element={<PostPage socket={socket} />} />
           <Route path="/notifications" element={authUser ? <Notification /> : <Navigate to="/login" />} />
           <Route path="/explore" element={authUser ? <Explore /> : <Navigate to="/login" />} />
         </Routes>

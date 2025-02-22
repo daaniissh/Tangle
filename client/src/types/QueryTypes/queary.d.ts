@@ -55,3 +55,19 @@ export type PostDetails = {
   updatedAt: string; // ISO date string
   __v: number;
 };
+
+export type NotificationType = {
+  _id: string;
+  from: {
+    _id: string;
+    username: string;
+    profileImg: string;
+  };
+  post: PostDetails;
+  to: string;
+  type: string;
+  read: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};

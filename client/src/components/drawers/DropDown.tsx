@@ -26,6 +26,8 @@ import {
 import { Label } from "@radix-ui/react-label";
 import { Switch } from "@/components/ui/Switch"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 type DropdownMenuDemoProps = {
   children: React.ReactNode;
   showStatusBar: boolean;
@@ -63,7 +65,7 @@ export function ThemeSwitch({ handleCheckedChange, showStatusBar }: ThemeProps) 
 }
 
 export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: DropdownMenuDemoProps) {
-
+  const {data:authUser} = useQuery({queryKey:["authUser"]})
   // const [showActivityBar, setShowActivityBar] = useState<Checked>(false)
   return (
     <DropdownMenu >
@@ -74,17 +76,18 @@ export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: D
         {/* <DropdownMenuLabel>More</DropdownMenuLabel> */}
         {/* <DropdownMenuSeparator /> */}
         <DropdownMenuGroup  >
-          <DropdownMenuItem  >
+        <Link to="/edit/account" > <DropdownMenuItem  >
             <Settings />
-            <span>Settings</span>
+          Settings
 
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          </Link>
+          <Link to={`/profile/${authUser?.username}`}> <DropdownMenuItem>
             <Bookmark />
             <span>Saved</span>
-
+           
           </DropdownMenuItem>
-
+</Link>
 
         </DropdownMenuGroup>
 

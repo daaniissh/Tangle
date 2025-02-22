@@ -1,13 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
+import { AuthUser } from '@/types/QueryTypes/queary'
+import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import { Link } from 'react-router-dom'
 type Pros = {
   username: string,
   img:string,
   name:string,
-  id:number
+  id:string
 }
 const Story = ({username,img,id,name}:Pros) => {
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
+ const isYourStory = authUser?.username == username
   return (
  
       <Link
@@ -28,7 +32,7 @@ const Story = ({username,img,id,name}:Pros) => {
             </Avatar>
             </div>
           </div>
-          <h3 className=' text-[12px] font-normal font-poppins truncate w-[70px] text-center' >{name}</h3>
+          <h3 className=' text-[12px] font-normal font-poppins truncate w-[70px] text-center' >{isYourStory ? "Your Story" : name}</h3>
         </div>
       </Link>
 

@@ -5,7 +5,7 @@ const useFollow = () => {
 	const queryClient = useQueryClient();
   const APIURL = import.meta.env.VITE_API_URL;
 
-	const { mutate: follow, isPending:isFollowing } = useMutation({
+	const { mutate: follow, isPending:isFollowing,data:followData } = useMutation({
 		mutationFn: async (userId:string) => {
 			try {
 				const res = await fetch(`${APIURL}/users/follow/${userId}`, {
@@ -17,14 +17,15 @@ const useFollow = () => {
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong!");
 				}
-				return;
+				return data;
 			} catch (error) {
 				
 			}
 		},
 		onSuccess: () => {
 			Promise.all([
-				queryClient.invalidateQueries({ queryKey: ["suggestedUsers"] }),
+				queryClient.invalidateQueries({ queryKey: ["suggested"] }),
+				queryClient.invalidateQueries({ queryKey: ["following"] }),
 				queryClient.invalidateQueries({ queryKey: ["authUser"] }),
 			]);
 		},
@@ -33,7 +34,7 @@ const useFollow = () => {
 		},
 	});
 
-	return { follow, isFollowing };
+	return { follow, isFollowing ,followData};
 };
 
 export default useFollow;

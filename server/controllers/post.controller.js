@@ -90,7 +90,7 @@ export const deleteComment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
- 
+
 export const editPost = async (req, res) => {
   try {
     console.log(req.params.id);
@@ -123,6 +123,7 @@ export const commentOnPost = async (req, res) => {
 
     // Add the new comment
     const comment = { user: userId, text };
+
     post.comments.push(comment);
 
     await post.save();
@@ -130,6 +131,8 @@ export const commentOnPost = async (req, res) => {
     const updatedPost = await Post.findById(postId).populate("comments.user");
     const notification = new Notification({
       from: userId,
+      comment: comment.text,
+      post,
       to: post.user._id,
       type: "comment",
     });
@@ -161,7 +164,7 @@ export const likeUnlikePost = async (req, res) => {
       const updatedLikes = post.likes.filter(
         (id) => id.toString() !== userId.toString()
       );
-      res.status(200).json(updatedLikes);
+      res.status(200).json("like");
     } else {
       post.likes.push(userId);
       await User.updateOne({ _id: userId }, { $push: { likedPosts: postId } });
@@ -169,12 +172,14 @@ export const likeUnlikePost = async (req, res) => {
 
       const notification = new Notification({
         from: userId,
+        post: post,
         to: post.user,
         type: "like",
       });
       await notification.save();
 
       const updatedLikes = post.likes;
+
       res.status(200).json(updatedLikes);
     }
   } catch (error) {
@@ -202,26 +207,6 @@ export const getAllPost = async (req, res) => {
     res.json(post);
   } catch (error) {
     res.json(error.message);
-  }
-};
-
-export const getLikedPosts = async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    const likedPosts = await Post.find({ _id: { $in: user.likedPosts } })
-      .populate({
-        path: "user",
-        select: "-password",
-      })
-      .populate({
-        path: "comments.user",
-        select: "-password",
-      });
-    res.json(likedPosts);
-  } catch (error) {
-    res.json(error);
   }
 };
 
@@ -253,7 +238,11 @@ export const getUserPosts = async (req, res) => {
   try {
     const { username } = req.params;
     const user = await User.findOne({ username });
-    const posts = await Post.find({ user: user._id, is_story: false })
+    const posts = await Post.find({
+      user: user._id,
+      is_story: false,
+      img: { $exists: true, $ne: "" },
+    })
       .sort({ createdAt: -1 })
       .populate({
         path: "user",
@@ -289,9 +278,11 @@ export const getSinglePost = async (req, res) => {
 };
 export const getSavePost = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.user._id });
+    const { username } = req.params;
+    const user = await User.findOne({ username: username });
     const posts = await Post.find({
       user: user._id,
+      img: { $exists: true, $ne: "" },
       is_save: true,
       is_story: false,
     });
@@ -303,6 +294,24 @@ export const getSavePost = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+export const getSavedPosts = async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const savedPosts = await Post.find({
+      _id: { $in: user.savedPosts },
+    }).populate({
+      path: "user.savedPosts",
+    });
+
+    res.status(200).json(savedPosts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 export const savePost = async (req, res) => {
   try {
@@ -310,14 +319,64 @@ export const savePost = async (req, res) => {
     const { id: postId } = req.params;
     const user = await User.findById(userId);
     const post = await Post.findById(postId);
-    if (!user) return res.status(404).json({ message: "user not found" });
-    if (!post) return res.status(404).json({ message: "post not found" });
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    if (post.is_save) {
+      await User.updateOne({ _id: userId }, { $pull: { savedPosts: postId } });
+    } else {
+      await User.updateOne(
+        { _id: userId },
+        { $addToSet: { savedPosts: postId } }
+      );
+    }
+
     post.is_save = !post.is_save;
     await post.save();
-    return res.status(200).json({ message: "saved successfully" });
+
+    const message = post.is_save
+      ? "Post removed from saved posts"
+      : "Post saved successfully";
+    return res.status(200).json({ message });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+export const deleteStory = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.user._id.toString();
+
+    // Find the post to be deleted
+    const story = await Post.findOne({
+      _id: postId,
+      is_story: true,
+      user: userId,
+    });
+
+    if (!story) {
+      return res.status(404).json({ error: "Story not found" });
+    }
+
+    // Remove the story from the user's usersStories array
+    await User.updateOne({ _id: userId }, { $pull: { usersStories: postId } });
+
+    // Check if the user has any remaining stories in the usersStories array
+    const user = await User.findById(userId);
+
+    // If usersStories is empty, set is_story to false
+    if (user.usersStories.length === 0) {
+      await User.updateOne({ _id: userId }, { is_story: false });
+    }
+
+    // Delete the story
+    await Post.deleteOne({ _id: postId });
+
+    res.status(200).json({ message: "Story deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -363,7 +422,10 @@ export const uploadStory = async (req, res) => {
 
     await newPost.save();
 
-    await User.findByIdAndUpdate(userId, { is_story: true });
+    // Update the user's is_story and push the post ID into usersStories
+    user.is_story = true;
+    user.usersStories.push(newPost._id); // Assuming usersStories is an array in the User model
+    await user.save();
 
     res.status(201).json(newPost);
   } catch (error) {
@@ -375,45 +437,87 @@ export const getStory = async (req, res) => {
   try {
     const now = new Date();
 
-    let posts = await Post.find({ is_story: true, expiresAt: { $gt: now } })
-      .sort({ createdAt: -1 })
-      .populate({ path: "user", select: "-password" });
+    // Find users with active stories
+    const usersWithStories = await User.find({ is_story: true }).populate({
+      path: "usersStories",
+      match: { is_story: true, expiresAt: { $gt: now } },
+      options: { sort: { createdAt: -1 } },
+      select: "-password",
+    });
 
+    // Collect users with active stories
+    const activeStories = usersWithStories.filter(
+      (user) => user.usersStories.length > 0
+    );
+
+    // Find users whose all stories have expired
+    const usersToUpdate = usersWithStories.filter(
+      (user) => user.usersStories.length === 0
+    ).map((user) => user._id);
+
+    // Update users whose stories have expired
+    if (usersToUpdate.length > 0) {
+      await User.updateMany(
+        { _id: { $in: usersToUpdate } },
+        { $set: { is_story: false } }
+      );
+    }
+
+    // Delete expired stories
     await Post.deleteMany({ is_story: true, expiresAt: { $lt: now } });
 
-    if (posts.length === 0) {
+    if (activeStories.length === 0) {
       return res.status(404).json([]);
     }
 
-    res.json(posts);
+    res.json(activeStories);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+
 export const getUserStory = async (req, res) => {
   try {
     const { username } = req.params;
     const now = new Date();
-    const user = await User.findOne({ username });
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const user = await User.findOne({ username }).populate([
+      {
+        path: "usersStories",
+        match: { is_story: true, expiresAt: { $gt: now } },
+        options: { sort: { createdAt: -1 } },
+        populate: {
+          path: "likes", // Populate the `user` field inside `usersStories`
+          select: "username profileImg", // Select the fields you want to include
+        },
+        select: "-password", // Exclude the password field
+      },
+      {
+        path: "likedPosts",
+        populate: {
+          path: "user",
+          select: "username id",
+        },
+      },
+    ]);
+
+    if (!user || user.usersStories.length === 0) {
+      return res.status(404).json({ error: "No stories found for this user" });
     }
 
-    const posts = await Post.find({
-      user: user._id,
-      is_story: true,
-      expiresAt: { $gt: now },
-    })
-      .sort({ createdAt: -1 })
-      .populate({ path: "user", select: "-password" });
+    // Remove duplicate users from likedPosts
+    const uniqueLikedPosts = user.likedPosts.reduce((acc, post) => {
+      const userId = post.user._id.toString();
+      if (!acc[userId]) {
+        acc[userId] = post;
+      }
+      return acc;
+    }, {});
 
-    if (posts.length === 0) {
-      return res.status(404).json([]);
-    }
+    user.likedPosts = Object.values(uniqueLikedPosts);
 
-    return res.json(posts);
+    return res.json(user);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }

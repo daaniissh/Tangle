@@ -18,12 +18,17 @@ const postSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    progress: {
+      type: Number,  // Progress percentage (0 to 100)
+      default: 0,    // Start progress at 0
+    },
     img: {
       type: String,
     },
     video: {
       type: String,
     },
+
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

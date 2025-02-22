@@ -98,7 +98,7 @@ const Login = () => {
         </Form>
       </div>
       <div className="flex justify-center  dark:border-stone-700 items-center w-[340px] mt-3  h-[78px] border-insta-border border-[1px]">
-        <p className=' text-insta-text dark:text-gray-300 text-[15px] font-thin font-instagram' >Don't have account?<a href="" className='text-insta-link font-medium' > Sign Up</a></p>
+        <p className=' text-insta-text dark:text-gray-300 text-[15px] font-thin font-instagram' >Don't have account?<Link to="/signup" className='text-insta-link font-medium' > Sign Up</Link></p>
       </div>
 
     </div>
