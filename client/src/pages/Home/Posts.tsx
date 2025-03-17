@@ -9,11 +9,7 @@ import { Compass } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Link } from 'react-router-dom'
 
-<<<<<<< HEAD
-const Posts = ({socket}) => {
-=======
 const Posts = () => {
->>>>>>> main
   const { data: allPosts, isLoading, isPending } = useQuery<PostDetails>({ queryKey: ["following"] as QueryKey });
 
   const Posts = Array.isArray(allPosts) ? allPosts : [];
@@ -22,11 +18,7 @@ const Posts = () => {
   }
   return (
     <div className=' md:w-10/12 min-h-screen mb-20 z-0 w-full overflow-x-hidden justify-center flex-col flex ' >
-<<<<<<< HEAD
-      {allPosts?.length !== 0 ? <>{Posts.map((data: PostDetails) => <Post socket={socket} postData={data} />)}</>
-=======
       {allPosts?.length !== 0 ? <>{Posts.map((data: PostDetails) => <Post data={data} />)}</>
->>>>>>> main
         : <div className=" dark:text-white w-full h-screen flex flex-col my-10 items-center space-y-6 p">
           <h2 className="text-3xl font-semibold text-center">Start Your Journey on Cirql</h2>
           <p className="text-lg text-center max-w-md">Follow inspiring individuals to stay updated with their posts. Dive into a world of engaging and insightful content.</p>

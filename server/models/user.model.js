@@ -38,12 +38,8 @@ const userSchema = new mongoose.Schema(
     ],
     profileImg: {
       type: String,
-<<<<<<< HEAD
       default:
         "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg",
-=======
-      default: "",
->>>>>>> main
     },
     coverImg: {
       type: String,
@@ -68,7 +64,6 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
-<<<<<<< HEAD
     usersStories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     savedPosts: [
       {
@@ -77,8 +72,6 @@ const userSchema = new mongoose.Schema(
         default: [],
       },
     ],
-=======
->>>>>>> main
 
     createdAt: { type: Date, default: Date.now },
     expiresAt: { type: Date },

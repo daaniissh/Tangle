@@ -18,11 +18,8 @@ import { formatPostDate } from "@/lib/utils/dateFunction";
 import LikeHeart from "./LikeHeart";
 import MoreOptions from "./MoreOptions";
 import useFollow from "@/hooks/useFollow";
-<<<<<<< HEAD
 import { io } from "socket.io-client";
 
-=======
->>>>>>> main
 
 
 interface PostDetailsProps {
@@ -33,7 +30,6 @@ interface PostDetailsProps {
   postId?: string;
 }
 
-<<<<<<< HEAD
 const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId, socket }) => {
   const queryClient = useQueryClient();
 
@@ -339,276 +335,6 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
   }
 
 
-=======
-const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId }) => {
-  const queryClient = useQueryClient();
-
-  if (!isDialogOpen) return null;
-  const APIURL = import.meta.env.VITE_API_URL;
-  const [isAnima, setIsAnime] = useState(false);
-  const [comment, setComment] = useState("");
-  const [isEdit, setIsEdit] = useState(false);
-  const { follow, isFollowing } = useFollow()
-  console.log(postId, "====postID");
-
-  const inpRef = useRef()
-
-  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
-
-  const { data: post, isLoading, refetch } = useQuery<post>({
-    queryKey: ["posts", postId] as QueryKey,
-    queryFn: async () => {
-      try {
-        const res = await fetch(`${APIURL}/posts/post/${postId}`, {
-          method: "GET",
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) return null;
-        if (!res.ok || data.error) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        console.log(data, "===user data");
-        return data;
-      } catch (error) { }
-    },
-    enabled: !!postId,
-    retry: false,
-  });
-
-  const { mutate: likePost, isPending: isLiking } = useMutation({
-    mutationFn: async () => {
-      try {
-        const res = await fetch(`${APIURL}/posts/like/${postId}`, {
-          method: "POST",
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) return null;
-        if (!res.ok || data.error) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        console.log(data, "===user data");
-        return data;
-      } catch (error) { }
-    },
-    onSuccess: (updatedLikes) => {
-      refetch();
-      if (updatedLikes.length === 0) {
-        setIsAnime(false);
-      }
-      console.log("Liked post", updatedLikes);
-      queryClient.setQueryData(["posts", postId], (oldData: any) => {
-        return oldData.map((p: any) => {
-          if (p._id === postId) {
-            return { ...p, likes: updatedLikes };
-          }
-          return p;
-        });
-      });
-    },
-  });
-
-  const { mutate: savePost, isPending: isSaving } = useMutation({
-    mutationFn: async () => {
-      try {
-        const res = await fetch(`${APIURL}/posts/save/${postId}`, {
-          method: "POST",
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (data.error) return null;
-        if (!res.ok || data.error) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        console.log(data, "===user data");
-        return data;
-      } catch (error) { }
-    },
-    onSuccess: (updateSave) => {
-      refetch();
-
-      console.log("Liked post", updateSave);
-      queryClient.setQueryData(["posts", postId], (oldData: any) => {
-        return oldData.map((p: any) => {
-          if (p._id === postId) {
-            return { ...p, likes: updateSave };
-          }
-          return p;
-        });
-      });
-    },
-  });
-
-  const { mutate: editPost, isPending } = useMutation({
-    mutationFn: async () => {
-      try {
-        const res = await fetch(`${APIURL}/posts/edit/${postId}`, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ text: editInp }),
-        });
-        const data = await res.json();
-        if (data.error) return null;
-        if (!res.ok || data.error) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        console.log(data, "===user data");
-        return data;
-      } catch (error) { }
-    },
-    onSuccess: () => {
-      refetch();
-      setIsEdit(false)
-
-    },
-  });
-  const { mutate: commentPost, data: cmData, isPending: isCommenting } = useMutation({
-    mutationFn: async () => {
-      try {
-        if (!comment) return
-        const res = await fetch(`${APIURL}/posts/comment/${postId}`, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: comment }),
-        });
-        const data = await res.json();
-        setComment("");
-
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        return data;
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    onSuccess: (data) => {
-      setComment("");
-      refetch()
-
-
-    },
-
-    onError: (error) => {
-
-    },
-  });
-  const { mutate: deleteComment, isPending: isCommentDeleteing } = useMutation({
-    mutationFn: async (commentID: string) => {
-      try {
-
-        const res = await fetch(`${APIURL}/posts/comment/${commentID}`, {
-          method: "DELETE",
-          credentials: "include",
-
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          console.log("error")
-        }
-        return data;
-
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    onSuccess: () => {
-
-      refetch()
-
-
-
-    },
-
-
-  });
-  const { mutate: deletePost, isPending: isDeleting } = useMutation({
-    mutationFn: async () => {
-      try {
-
-        const res = await fetch(`${APIURL}/posts/${postId}`, {
-          method: "DELETE",
-          credentials: "include",
-
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          console.log("error")
-        }
-        return data;
-
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    onSuccess: () => {
-
-      onClose()
-
-
-
-    },
-
-
-  });
-  const postOwner = authUser?.username == post?.user?.username;
-  const isLiked = post?.likes?.includes(authUser?._id);
-  const amIFollowing = authUser?.following.includes(post?.user?._id.toString()!);
-
-  const [localLike, setLocalLike] = useState(isLiked);
-  const [editInp, setEditInp] = useState("");
-  const [btn, setBtn] = useState(true);
-
-  const formattedDate = formatPostDate(post?.createdAt.toString()!)
-
-  const handleLikePost = async () => {
-    if (isLiking) return;
-    setIsAnime(false);
-    likePost();
-  };
-
-  const handleDouble = async () => {
-    if (!isLiked) {
-      setLocalLike(localLike);
-      if (isLiking) return;
-      setIsAnime(true);
-      try {
-        likePost();
-      } catch (error) {
-        console.log("Error while liking the post", error);
-      }
-    }
-  };
-
-  function handleEdit() {
-    setIsEdit(true);
-    setEditInp(post?.text!);
-
-  }
-  function handleDelete(id: string) {
-    deleteComment(id)
-
-  }
-  function handleChangeEdit(e) {
-    setEditInp(e.target.value)
-    if (editInp?.length !== post?.text?.length) {
-      setBtn(false)
-    } else {
-      setBtn(true)
-    }
-  }
-  function submitEdit(e) {
-    editPost()
-
-  }
->>>>>>> main
 
   return (
     <div className="bg-gray-100 dark:bg-black dark:text-white">
@@ -671,17 +397,10 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                       isStory={post?.user?.is_story}
                       username={post?.user?.username}
                     />
-<<<<<<< HEAD
                     {!postOwner && <div className="flex gap-2  ">
                       <span className="text-sm" >•</span>
                       <span onClick={followUser} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
                         {isFollowing && <SpinnerIcon />}
-=======
-                   {!postOwner && <div className="flex gap-2  ">
-                      <span className="text-sm" >•</span>
-                      <span onClick={()=>follow(post?.user?._id.toString()!)} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
-                        {isFollowing && <SpinnerIcon/>}
->>>>>>> main
                         {!isFollowing && amIFollowing && "Unfollow"}
                         {!isFollowing && !amIFollowing && "Follow"}
                       </span>
@@ -779,11 +498,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                     placeholder="Add a comment..."
                     className="flex-1 bg-gray-100 dark:bg-black dark:text-white rounded-lg px-4 py-2 outline-none"
                   />
-<<<<<<< HEAD
                   <Button disabled={isCommenting} onClick={commentOnPost} variant="ghost" className="ml-3 text-insta-link">
-=======
-                  <Button disabled={isCommenting} onClick={() => commentPost()} variant="ghost" className="ml-3 text-insta-link">
->>>>>>> main
                     {isCommenting ? <SpinnerIcon /> : "Post"}
                   </Button>
                 </div>
