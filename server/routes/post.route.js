@@ -16,12 +16,9 @@ import {
   getUserStory,
   getSinglePost,
   deleteComment,
-<<<<<<< HEAD
   getSavedPosts,
   deleteStory,
   
-=======
->>>>>>> main
 } from "../controllers/post.controller.js";
 import { editPost } from "../controllers/post.controller.js";
 

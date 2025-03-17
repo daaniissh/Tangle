@@ -8,10 +8,7 @@ import { DropdownMenuSeparator } from "../ui/DropdownMenu";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 import { Button } from "../ui/Button";
 import { AuthUser } from "@/types/QueryTypes/queary";
-<<<<<<< HEAD
 import VerifyTick from "@/logos/VerifyTick";
-=======
->>>>>>> main
 
 type SearchProps = {
   searchOpen: boolean;
@@ -90,13 +87,9 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
 
   // Handle recent search addition
   const handleRecent = (user: AuthUser) => {
-<<<<<<< HEAD
     if(isDesktop){
       onClick!()
     }
-=======
-    onClick!()
->>>>>>> main
     setInp("")
     const updatedRecentSearches = [user, ...recentSearches.filter((u) => u._id !== user._id)].slice(0, 10);  // Limit to 10
     setRecentSearches(updatedRecentSearches);
@@ -122,11 +115,7 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
     <>
       {isDesktop && (
         <div
-<<<<<<< HEAD
           className={`absolute w-[450px] h-screen  dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${searchOpen ? "translate-x-0 left-16 z-[999999]" : "-translate-x-full z-[9999]"
-=======
-          className={`absolute w-[450px] h-screen rounded-tr-xl rounded-br-xl dark:border-r-insta-darkBorder border-r-[0.5px] top-0 bg-white dark:bg-black left-0 transform transition-transform duration-500 z-50 ${searchOpen ? "translate-x-0 left-16 z-[999999]" : "-translate-x-full z-[9999]"
->>>>>>> main
             }`}
         >
           <div className="absolute pl-2 w-full">
@@ -174,11 +163,7 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
                         <li key={item?._id} className="w-full">
                           <Link
                             onClick={() => handleRecent(item)}
-<<<<<<< HEAD
                             to={`/profile/${item?.username}`}
-=======
-                            to={`profile/${item?.username}`}
->>>>>>> main
                             className="w-full cursor-pointer dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border rounded-[3px] h-14 flex justify-start gap-3 px-4 items-center"
                           >
                             <Avatar className="group-hover:scale-110 duration-150">
@@ -189,14 +174,10 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
                               <AvatarFallback>{item?.username?.[0]?.toUpperCase()}</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col">
-<<<<<<< HEAD
                             <div className="flex items-end gap-1">
                               <h1 className="text-sm font-semibold">{item?.username}</h1>
                               {item?.username == "danish" && <VerifyTick className='' />}
                               </div>
-=======
-                              <h1 className="text-[14px] font-[600]">{item?.username}</h1>
->>>>>>> main
                               <div className="flex gap-2 text-xs">
                                 <p className="capitalize">{item?.fullName}</p>
                                 <span>•</span>
@@ -241,11 +222,7 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
                         <li>
                           <Link
                             onClick={() => handleRecent(item)}
-<<<<<<< HEAD
                             to={`/profile/${item?.username}`}
-=======
-                            to={`profile/${item?.username}`}
->>>>>>> main
                             className="w-full mb-2 cursor-pointer rounded-sm h-14 flex justify-start items-center gap-3 px-4 mx-2 dark:hover:bg-insta-darkBorder dark:text-insta-darkText hover:bg-insta-border"
                           >
                             <Avatar className="group-hover:scale-110 transition-transform duration-150">
@@ -256,14 +233,10 @@ const SearchCom = ({ searchOpen, inpMobile,onClick}: SearchProps) => {
                               <AvatarFallback>DN</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col">
-<<<<<<< HEAD
                               <div className="flex items-end gap-1">
                               <h1 className="text-sm font-semibold">{item?.username}</h1>
                               {item?.username == "danish" && <VerifyTick className='' />}
                               </div>
-=======
-                              <h1 className="text-sm font-semibold">{item?.username}</h1>
->>>>>>> main
                               <div className="flex items-center gap-2 text-xs">
                                 {
                                   item.fullName && <> <p className="capitalize">{item.fullName}</p>
