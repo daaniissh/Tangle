@@ -144,7 +144,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 isNotification={isNotification}
                 searchOpen={searchOpen}
               />
-              <Li
+            <Li
                 Icon={Search}
                 className={`${!searchOpen && isNotification && "border-none"}`}
                 is_border="border"

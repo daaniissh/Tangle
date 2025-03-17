@@ -25,6 +25,10 @@ module.exports = {
           '25%': { transform: 'translateX(10px)' },
           '38%': { transform: 'translateY(40px)' },
           '46%': { transform: 'rotate(-10deg)' },
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
           '50%': { transform: 'translateX(-10px)' },
           '60%': { transform: 'translateY(40px)' },
           '75%': { transform: 'translateX(10px)' },
@@ -33,16 +37,22 @@ module.exports = {
         upAndHide: {
           '0%': { transform: 'translateY(0)' },
           '100%': { transform: 'translateY(-400px)', opacity: 0 },
+<<<<<<< HEAD
         },
         gradient: {
           '0%, 100%': { 'background-position': '0% 50%' },
           '50%': { 'background-position': '100% 50%' },
+=======
+>>>>>>> main
         },
       },
       animation: {
         blink: "blink 3s infinite",
         shakeAndHide: 'shake 1s ease-in-out, upAndHide 1s 0.5s forwards',
+<<<<<<< HEAD
         gradient: 'gradient 2s ease infinite', // Add the gradient animation
+=======
+>>>>>>> main
       },
       colors: {
         insta: {
@@ -80,6 +90,13 @@ module.exports = {
   },
   plugins: [
     require("tailwindcss-animate"),
+<<<<<<< HEAD
     require("tailwind-scrollbar"),
   ],
 };
+=======
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar"),
+  ],
+};
+>>>>>>> main

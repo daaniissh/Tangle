@@ -55,6 +55,7 @@ export type PostDetails = {
   updatedAt: string; // ISO date string
   __v: number;
 };
+<<<<<<< HEAD
 
 export type NotificationType = {
   _id: string;
@@ -71,3 +72,5 @@ export type NotificationType = {
   updatedAt: string;
   __v: number;
 };
+=======
+>>>>>>> main

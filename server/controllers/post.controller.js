@@ -90,7 +90,11 @@ export const deleteComment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> main
 export const editPost = async (req, res) => {
   try {
     console.log(req.params.id);
@@ -422,10 +426,14 @@ export const uploadStory = async (req, res) => {
 
     await newPost.save();
 
+<<<<<<< HEAD
     // Update the user's is_story and push the post ID into usersStories
     user.is_story = true;
     user.usersStories.push(newPost._id); // Assuming usersStories is an array in the User model
     await user.save();
+=======
+    await User.findByIdAndUpdate(userId, { is_story: true });
+>>>>>>> main
 
     res.status(201).json(newPost);
   } catch (error) {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { AuthUser } from "@/types/QueryTypes/queary";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Socket } from "socket.io-client"; // Import Socket type if needed
@@ -48,6 +49,44 @@ const useFollow = (socket: Socket) => {
   });
 
   return { follow, isFollowing, followData };
+=======
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+
+const useFollow = () => {
+	const queryClient = useQueryClient();
+  const APIURL = import.meta.env.VITE_API_URL;
+
+	const { mutate: follow, isPending:isFollowing } = useMutation({
+		mutationFn: async (userId:string) => {
+			try {
+				const res = await fetch(`${APIURL}/users/follow/${userId}`, {
+					method: "POST",
+          credentials:"include"
+				});
+
+				const data = await res.json();
+				if (!res.ok) {
+					throw new Error(data.error || "Something went wrong!");
+				}
+				return;
+			} catch (error) {
+				
+			}
+		},
+		onSuccess: () => {
+			Promise.all([
+				queryClient.invalidateQueries({ queryKey: ["suggestedUsers"] }),
+				queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+			]);
+		},
+		onError: (error) => {
+			
+		},
+	});
+
+	return { follow, isFollowing };
+>>>>>>> main
 };
 
 export default useFollow;
