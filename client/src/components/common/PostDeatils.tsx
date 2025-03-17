@@ -18,6 +18,11 @@ import { formatPostDate } from "@/lib/utils/dateFunction";
 import LikeHeart from "./LikeHeart";
 import MoreOptions from "./MoreOptions";
 import useFollow from "@/hooks/useFollow";
+<<<<<<< HEAD
+import { io } from "socket.io-client";
+
+=======
+>>>>>>> main
 
 
 interface PostDetailsProps {
@@ -28,6 +33,313 @@ interface PostDetailsProps {
   postId?: string;
 }
 
+<<<<<<< HEAD
+const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId, socket }) => {
+  const queryClient = useQueryClient();
+
+  if (!isDialogOpen) return null;
+  const APIURL = import.meta.env.VITE_API_URL;
+
+
+  const [isAnima, setIsAnime] = useState(false);
+  const [comment, setComment] = useState("");
+  const [isLike, setIslike] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const { follow, isFollowing, followData } = useFollow(socket)
+  console.log(postId, "====postID");
+
+  const inpRef = useRef()
+
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
+
+  const { data: post, isLoading, refetch } = useQuery<post>({
+    queryKey: ["posts", postId] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/post/${postId}`, {
+          method: "GET",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log(data, "===user data");
+        return data;
+      } catch (error) { }
+    },
+    enabled: !!postId,
+    retry: false,
+  });
+
+  const { mutate: likePost, isPending: isLiking, data: likeData } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/like/${postId}`, {
+          method: "POST",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log(data, "===user data");
+        return data;
+      } catch (error) { }
+    },
+    onSuccess: (updatedLikes) => {
+      refetch();
+      if (updatedLikes?.length === 0) {
+        setIsAnime(false);
+      }
+      if (updatedLikes == "like") {
+        setIslike(true)
+      }
+      console.log("Liked post", updatedLikes);
+
+    },
+  });
+
+  const { mutate: savePost, isPending: isSaving } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/save/${postId}`, {
+          method: "POST",
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log(data, "===user data");
+        return data;
+      } catch (error) { }
+    },
+    onSuccess: () => {
+      refetch();
+
+
+    },
+  });
+
+  const { mutate: editPost, isPending } = useMutation({
+    mutationFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/edit/${postId}`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: editInp }),
+        });
+        const data = await res.json();
+        if (data.error) return null;
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        console.log(data, "===user data");
+        return data;
+      } catch (error) { }
+    },
+    onSuccess: () => {
+      refetch();
+      setIsEdit(false)
+
+    },
+  });
+  const { mutate: commentPost, data: cmData, isPending: isCommenting } = useMutation({
+    mutationFn: async () => {
+      try {
+        if (!comment) return
+        const res = await fetch(`${APIURL}/posts/comment/${postId}`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: comment }),
+        });
+        const data = await res.json();
+        setComment("");
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    onSuccess: (data) => {
+      setComment("");
+      refetch()
+
+
+    },
+
+    onError: (error) => {
+
+    },
+  });
+  const { mutate: deleteComment, isPending: isCommentDeleteing } = useMutation({
+    mutationFn: async (commentID: string) => {
+      try {
+
+        const res = await fetch(`${APIURL}/posts/comment/${commentID}`, {
+          method: "DELETE",
+          credentials: "include",
+
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          console.log("error")
+        }
+        return data;
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    onSuccess: () => {
+
+      refetch()
+
+
+
+    },
+
+
+  });
+  const { mutate: deletePost, isPending: isDeleting } = useMutation({
+    mutationFn: async () => {
+      try {
+
+        const res = await fetch(`${APIURL}/posts/${postId}`, {
+          method: "DELETE",
+          credentials: "include",
+
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          console.log("error")
+        }
+        return data;
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    onSuccess: () => {
+
+      onClose()
+
+
+
+    },
+
+
+  });
+
+
+
+  const postOwner = authUser?.username == post?.user?.username;
+  const isLiked = post?.likes?.includes(authUser?._id);
+  const amIFollowing = authUser?.following.includes(post?.user?._id.toString()!);
+
+  const [localLike, setLocalLike] = useState(isLiked);
+  const [editInp, setEditInp] = useState("");
+  const [btn, setBtn] = useState(true);
+
+  const formattedDate = formatPostDate(post?.createdAt.toString()!)
+
+
+  // useEffect(() => {
+  //   if (authUser?._id) {
+  //     socket.emit("addUser", authUser._id); // Emit once when authUser is available
+  //   }
+  // }, [authUser]);
+
+
+  const handleLikePost = async () => {
+    console.log(likeData, "like====")
+    if (isLiking) return;
+    if (likeData == "like" || likeData == undefined) {
+      // Only send notification when likeData is "like"
+      try {
+        await socket.emit("sendNotification", {
+          from: authUser?._id,
+          to: post?.user?._id,
+          type: "like",
+        });
+        setIslike(false)
+
+
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
+      }
+    }
+    setIsAnime(false);
+    likePost();
+  };
+
+  const handleDouble = async () => {
+    if (!isLiked) {
+      setLocalLike(localLike);
+      if (likeData == "like" || likeData == undefined) {
+        setIsAnime(true);
+        try {
+          await socket.emit("sendNotification", {
+            from: authUser?._id,
+            to: post?.user?._id,
+            type: "like",
+          });
+          likePost();
+        } catch (error) {
+          console.log("Error while liking the post", error);
+        }
+      }
+    }
+  };
+  async function commentOnPost() {
+
+    commentPost()
+    await socket.emit("sendNotification", {
+      from: authUser?._id,
+      to: post?.user?._id,
+      type: "comment",
+    });
+  }
+  async function followUser() {
+    follow(post?.user?._id.toString()!)
+    console.log(followData?.type, "===follow")
+   
+  }
+  function handleEdit() {
+    setIsEdit(true);
+    setEditInp(post?.text!);
+
+  }
+
+  function handleChangeEdit(e: any) {
+    setEditInp(e.target.value)
+    if (editInp?.length !== post?.text?.length) {
+      setBtn(false)
+    } else {
+      setBtn(true)
+    }
+  }
+
+  function submitEdit() {
+    editPost()
+
+  }
+
+
+=======
 const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId }) => {
   const queryClient = useQueryClient();
 
@@ -296,6 +608,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
     editPost()
 
   }
+>>>>>>> main
 
   return (
     <div className="bg-gray-100 dark:bg-black dark:text-white">
@@ -358,10 +671,17 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                       isStory={post?.user?.is_story}
                       username={post?.user?.username}
                     />
+<<<<<<< HEAD
+                    {!postOwner && <div className="flex gap-2  ">
+                      <span className="text-sm" >•</span>
+                      <span onClick={followUser} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
+                        {isFollowing && <SpinnerIcon />}
+=======
                    {!postOwner && <div className="flex gap-2  ">
                       <span className="text-sm" >•</span>
                       <span onClick={()=>follow(post?.user?._id.toString()!)} className="text-sm text-insta-link font-bold cursor-pointer hover:text-insta-primary" >
                         {isFollowing && <SpinnerIcon/>}
+>>>>>>> main
                         {!isFollowing && amIFollowing && "Unfollow"}
                         {!isFollowing && !amIFollowing && "Follow"}
                       </span>
@@ -459,7 +779,11 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                     placeholder="Add a comment..."
                     className="flex-1 bg-gray-100 dark:bg-black dark:text-white rounded-lg px-4 py-2 outline-none"
                   />
+<<<<<<< HEAD
+                  <Button disabled={isCommenting} onClick={commentOnPost} variant="ghost" className="ml-3 text-insta-link">
+=======
                   <Button disabled={isCommenting} onClick={() => commentPost()} variant="ghost" className="ml-3 text-insta-link">
+>>>>>>> main
                     {isCommenting ? <SpinnerIcon /> : "Post"}
                   </Button>
                 </div>

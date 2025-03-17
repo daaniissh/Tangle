@@ -15,12 +15,12 @@ import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
 import copy from 'copy-text-to-clipboard';
 import { useState } from "react"
-export default function ShareDialog({ children, username, id }: { children: React.ReactNode, username?: string, id?: number | string }) {
+export default function ShareDialog({ children, username, id,story }: { children: React.ReactNode, username?: string, id?: number | string ,story?:boolean}) {
   const [loading, setLoading] = useState(false)
   const CopyLink = async () => {
     try {
 
-      await copy(`http://localhost:5173/post/${username}/${id}`);
+      await copy(story ? `http://localhost:5173/story/${username}/${id}` : `http://localhost:5173/post/${username}/${id}`);
       await setLoading(true)
     } catch (error) {
       setLoading(false)
@@ -52,7 +52,7 @@ export default function ShareDialog({ children, username, id }: { children: Reac
             </Label>
             <Input
               id="link"
-              defaultValue={`http://localhost:5173/post/${username}/${id}`}
+              defaultValue={story ? `http://localhost:5173/story/${username}/${id}` : `http://localhost:5173/post/${username}/${id}`}
               readOnly
             />
           </div>

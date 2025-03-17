@@ -1,5 +1,6 @@
 import ExplorePost from '@/components/common/SmallPost'
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
+import ProgressLoader from '@/components/progressLoader/ProgressLoader';
 import { QueryKey } from '@/types/QueryKey/key';
 import { AuthUser, Post } from '@/types/QueryTypes/queary';
 import { useQuery } from '@tanstack/react-query';
@@ -11,7 +12,7 @@ const Explore = () => {
   const APIURL = import.meta.env.VITE_API_URL;
 
   
-  const { data: allPosts,isLoading } = useQuery<AuthUser>({ queryKey: ["posts"] as QueryKey });
+  const { data: allPosts,isLoading ,isRefetching} = useQuery<AuthUser>({ queryKey: ["posts"] as QueryKey });
  const Posts = Array.isArray(allPosts) ? allPosts : [];
   if (isLoading) {
     return (
@@ -23,6 +24,11 @@ const Explore = () => {
   }
 
   return (
+    <>
+     {(isLoading || isRefetching) && (
+        <ProgressLoader />
+      )}
+
     <div className="flex justify-center w-full min-h-screen overflow-y-scroll mt-10 md:mt-0 h-screen scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white dark:scrollbar-thumb-gray-800 mb-20 md:mb-0">
       <div className="w-full px-2 mt-10  md:px-5 max-w-5xl">
         <div className="grid gap-1 grid-cols-3 auto-rows-fr ">
@@ -34,7 +40,7 @@ const Explore = () => {
         </div>
       </div>
     </div>
-
+    </>
 
   )
 }

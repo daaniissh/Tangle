@@ -1,94 +1,269 @@
+import PageNotAvailable from '@/components/common/BrokenLink';
 import EmptyPost from '@/components/common/EmptyPost';
+import PostDetails from '@/components/common/PostDeatils';
 import SmallPost from '@/components/common/SmallPost';
 import ExplorePost from '@/components/common/SmallPost';
-import { Bookmark, Grid3x3, Link as WebLink } from 'lucide-react';
+import FollowersModal from '@/components/followrsPeepsModel/FollowPeeps';
+import SpinnerIcon from '@/components/loaders/LoadingSpinner';
+import ProgressLoader from '@/components/progressLoader/ProgressLoader';
+import { Button } from '@/components/ui/Button';
+import useFollow from '@/hooks/useFollow';
+import { PostData } from '@/lib/mock/post';
+import VerifyTick from '@/logos/VerifyTick';
+import { QueryKey } from '@/types/QueryKey/key';
+import { AuthUser, Post } from '@/types/QueryTypes/queary';
+import { useQuery } from '@tanstack/react-query';
+import { Bookmark, Grid3x3, Loader2, Link as WebLink } from 'lucide-react';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
 
-const ProfilePage: React.FC = () => {
+interface ProfilePageProps {
+  socket: Socket;
+}
+
+const ProfilePage = ({ socket }: ProfilePageProps) => {
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const [activeTab, setActiveTab] = useState<'posts' | 'saved'>('posts');
+  const APIURL = import.meta.env.VITE_API_URL;
+  const { username } = useParams();
 
+  const { follow, isFollowing } = useFollow(socket)
+
+  const { data: profileData, isRefetching, isLoading } = useQuery<AuthUser>({
+    queryKey: ["profile", username] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/users/profile/${username}`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+        if (data.error) return null
+
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+    },
+    retry: false
+
+  })
+  const { data: postData } = useQuery<Post>({
+    queryKey: ["posts", username] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/user/${username}`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+        if (data.error) return null
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+    },
+    retry: false,
+
+
+
+  })
+  const { data: saveData } = useQuery<Post>({
+    queryKey: ["posts", [activeTab, username]] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/posts/save/${username}`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+
+        if (data.error) return null
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+    },
+    retry: false,
+    enabled: !!username,
+
+
+
+  })
+
+  const alreadyFollowed = authUser?.following?.includes(profileData?._id!)
+  const isEdit = authUser?.username === username
   return (
-    <div className="min-h-screen  max-h-screen  scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white  dark:scrollbar-thumb-stone-800   w-full overflow-y-scroll  bg-white text-black dark:bg-black dark:text-white flex flex-col  items-center md:mt-0 py-8 mt-10">
-      {/* Profile Header */}
-      <div className="w-full max-w-xl  text-center">
-        <div className="relative mb-4">
-          {/* Profile Picture Placeholder */}
-          <div className="w-32 h-32 mx-auto rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-            <img src='https://i.pinimg.com/736x/75/cf/5c/75cf5cb8596854f9f2ac3c13730c658e.jpg' className="w-32 h-32 rounded-full object-cover" />
+    <>
+
+      {(isLoading || isRefetching) ? (
+        <ProgressLoader />
+      ) : profileData ? (
+        <div className="min-h-screen max-h-screen scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white dark:scrollbar-thumb-stone-800 w-full overflow-y-scroll bg-white text-black dark:bg-black dark:text-white flex flex-col items-center md:mt-0 py-8 mt-10">
+          {/* Profile Header */}
+          <div className="w-full max-w-xl text-center">
+            <div className="relative mb-4">
+              {/* Profile Picture Placeholder */}
+              <Link   to={`/story/${profileData?.username}/${profileData?._id}`}
+              
+                className={`w-32 h-32 mx-auto rounded-full flex items-center justify-center ${profileData?.is_story
+                    ? "p-1 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500"
+                    : "bg-gray-200 dark:bg-gray-700"
+                  }`}
+              >
+                <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 p-1">
+                  <img
+                    src={
+                      profileData?.profileImg ||
+                      "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"
+                    }
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </div>
+              </Link>
+            </div>
+
+            {/* Username and Details */}
+            <div className="text-xl font-semibold mb-4 flex justify-center gap-1 items-center">{profileData?.username}     {profileData?.username == "danish" && <VerifyTick className='' />} </div>
+            {isEdit ? (
+              <Link
+                to={`/edit/${authUser?.username}`}
+                className="px-4 py-1 border hover:bg-gray-200 dark:hover:bg-stone-900 border-gray-600 dark:border-gray-400 rounded-md text-gray-700 dark:text-gray-300"
+              >
+                Edit profile
+              </Link>
+            ) : (
+              <Button
+                onClick={() => follow(profileData?._id!)}
+                size="sm"
+                className={`rounded-lg ${alreadyFollowed && "!bg-neutral-700"
+                  } hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary`}
+              >
+                {isFollowing && <SpinnerIcon />}
+                {!isFollowing && alreadyFollowed && "Following"}
+                {!isFollowing && !alreadyFollowed && "Follow"}
+              </Button>
+            )}
+
+            <div className="mt-3 flex justify-center space-x-8">
+              <div className="text-center ">
+                <span className="font-bold">{postData?.length}</span> posts
+              </div>
+              <FollowersModal type='FOLLOWERS' username={username} >
+                <div className="text-center  cursor-pointer">
+                  <span className="font-bold">{profileData?.followers?.length}</span> followers
+                </div>
+              </FollowersModal>
+              <FollowersModal type='FOLLOWING' username={username} >
+                <div className="text-center cursor-pointer">
+                  <span className="font-bold">{profileData?.following?.length}</span> following
+                </div>
+              </FollowersModal>
+            </div>
+            <div className="mt-2 text-gray-500 dark:text-gray-400">{profileData?.fullName}</div>
+            <div className="">{profileData?.bio}</div>
+            {profileData?.link && (
+              <a
+                href={profileData?.link}
+                about="*/"
+                className="flex justify-center items-center gap-1 hover:underline text-insta-link font-semibold text-sm"
+              >
+                <WebLink
+                  className="size-3 text-insta-darkPrimary dark:text-zinc-600"
+                  strokeWidth={3}
+                />
+                {profileData?.link}
+              </a>
+            )}
+          </div>
+
+          {/* Tabs Section */}
+          <div className="w-full max-w-5xl mt-8 border-t border-gray-300 dark:border-gray-600">
+            <div className="flex justify-around text-gray-500 dark:text-gray-400 text-sm py-2">
+              <div
+                onClick={() => setActiveTab("posts")}
+                className={`relative cursor-pointer hover:text-black flex items-center gap-2 dark:hover:text-white ${activeTab === "posts"
+                  ? 'text-black dark:text-white font-bold after:content-[""] after:absolute after:top-0 after:left-0 after:right-0 after:border-t after:border-black dark:after:border-white after:-translate-y-2'
+                  : ""
+                  }`}
+              >
+                <Grid3x3 className="size-4" /> POSTS
+              </div>
+
+              <div
+                onClick={() => setActiveTab("saved")}
+                className={`relative cursor-pointer hover:text-black flex items-center gap-2 dark:hover:text-white ${activeTab === "saved"
+                  ? 'text-black dark:text-white font-bold after:content-[""] after:absolute after:top-0 after:left-0 after:right-0 after:border-t after:border-black dark:after:border-white after:-translate-y-2'
+                  : ""
+                  }`}
+              >
+                <Bookmark className="size-4" /> SAVED
+              </div>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="w-full max-w-5xl md:py-10 py-5 *:
+          
+          
+          ">
+            {activeTab === "posts" ? (
+              <>
+                {postData?.length < 1 ? (
+                  <EmptyPost profileData={profileData._id} />
+                ) : (
+                  <div className="grid gap-1 grid-cols-3 md:grid-rows-8 lg:grid-rows-3 text-gray-500 dark:text-gray-400">
+                    {postData?.map((post: Post) => (
+                      <SmallPost
+                        comments={post?.comments?.length?.toString()}
+                        img={post?.img}
+                        likes={post?.likes?.length?.toString()}
+                        link={`${username}/${post?._id}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {saveData?.length < 1 ? (
+                  <div className="text-center text-gray-500 dark:text-gray-400">
+                    <p className="font-extrabold">No Saved Posts Yet</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-1 grid-cols-3 md:grid-rows-8 lg:grid-rows-3 text-gray-500 dark:text-gray-400">
+                    {saveData?.map((post: Post) => (
+                      <SmallPost
+                        comments={post?.comments?.length?.toString()}
+                        img={post?.img}
+                        likes={post?.likes?.length?.toString()}
+                        link={`${username}/${post?._id}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
-        {/* Username and Details */}
-        <div className="text-xl font-semibold mb-4">daaniisssh</div>
-        <Link to="/edit/danish" className=" px-4 py-1   border hover:bg-gray-200 dark:hover:bg-stone-900 border-gray-600 dark:border-gray-400 rounded-md text-gray-700 dark:text-gray-300">
-          Edit profile
-        </Link>
+      ) : (
+        <PageNotAvailable />
+      )}
+    </>
 
-        <div className="mt-3 flex justify-center space-x-8">
-          <div className="text-center">
-            <span className="font-bold">0</span> posts
-          </div>
-          <div className="text-center">
-            <span className="font-bold">579</span> followers
-          </div>
-          <div className="text-center">
-            <span className="font-bold">648</span> following
-          </div>
-        </div>
-        <div className="mt-2 text-gray-500 dark:text-gray-400">Danish</div>
-        <div className="">Lorem ipsum dolor sit.</div>
-        <a href='https://lucide.dev/icons/link' about='*/' className="flex justify-center items-center gap-1 hover:underline text-insta-link font-semibold text-sm"><WebLink className='size-3 text-insta-darkPrimary dark:text-zinc-600' strokeWidth={3} />https://lucide.dev/icons/link</a> 
-      </div>
-
-      {/* Tabs Section */}
-      <div className="w-full max-w-5xl mt-8 border-t border-gray-300 dark:border-gray-600">
-        <div className="flex justify-around text-gray-500 dark:text-gray-400 text-sm py-2">
-          <div
-            onClick={() => setActiveTab('posts')}
-            className={`relative cursor-pointer hover:text-black flex items-center gap-2 dark:hover:text-white ${activeTab === 'posts'
-              ? 'text-black dark:text-white font-bold after:content-[""] after:absolute after:top-0 after:left-0 after:right-0 after:border-t after:border-black dark:after:border-white after:-translate-y-2'
-              : ''
-              }`}
-          >
-            <Grid3x3 className='size-4' />    POSTS
-          </div>
-
-          <div
-            onClick={() => setActiveTab('saved')}
-            className={`relative cursor-pointer hover:text-black flex items-center gap-2 dark:hover:text-white ${activeTab === 'saved'
-              ? 'text-black dark:text-white font-bold after:content-[""] after:absolute after:top-0 after:left-0 after:right-0 after:border-t after:border-black dark:after:border-white after:-translate-y-2'
-              : ''
-              }`}
-          >
-            <Bookmark className='size-4' />   SAVED
-          </div>
-
-
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="w-full max-w-5xl  py-10">
-        {activeTab === 'posts' ? (
-          <div className="grid gap-1    grid-cols-3  md:grid-rows-8  lg:grid-rows-3   text-gray-500 dark:text-gray-400">
-            {/* <EmptyPost/> */}
-            <SmallPost comments={"231"} img='https://i.pinimg.com/736x/32/5f/0b/325f0b36ace13783eee68de4ecb7127d.jpg' likes='321'/>
-            <SmallPost comments={"21K"} img='https://i.pinimg.com/736x/ab/7c/0b/ab7c0b8770c85bd917c1a9ac103a20cd.jpg' likes='321'/>
-         
-
-          </div>
-        ) : (
-          <div className="grid gap-1   grid-cols-3  md:grid-rows-8  lg:grid-rows-3   text-gray-500 dark:text-gray-400">
-          {/* <EmptyPost/> */}
-          <SmallPost comments={"231"} img='https://i.pinimg.com/736x/32/5f/0b/325f0b36ace13783eee68de4ecb7127d.jpg' likes='321'/>
-          <SmallPost comments={"231"} img='https://i.pinimg.com/736x/80/86/e6/8086e632f309f3302f7915a960f62c6d.jpg' likes='321'/>
-          {/* <div className="text-center text-gray-500 dark:text-gray-400">
-            <p className='font-extrabold ' >No Saved Posts Yet</p>
-          </div> */}
-        </div>
-        )}
-      </div>
-    </div>
   );
 };
 

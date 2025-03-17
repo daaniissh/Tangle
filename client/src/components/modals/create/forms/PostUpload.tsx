@@ -51,6 +51,42 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
       queryClient.invalidateQueries({ queryKey: ["posts"] as QueryKey });
     },
   })
+<<<<<<< HEAD
+  const { mutate: createStory ,isPending:isStory} = useMutation({
+    mutationFn: async ({ image, caption }: { image: string, caption: string }) => {
+      try {
+        const res = await fetch(`${APIURL}/posts/story`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: caption, img: image }),
+          credentials: 'include',
+        })
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+        return data;
+
+      } catch (error) {
+        console.log(error)
+
+      }
+    },
+    onSuccess: () => {
+      // setText("");
+      // setImg(null);
+      // toast.success("Post created successfully");
+      setIsOpen(false)
+      gotoForm('SelectImage')
+      queryClient.invalidateQueries({ queryKey: ["posts"] as QueryKey });
+    },
+  })
+
+
+=======
+>>>>>>> main
   const SharePost = () => {
 
     CreatePost({
@@ -62,6 +98,22 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
 
 
 
+<<<<<<< HEAD
+
+  };
+  const ShareStory = () => {
+
+    createStory({
+      caption,
+      image: formsState?.CropImage?.image as string
+    });
+
+    onSubmit({ caption, image: formsState.CropImage.image as string, file: formsState.CropImage.file });
+
+
+
+=======
+>>>>>>> main
 
   };
   return (
@@ -103,8 +155,14 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
             </div>
 
           </div>
+<<<<<<< HEAD
+          <div className="mt-5 flex gap-2">
+            <Button onClick={ShareStory} className='!bg-green-600 !text-white w-full' >{isStory ? <SpinnerIcon /> : "Story"}</Button>
+            <Button onClick={SharePost} className='!bg-insta-primary !text-white w-full' >{isPending ? <SpinnerIcon /> : "Post"}</Button>
+=======
           <div className="mt-5">
             <Button onClick={SharePost} className='!bg-insta-primary !text-white w-full' >{isPending ? <SpinnerIcon /> : "Share"}</Button>
+>>>>>>> main
           </div>
 
         </div>

@@ -3,38 +3,69 @@ import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { users } from '@/lib/mock/user';
+import { useQuery } from '@tanstack/react-query';
+import { QueryKey } from '@/types/QueryKey/key';
+import { AuthUser } from '@/types/QueryTypes/queary';
+import useFollow from '@/hooks/useFollow';
+import SpinnerIcon from '../loaders/LoadingSpinner';
+import VerifyTick from '@/logos/VerifyTick';
 type Data = {
-  username: string;
-  is_followed: boolean;
-  image: string;
-  name: string;
+ profileData:AuthUser
 };
-const RightPanel = () => {
-  const [isLoading, setLoading] = useState(true)
+const RightPanel = (socket) => {
+
+  const APIURL = import.meta.env.VITE_API_URL;
+    const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
+  
+  const { data: suggestedData, isLoading } = useQuery({
+    queryKey: ["suggested"] as QueryKey,
+    queryFn: async () => {
+      try {
+        const res = await fetch(`${APIURL}/users/suggested`, {
+          method: 'GET',
+          credentials: 'include',
+        })
+        const data = await res.json()
+        if (data.error) return null
+        if (!res.ok || data.error) {
+          throw new Error(data.error || "Something went wrong")
+        }
+        console.log(data, "===user data")
+        return data
+      } catch (error) {
+
+      }
+
+    },
+
+
+  })
+
+  const { follow, followData, isFollowing } = useFollow(socket)
 
   return (
     <div className="hidden dark:bg-black   h-auto xl:block my-8 w-80 ">
       {/* User Profile Section */}
       <div className="mb-5 px-2">
-        <Link to="/profile/danish" className="flex  justify-between items-center w-full">
+        <Link to={`/profile/${authUser?.username}`} className="flex  justify-between items-center w-full">
           <div className="flex gap-3 items-center">
             <Avatar className="transition-transform duration-150 group-hover:scale-110">
               <AvatarImage
                 className="rounded-full object-cover w-11 h-11"
-                src="https://i.pinimg.com/736x/cf/74/4e/cf744e083e68347b1f3488282db98a15.jpg"
+                src={authUser?.profileImg}
               />
               <AvatarFallback>DN</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
               <h1 className="text-base font-semibold dark:text-white whitespace-nowrap overflow-hidden text-ellipsis">
-                daniish
+              {authUser?.username}
               </h1>
               <p className="text-sm text-insta-darkPrimary">
-                danish
+              {authUser?.fullName}
               </p>
             </div>
           </div>
-          <Link to="/edit/username" className="text-xs">
+          <Link  to={`/edit/${authUser?.username}`} className="text-xs">
             <span className="px-3 py-1 rounded-lg cursor-pointer font-semibold dark:text-insta-primary hover:text-insta-darkLink dark:hover:text-insta-link">
               Account
             </span>
@@ -47,43 +78,54 @@ const RightPanel = () => {
         <h1 className="text-sm text-insta-darkPrimary tracking-wide font-semibold px-2 mb-3">
           Suggested for you
         </h1>
-        <ul className="flex w-full flex-col ">
-          {users.map((user:Data)=>(
-             <li className='' >
-            <Link
-              to="/profile/user"
-              className="w-full cursor-pointer  dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-text/50 transition"
-            >
-              <div className="flex justify-between   items-center w-full">
-                <div className="flex gap-3 items-center">
-                  <Avatar className="transition-transform  duration-150 group-hover:scale-110">
-                    <AvatarImage
-                      className="rounded-full object-cover w-11 h-11"
-                      src={user.image}
-                    />
-                    <AvatarFallback className='capitalize' >{user.name.charAt(1)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col">
-                    <h1 className="text-base font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-                      {user.username}
-                    </h1>
-                    <p className="text-sm text-insta-darkPrimary">
-                      {user.name}
-                    </p>
+       {isLoading ? <RightPanelSkeleton/> : <ul className="flex w-full flex-col ">
+          {suggestedData?.map((user: AuthUser) => (
+
+            <li className=''>
+              <Link
+                to={`/profile/${user.username}`}
+                className="w-full cursor-pointer dark:text-insta-darkText rounded-md flex items-center p-2 hover:bg-insta-border dark:hover:bg-insta-text/50 transition"
+              >
+                <div className="flex justify-between items-center w-full">
+                  <div className="flex gap-3 items-center">
+                    <Avatar className="transition-transform duration-150 group-hover:scale-110">
+                      <AvatarImage
+                        className="rounded-full object-cover w-11 h-11"
+                        src={user?.profileImg || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"}
+                      />
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <h1 className="text-base flex font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+                        {user?.username}
+                        {user?.username == "danish" && <VerifyTick className='' />}
+                      </h1>
+                      <p className="text-sm text-insta-darkPrimary">
+                        {user?.fullName}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-xs relative">
+                    <span
+                      onClick={(event) => {
+                        event.stopPropagation(); // Prevents parent click
+                        event.preventDefault();  // Stops link navigation
+                        follow(user?._id);
+                      }}
+                      className="px-3 py-1 rounded-lg font-semibold cursor-pointer text-insta-primary dark:text-insta-link hover:text-insta-darkLink"
+                    >
+                      {isFollowing && <SpinnerIcon />}
+                      {!isFollowing && "Follow"}
+                    </span>
                   </div>
                 </div>
-                <div className="text-xs">
-                  <span className="px-3 py-1 rounded-lg font-semibold cursor-pointer  text-insta-primary dark:text-insta-link hover:text-insta-darkLink ">
-                    Follow
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </li>
+              </Link>
+            </li>
+
+
           ))
-         
-}
-        </ul>
+
+          }
+        </ul>}
       </div>
     </div>
   )

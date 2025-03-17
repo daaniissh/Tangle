@@ -63,9 +63,9 @@ const EmailSend = () => {
   };
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
-      <div className='flex justify-center text-1xl mb-6' ><img width="160" height="90" src="./Logo.png" alt="" /></div>
-      <div className="sm:w-[400px] w-[340px] h-auto border-insta-border border-[1px] p-4 ">
-        <p className="mb-5 leading-[20px] text-center font-medium text-[14px] text-gray-500 font-instagram">
+      {/* <div className='flex justify-center text-1xl mb-6' ><img width="160" height="90" src="./Logo.png" alt="" /></div> */}
+      <div className="sm:w-[400px] w-[340px] h-auto border-insta-border dark:border-insta-darkPrimary border-[1px] p-4 ">
+        <p className="mb-5 leading-[20px] text-center font-medium text-[14px] dark:text-white  text-gray-500 font-instagram">
           Enter your email address to receive a One-Time Password (OTP) for secure access. Please check your inbox after submitting the form.
         </p>
         <div className='bg-insta-border w-full h-[0.5px] mb-7' ></div>

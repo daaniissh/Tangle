@@ -15,7 +15,7 @@ const SubHeader = ({ name, onClick }: p) => {
   };
  
   return (
-    <div className="border-b-[1px] bg-white dark:bg-black dark:border-insta-darkBorder flex gap-2 border-insta-border w-full items-center justify-center h-10 fixed top-0 z-[9999]">
+    <div className="border-b-[1px] bg-white dark:bg-black dark:border-insta-darkBorder flex gap-2 border-insta-border w-full items-center justify-center h-10 fixed top-0 z-40">
       <div className="flex w-full flex-[1,2] items-center text-white">
         {/* Left-aligned Link element */}
         <Link

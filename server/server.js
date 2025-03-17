@@ -9,7 +9,8 @@ import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
 import connectMongo from "./db/databaseConnection.js";
 import cookieParser from "cookie-parser";
-
+import { Server } from "socket.io";
+import User from "./models/user.model.js";
 dotenv.config();
 const app = express();
 app.use(
@@ -34,6 +35,50 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+
+const io = new Server({
+  cors: { origin: "http://localhost:5173", credentials: true },
+  methods: ["GET", "POST"],
+});
+
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  // Associate socket ID with user ID
+  socket.on("addUser", async (userId) => {
+    try {
+      if (userId) {
+        await User.findByIdAndUpdate(userId, { socketId: socket.id });
+        console.log(`Socket ID ${socket.id} associated with user ${userId}`);
+      } else {
+        console.log("Invalid user ID");
+      }
+    } catch (error) {
+      console.error("Failed to update socket ID:", error.message);
+    }
+  });
+
+  // Handle sending notifications
+  socket.on("sendNotification", async ({ from, to, type }) => {
+    try {
+      const recipient = await User.findById(to);
+      if (recipient && recipient.socketId) {
+        io.to(recipient.socketId).emit("getNotification", { from, type });
+        console.log(`Notification sent to user ${to}`);
+      } else {
+        console.log(`User with ID ${to} not found or no socket ID associated.`);
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error.message);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
+  });
+});
+io.listen(3000);
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

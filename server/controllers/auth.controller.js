@@ -204,7 +204,7 @@ export const forgotPassword = async (req, res) => {
             <p>Thank you!</p>
         </div>
         <div class="footer">
-            <p>&copy; ${year} Your Company Name. All rights reserved.</p>
+            <p>&copy; ${year} Tangle. All rights reserved.</p>
         </div>
     </div>
 </body>

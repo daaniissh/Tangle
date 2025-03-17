@@ -13,7 +13,7 @@ import { SignupResponse } from '@/types/api/auth';
 import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
   const APIURL = import.meta.env.VITE_API_URL;
-    const Navigate = useNavigate()
+    const navigate = useNavigate()
   
   console.log(APIURL)
   const form = useForm<SignUpSchema>({
@@ -50,7 +50,7 @@ const SignUp = () => {
     },
     onSuccess: () => {
       // toast.success("Account created successfully")
-      Navigate("/")
+      navigate("/")
     }
   })
 
