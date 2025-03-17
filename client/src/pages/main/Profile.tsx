@@ -16,14 +16,19 @@ import { useQuery } from '@tanstack/react-query';
 import { Bookmark, Grid3x3, Loader2, Link as WebLink } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
 
-const ProfilePage: React.FC = () => {
+interface ProfilePageProps {
+  socket: Socket;
+}
+
+const ProfilePage = ({ socket }: ProfilePageProps) => {
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const [activeTab, setActiveTab] = useState<'posts' | 'saved'>('posts');
   const APIURL = import.meta.env.VITE_API_URL;
   const { username } = useParams();
 
-  const { follow, isFollowing } = useFollow()
+  const { follow, isFollowing } = useFollow(socket)
 
   const { data: profileData, isRefetching, isLoading } = useQuery<AuthUser>({
     queryKey: ["profile", username] as QueryKey,
@@ -103,25 +108,34 @@ const ProfilePage: React.FC = () => {
   const isEdit = authUser?.username === username
   return (
     <>
-  
+
       {(isLoading || isRefetching) ? (
-      <ProgressLoader/>
+        <ProgressLoader />
       ) : profileData ? (
         <div className="min-h-screen max-h-screen scrollbar-thin dark:scrollbar-track-black scrollbar-thumb-white dark:scrollbar-thumb-stone-800 w-full overflow-y-scroll bg-white text-black dark:bg-black dark:text-white flex flex-col items-center md:mt-0 py-8 mt-10">
           {/* Profile Header */}
           <div className="w-full max-w-xl text-center">
             <div className="relative mb-4">
               {/* Profile Picture Placeholder */}
-              <div className="w-32 h-32 mx-auto rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <img
-                  src={
-                    profileData?.profileImg ||
-                    "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"
-                  }
-                  className="w-32 h-32 rounded-full object-cover"
-                />
-              </div>
+              <Link   to={`/story/${profileData?.username}/${profileData?._id}`}
+              
+                className={`w-32 h-32 mx-auto rounded-full flex items-center justify-center ${profileData?.is_story
+                    ? "p-1 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500"
+                    : "bg-gray-200 dark:bg-gray-700"
+                  }`}
+              >
+                <div className="w-full h-full rounded-full bg-white dark:bg-gray-900 p-1">
+                  <img
+                    src={
+                      profileData?.profileImg ||
+                      "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"
+                    }
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                </div>
+              </Link>
             </div>
+
             {/* Username and Details */}
             <div className="text-xl font-semibold mb-4 flex justify-center gap-1 items-center">{profileData?.username}     {profileData?.username == "danish" && <VerifyTick className='' />} </div>
             {isEdit ? (
@@ -149,14 +163,14 @@ const ProfilePage: React.FC = () => {
                 <span className="font-bold">{postData?.length}</span> posts
               </div>
               <FollowersModal type='FOLLOWERS' username={username} >
-              <div className="text-center cursor-pointer">
-                <span className="font-bold">{profileData?.followers?.length}</span> followers
-              </div>
+                <div className="text-center  cursor-pointer">
+                  <span className="font-bold">{profileData?.followers?.length}</span> followers
+                </div>
               </FollowersModal>
               <FollowersModal type='FOLLOWING' username={username} >
-              <div className="text-center cursor-pointer">
-                <span className="font-bold">{profileData?.following?.length}</span> following
-              </div>
+                <div className="text-center cursor-pointer">
+                  <span className="font-bold">{profileData?.following?.length}</span> following
+                </div>
               </FollowersModal>
             </div>
             <div className="mt-2 text-gray-500 dark:text-gray-400">{profileData?.fullName}</div>

@@ -72,7 +72,7 @@ const FollowersModal = ({ children, username, type }: FollowersModalProps) => {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-sm px-0 !bg-[#262626] text-white">
+      <DialogContent className="max-w-sm px-0 dark:!bg-[#262626] dark:text-white">
         <DialogHeader className="flex items-center border-b border-stone-600 -mt-2 pb-3 h-full">
           <DialogTitle className="text-lg font-bold mb-1">
             {type === "FOLLOWERS" ? "Followers" : "Following"}
@@ -83,7 +83,7 @@ const FollowersModal = ({ children, username, type }: FollowersModalProps) => {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-4 rounded-lg  !bg-[#363636] text-white placeholder-gray-400"
+            className="mb-4 rounded-lg  dark:!bg-[#363636] dark:!text-white placeholder-gray-400"
           />
         </div>
         {isLoading && <p>Loading...</p>}

@@ -106,7 +106,7 @@ const HomePage = ({ socket }) => {
 
         {/* Right Section: Right Panel */}
         <div className="hidden lg:flex flex-shrink-0">
-          <RightPanel />
+          <RightPanel socket={socket} />
         </div>
       </div>
 

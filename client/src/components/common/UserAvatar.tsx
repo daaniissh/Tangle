@@ -50,10 +50,10 @@ console.log(isStory)
           <div className="flex items-center">
             <div className="flex items-end gap-1">
               <span>{username}</span>
-              {username === "danish" && <VerifyTick />}
+              {username === "danish" && <VerifyTick className='' />}
             </div>
             {createdAt && (
-              <div className="flex items-center">
+              <div className="flex items-center h-auto mt-1">
                 <span className="text-sm text-gray-400 ml-1">•</span>
                 <span className="font-poppins text-xs ml-1 text-gray-400">
                   {createdAt}

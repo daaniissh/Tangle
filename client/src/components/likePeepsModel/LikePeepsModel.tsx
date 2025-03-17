@@ -40,7 +40,7 @@ const LikesModal = ({ children, users }: LikesModalProps) => {
           {children}
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-sm px-0 !bg-[#262626] text-white">
+      <DialogContent className="max-w-sm px-0 !bg-[#262626] !border-none text-white">
         <DialogHeader className="flex items-center border-b border-stone-600 -mt-2 pb-3 h-full">
           <DialogTitle className="text-lg font-bold mb-1">
             Likes
@@ -51,7 +51,7 @@ const LikesModal = ({ children, users }: LikesModalProps) => {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mb-4 rounded-lg  !bg-[#363636] text-white placeholder-gray-400"
+            className="mb-4 rounded-lg !border-none !outline-none  !bg-[#363636] text-white placeholder-gray-400"
           />
         </div>
         {filteredUsers.length === 0 && <p className='text-center font-bold text-gray-400'>No users found.</p>}

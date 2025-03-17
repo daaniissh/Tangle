@@ -7,6 +7,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { formatDistanceToNow } from 'date-fns';
+
 
 import Cirql from '@/logos/Cirql';
 import { QueryKey } from '@/types/QueryKey/key';
@@ -17,7 +19,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AuthUser, PostDetails } from '@/types/QueryTypes/queary';
-import { formatPostDate } from '@/lib/utils/dateFunction';
+
 import { Button } from '@/components/ui/Button';
 import useFollow from '@/hooks/useFollow';
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
@@ -32,10 +34,14 @@ const StoryPage = ({ socket }) => {
   const user = stories.find((story) => story.id.toString() === id);
   const APIURL = import.meta.env.VITE_API_URL;
 
+  function formatPostDate(createdAt: string) {
+    const createdDate = new Date(createdAt);
+    return formatDistanceToNow(createdDate, { addSuffix: true });
+  }
 
 
   // Fetch progress from the backend and store it in progressValues
-  const { data: storyData, refetch,isLoading } = useQuery({
+  const { data: storyData, refetch, isLoading } = useQuery({
     queryKey: ["userStory"] as QueryKey,
     queryFn: async () => {
       try {
@@ -126,7 +132,7 @@ const StoryPage = ({ socket }) => {
   };
 
 
-  const progressInterval = 1000000; // 8 seconds per story
+  const progressInterval = 8000; // 8 seconds per story
   const [activeIndex, setActiveIndex] = useState(0);
   const [progressValues, setProgressValues] = useState([]);
 
@@ -168,7 +174,7 @@ const StoryPage = ({ socket }) => {
       navigate(-1); // Navigate to home page ("/")
     }
     return () => clearInterval(interval);
-  }, [activeIndex,progressValues,navigate]);
+  }, [activeIndex, progressValues, navigate]);
 
 
 
@@ -188,13 +194,13 @@ const StoryPage = ({ socket }) => {
           <div className="w-32 py-5 mt-5 px-3 items-start justify-start bg-gray-700/50 animate-pulse rounded"></div>
           <div className="w-10 h-10 bg-gray-700/50 animate-pulse rounded"></div>
         </div> */}
-  
+
         {/* Left and Right Navigation Arrows Skeleton */}
         {/* <div className="md:w-2/5 w-full mx-auto absolute py-10 md:py-auto flex justify-between items-center md:px-10 h-full">
           <div className="w-24 h-screen bg-gray-700/50 animate-pulse rounded"></div>
           <div className="w-24 h-[40%] bg-gray-700/50 animate-pulse rounded"></div>
         </div> */}
-  
+
         {/* Main Content Skeleton */}
         <div className="flex py-2 relative md:w-auto h-screen rounded-0 mb-5 md:rounded-[8px]">
           <div className="flex md:mt-2 w-full justify-between flex-col h-full">
@@ -208,7 +214,7 @@ const StoryPage = ({ socket }) => {
                   ></div>
                 ))}
               </div>
-  
+
               <div className="mt-2 px-2 z-50 flex items-center">
                 <div className="w-10 h-10 bg-gray-700/50 animate-pulse rounded-full"></div>
                 <div className="ml-2 flex-1">
@@ -217,7 +223,7 @@ const StoryPage = ({ socket }) => {
                 <div className="w-20 h-8 bg-gray-700/50 animate-pulse rounded"></div>
               </div>
             </div>
-  
+
             {/* Story Content Skeleton */}
             <div className="h-full w-[450px] flex justify-center items-center md:rounded-[8px] overflow-hidden">
               <div className="w-full h-full bg-gray-700/50 animate-pulse rounded-lg"></div>
@@ -233,9 +239,9 @@ const StoryPage = ({ socket }) => {
         <div className="w-32 py-5 mt-5 px-3 items-start justify-start">
           <Cirql className="fill-white w-20" />
         </div>
-        <Link to="/" className="text-white z-50 cursor-pointer">
+        <span onClick={() => navigate(-1)} className="text-white z-50 cursor-pointer">
           <Plus className="rotate-45 size-10" />
-        </Link>
+        </span>
       </div>
 
       <div className="md:w-2/5 w-full mx-auto absolute py-10 md:py-auto flex justify-between items-center md:px-10 h-full">
@@ -252,7 +258,7 @@ const StoryPage = ({ socket }) => {
       <div className="flex py-2 relative md:w-auto h-screen rounded-0 mb-5 md:rounded-[8px]">
         <div className="flex md:mt-2 w-full justify-between flex-col h-full">
           <div className="absolute w-full h-20 px-8 md:px-0 flex md:mt-auto z-50 bg-gradient-to-b from-black/50 to-transparent flex-col">
-            <div className="flex justify-center gap-1 mt-1  w-full px-3">
+            <div className="flex justify-center gap-1 mt-1  w-full px-1 md:px-3">
               {progressValues.map((progress, idx) => (
                 <Progress
                   value={progress}
@@ -262,7 +268,7 @@ const StoryPage = ({ socket }) => {
               ))}
             </div>
 
-            <div className="mt-2 px-2 z-50 flex items-center">
+            <div className="mt-2 md:px-2 z-50 flex items-center">
               <Link to={`/profile/${storyData?.username}`} className='w-full flex' >
                 <Avatar className="scale-75 duration-150">
                   <AvatarImage
@@ -276,8 +282,8 @@ const StoryPage = ({ socket }) => {
                 <span className="flex flex-row z-50 justify-between w-full items-center">
                   <h1 className="text-base flex gap-1 items-center font-[400] cursor-pointer ml-1 whitespace-nowrap overflow-hidden text-white text-ellipsis">
                     {storyData?.username}
-                    {storyData?.username == "danish" && <VerifyTick className='' />}
-                  </h1>
+
+                    {storyData?.username == "danish" && <VerifyTick className='' />}                  </h1>
                   <Link to="/" className="text-white px-4 block md:hidden cursor-pointer">
                     <Plus className="rotate-45 size-10" />
                   </Link>
@@ -311,21 +317,22 @@ const StoryPage = ({ socket }) => {
               {storyData?.usersStories
                 ?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
                 .map((item: PostDetails) => {
-                  const isLiked = item?.likes?.includes(authUser?._id);
+                  const isLiked = item?.likes?.some((like) => like._id === authUser?._id);
+
                   return (<SwiperSlide className="w-full rounded-[8px]">
                     <div className="absolute bg-gradient-to-t from-black/50 to-transparent
    z-50 left-0 bottom-1 flex justify-between w-full">
                       {owner && (
                         <Button
-                          onClick={() => deletePost(item._id)}
+                          onClick={() => deletePost(item?._id)}
                           variant="ghost"
-                          className="text-white font-semibold mx-2 cursor-pointer"
+                          className="text-white mb-8 font-semibold mx-2 cursor-pointer"
                         >
-                          {isDeleting ? <SpinnerIcon/> : "Delete"}
+                          {isDeleting ? <SpinnerIcon /> : "Delete"}
                         </Button>
                       )}
-                      <div className="flex justify-end items-center md:px-4 py-5 px-10 gap-5 w-full ">
-                       {owner ? <LikesModal users={item.likes} > <button className='font-bold text-white text-sm cursor-pointer' >view activity</button></LikesModal> : <Heart
+                      <div className="flex justify-end items-center md:px-4 pb-8 px-10 gap-5 w-full  ">
+                        {owner ? <LikesModal users={item.likes} > <button className='font-bold  text-white text-sm cursor-pointer' >view activity</button></LikesModal> : <Heart
                           onClick={() => handleLikePost(item._id)}
                           className={`${isLiked && "fill-red-700 !text-red-700"
                             } w-5 h-5 md:w-6 md:h-6 text-white cursor-pointer hover:text-white/50`}

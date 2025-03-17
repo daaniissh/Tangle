@@ -132,7 +132,7 @@ const Post = ({ postData, socket }: PostProps) => {
   const formattedDate = formatSmallPostData(postData?.createdAt.toString()!)
 
   return (
-    <div className="w-full md:w-8/12 mx-auto mt-2 md:dark:border-b    md:dark:border-gray-600/50 rounded-lg overflow-hidden">
+    <div className="w-full md:w-8/12 mx-auto mt-2 md:dark:border-b  md:border-b  md:dark:border-gray-600/50  overflow-hidden">
 
       {/* Post Header */}
       <div className="flex items-center py-3 md:py-2 px-3 md:px-0">

@@ -8,4 +8,5 @@ export type QueryKey =
   | readonly ["suggested"]
   | readonly ["profile",string]
   | readonly ["notifications",boolean?]
+  | readonly ["notificationsMain",boolean?]
   | readonly ["users"];

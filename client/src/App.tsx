@@ -14,22 +14,20 @@ import Notification from './pages/main/Notification.tsx'
 import HomePage from './pages/Home/HomePage.tsx'
 import StoryPage from './pages/Home/StoryPage.tsx'
 import Explore from './pages/main/Explore.tsx'
-import Profile from './pages/main/Profile.tsx'
+
 import ProfilePage from './pages/main/Profile.tsx'
 import ProfileEdit from './pages/main/ProfileEdit.tsx'
-import PostDetails from './components/common/PostDeatils.tsx'
+
 import PostPage from './pages/main/Postpage.tsx'
-import Create from './components/modals/create/Comps.tsx'
-import { Button } from './components/ui/Button.tsx'
-import { PostDialog } from './components/modals/create/Form.tsx'
+
 import { useQuery } from '@tanstack/react-query'
 import { QueryKey } from './types/QueryKey/key'
-import SpinnerIcon from './components/loaders/LoadingSpinner.tsx'
+
 import CirqlG from './logos/Cirql-g.tsx'
 import Cirql from './logos/Cirql.tsx'
 import { PostDetails as post } from './types/QueryTypes/queary'
 import { io } from 'socket.io-client'
-import ProgressLoader from './components/progressLoader/ProgressLoader.tsx'
+import Message from './pages/main/Message.tsx'
 
 // import { Sidebar } from 'lucide-react'
 
@@ -117,6 +115,26 @@ function App() {
     retry: false
 
   })
+  const { data } = useQuery({
+      queryKey: ["notificationsMain"] as QueryKey,
+      queryFn: async () => {
+        try {
+          const response = await fetch(`${APIURL}/notifications`, {
+            method: "GET",
+            credentials: "include",
+          });
+          if (!response.ok) {
+            throw new Error("Failed to fetch notifications");
+          }
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error fetching notifications:", error);
+          throw error;
+        }
+      },
+      // refetchInterval: 10000,
+    })
   const { } = useQuery<post[]>({
     queryKey: ["following"] as QueryKey,
     queryFn: async () => {
@@ -200,7 +218,7 @@ function App() {
         <Routes>
           <Route path="/" element={authUser ? <HomePage socket={socket} /> : <Navigate to="/login" />} />
 
-          <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
+          <Route path="/profile/:username" element={authUser ? <ProfilePage socket={socket} /> : <Navigate to="/login" />} />
           <Route path="edit/:username" element={authUser ? <ProfileEdit showStatusBar={showStatusBar} handleCheckedChange={handleCheckedChange} /> : <Navigate to="/login" />} />
 
           <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
@@ -212,6 +230,7 @@ function App() {
           <Route path="/story/:username/:id" element={authUser ? <StoryPage socket={socket} /> : <Navigate to="/login" />} />
           <Route path="post/:username/:postId" element={<PostPage socket={socket} />} />
           <Route path="/notifications" element={authUser ? <Notification /> : <Navigate to="/login" />} />
+          <Route path="/message" element={authUser ? <Message /> : <Navigate to="/login" />} />
           <Route path="/explore" element={authUser ? <Explore /> : <Navigate to="/login" />} />
         </Routes>
       </div>

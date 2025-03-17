@@ -12,7 +12,7 @@ import VerifyTick from '@/logos/VerifyTick';
 type Data = {
  profileData:AuthUser
 };
-const RightPanel = () => {
+const RightPanel = (socket) => {
 
   const APIURL = import.meta.env.VITE_API_URL;
     const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
@@ -41,7 +41,7 @@ const RightPanel = () => {
 
   })
 
-  const { follow, followData, isFollowing } = useFollow()
+  const { follow, followData, isFollowing } = useFollow(socket)
 
   return (
     <div className="hidden dark:bg-black   h-auto xl:block my-8 w-80 ">

@@ -39,7 +39,10 @@ const FollowPost = ({ FollowPost}) => {
           </div>
         </div>
         <div className="flex  items-center text-[12px]">
-          <Button onClick={() => follow(FollowPost?.from?._id)} size="sm" className={`rounded-lg ${alreadyFollowed && "!bg-neutral-700"} hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary`}>   {isFollowing && <SpinnerIcon />}
+          <Button onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            follow(FollowPost?.from?._id)}} size="sm" className={`rounded-lg ${alreadyFollowed && "!bg-neutral-700"} hover:bg-insta-darkLink px-5 dark:bg-insta-primary dark:text-white dark:hover:bg-insta-link bg-insta-primary`}>   {isFollowing && <SpinnerIcon />}
             {!isFollowing && alreadyFollowed && "Following"}
             {!isFollowing && !alreadyFollowed && "Follow back"}</Button>
         </div>

@@ -27,7 +27,7 @@ import { Label } from "@radix-ui/react-label";
 import { Switch } from "@/components/ui/Switch"
 import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 type DropdownMenuDemoProps = {
   children: React.ReactNode;
   showStatusBar: boolean;
@@ -40,8 +40,18 @@ type ThemeProps = {
 
 
 
-
-
+const APIURL = import.meta.env.VITE_API_URL;
+const logoutUser = async () => {
+  // Replace with your actual logout API endpoint
+  const response = await fetch(`${APIURL}/auth/logout`, {
+    method: "POST",
+    credentials: "include", // Include cookies if needed
+  });
+  if (!response.ok) {
+    throw new Error("Logout failed");
+  }
+  return response.json();
+};
 
 
 export function ThemeSwitch({ handleCheckedChange, showStatusBar }: ThemeProps) {
@@ -65,7 +75,26 @@ export function ThemeSwitch({ handleCheckedChange, showStatusBar }: ThemeProps) 
 }
 
 export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: DropdownMenuDemoProps) {
-  const {data:authUser} = useQuery({queryKey:["authUser"]})
+  const { data: authUser } = useQuery({ queryKey: ["authUser"] })
+
+  const queryClient = useQueryClient();
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      // Invalidate the authUser query to reflect the logged-out state
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      // Optionally, redirect the user to the login page
+      window.location.href = "/login"; // Replace with your desired redirect logic
+    },
+    onError: (error) => {
+      console.error("Logout failed:", error);
+    },
+  });
+
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
   // const [showActivityBar, setShowActivityBar] = useState<Checked>(false)
   return (
     <DropdownMenu >
@@ -76,18 +105,18 @@ export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: D
         {/* <DropdownMenuLabel>More</DropdownMenuLabel> */}
         {/* <DropdownMenuSeparator /> */}
         <DropdownMenuGroup  >
-        <Link to="/edit/account" > <DropdownMenuItem  >
+          <Link to="/edit/account" > <DropdownMenuItem  >
             <Settings />
-          Settings
+            Settings
 
           </DropdownMenuItem>
           </Link>
           <Link to={`/profile/${authUser?.username}`}> <DropdownMenuItem>
             <Bookmark />
             <span>Saved</span>
-           
+
           </DropdownMenuItem>
-</Link>
+          </Link>
 
         </DropdownMenuGroup>
 
@@ -98,7 +127,7 @@ export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: D
 
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout} >
           <LogOut />
           <span>Log out</span>
 

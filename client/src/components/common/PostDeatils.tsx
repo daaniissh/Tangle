@@ -41,7 +41,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
   const [comment, setComment] = useState("");
   const [isLike, setIslike] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const { follow, isFollowing, followData } = useFollow()
+  const { follow, isFollowing, followData } = useFollow(socket)
   console.log(postId, "====postID");
 
   const inpRef = useRef()
@@ -312,14 +312,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
   async function followUser() {
     follow(post?.user?._id.toString()!)
     console.log(followData?.type, "===follow")
-    if (followData.type == undefined || followData.type === "follow") {
-
-      await socket.emit("sendNotification", {
-        from: authUser?._id,
-        to: post?.user?._id,
-        type: "follow",
-      });
-    }
+   
   }
   function handleEdit() {
     setIsEdit(true);

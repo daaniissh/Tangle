@@ -122,7 +122,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 : "w-28 pl-5 py-1 items-start justify-start"
                 } rounded-xl cursor-pointer flex mt-6`}
             >
-              {isNotification || searchOpen ? <Cirql_logo_w /> : <Cirql className="dark:fill-white fill-black" />}
+              {isNotification || searchOpen ? <Cirql_logo_w className="dark:stroke-white  stroke-black"  /> : <Cirql className="dark:fill-white  fill-black" />}
             </div>
             <ul
               className={`${searchOpen || isNotification
@@ -162,6 +162,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 searchOpen={searchOpen}
               />
               <Li
+              route="/message"
                 Icon={MessageCircle}
                 onClick={closeAllComp}
                 text="Message"
@@ -244,9 +245,9 @@ const Sidebar: React.FC<SideBarProps> = ({
                   <PlusCircle className="group-hover:scale-110 duration-150" />
                 </li>
               </PostDialog>
-              <li className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
+              <Link to="/message" className="flex dark:hover:bg-insta-darkBorder gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group">
                 <MessageCircle className="group-hover:scale-110 duration-150" />
-              </li>
+              </Link>
               <Link to={`/profile/${authUser?.username}`}
                 onClick={closeAllComp}
                 className={`flex dark:hover:bg-insta-darkBorder dark:text-insta-darkText gap-3 font-instagram text-[15px] items-center font-medium hover:bg-insta-background rounded-xl cursor-pointer py-2 px-2 group ${searchOpen || isNotification ? "w-auto" : "border-none w-full"

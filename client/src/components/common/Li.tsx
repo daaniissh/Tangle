@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client'; // Import socket.io-client
 import LikeTooltip from './LikeTooltip';
+import { QueryKey } from '@/types/QueryKey/key';
 type Notification = {
   from: string;
   to: string;
@@ -18,6 +19,7 @@ const Li = ({ onClick, isNotification, searchOpen, Icon, text, className, is_bor
   const [notifications, setNotifications] = useState<Notification[]>([]); // Array of all notifications
 
   const { data: authUserData } = useQuery<AuthUser>({ queryKey: ['authUser'] });
+  const { data: notification } = useQuery({ queryKey: ["notificationsMain"] as QueryKey });
 
   useEffect(() => {
     if (!authUserData?._id) return; // Guard clause for missing user ID
@@ -35,16 +37,42 @@ const Li = ({ onClick, isNotification, searchOpen, Icon, text, className, is_bor
   }, [authUserData, socket]);
 
   // Update total notifications and new notifications
- 
+  useEffect(() => {
+    if (notification) {
+      // Assuming `notification` is an array of notifications
+      const currentNotificationLength = notification?.length;
+
+      // Get the stored length from localStorage
+      const storedLength = parseInt(localStorage.getItem('notificationLength') || '0', 10);
+
+      // If the current length is greater than the stored length, calculate new notifications
+      if (currentNotificationLength !== storedLength) {
+        const newNotificationsCount = currentNotificationLength - storedLength;
+        console.log(newNotificationsCount || 0, "===new")
+        setNewNotifications(newNotificationsCount);
+      }
+
+      // Update localStorage with the current notification length
+
+
+      // Update the notifications state
+
+    }
+  }, [notification]);
 
   function handleClick() {
     setNotifications([])
 
     onClick();
+
+    localStorage.setItem('notificationLength', notification?.length?.toString());
+    setNewNotifications(0)
+
     localStorage.removeItem("notifications"); // Store total notifications
   }
 
   const location = useLocation();
+  // console.log(newNotifications,"===new")
 
   return (
     <Link
@@ -55,11 +83,12 @@ const Li = ({ onClick, isNotification, searchOpen, Icon, text, className, is_bor
       <div className="flex gap-3 relative">
         <Icon className="group-hover:scale-110 duration-150" />
         {!searchOpen && !isNotification && text}
-        {text === "Notification" && notifications.length !== 0 && (
+        {(text === "Notification" && (newNotifications !== 0 || notifications.length !== 0)) && (
           <span className="bg-red-600 w-4 h-4 rounded-full absolute bottom-3 left-3 text-center text-xs text-white">
-            {notifications.length}
+            {newNotifications || notifications.length}
           </span>
         )}
+
       </div>
       {text === "Notification" && notifications.length > 0 && <LikeTooltip obj={notifications} />}
     </Link>

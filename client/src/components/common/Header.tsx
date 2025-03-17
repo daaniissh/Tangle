@@ -68,7 +68,7 @@ const Header = ({ inputRef, socket, searchOpen, show, SearchOpen, searchRef }: H
     <>
       {!isActive ?
         <div className="border-b-[1px]  bg-white dark:bg-black  dark:border-insta-darkBorder flex gap-2 z-10 border-insta-border w-full fixed items-center justify-between h-14" >
-          <CirqlG className='w-14 px-2' />
+          <CirqlG className='w-14 px-2 ' />
           <div className="relative w-full ">
             {!show && (
               <Search className="absolute size-5 text-gray-500 top-[10px] left-2" />

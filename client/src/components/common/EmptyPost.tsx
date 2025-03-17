@@ -17,7 +17,7 @@ const EmptyPost = ({ profileData }: Data) => {
         <Camera className='size-10 text-black dark:text-white font-extrabold' />
       </div>
       <h1 className='font-extrabold text-center text-2xl mt-1 dark:text-white text-black'>Share Photos</h1>
-      <p className='font-semibold'>When you share photos, they will appear on your profile.</p>
+      <p className='font-semibold text-center mx-4'>When you share photos, they will appear on your profile.</p>
       <PostDialog>
         <button className='text-insta-link font-bold text-sm mt-4 hover:text-insta-primary'>Share your first photo</button>
       </PostDialog>

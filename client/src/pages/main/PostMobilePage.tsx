@@ -32,7 +32,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
   const APIURL = import.meta.env.VITE_API_URL;
   const [isAnima, setIsAnime] = useState(false);
   const [comment, setComment] = useState("");
-  const { follow, isFollowing,followData } = useFollow()
+  const { follow, isFollowing,followData } = useFollow(socket)
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate()
   console.log(postId, "====postID");
@@ -304,14 +304,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
   async function followUser() {
     follow(postData?.user?._id.toString()!)
     console.log(followData?.type, "===follow")
-    if (followData.type == undefined || followData.type === "follow") {
-
-      await socket.emit("sendNotification", {
-        from: authUser?._id,
-        to: postData?.user?._id,
-        type: "follow",
-      });
-    }
+   
   }
   const bind = useDoubleTap(async (event) => {
     console.log(likeData, "like====")
