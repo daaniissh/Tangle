@@ -11,7 +11,9 @@ import connectMongo from "./db/databaseConnection.js";
 import cookieParser from "cookie-parser";
 import { createServer } from "http"; // Import HTTP server
 import { Server } from "socket.io";
+// import {MongoStore}
 import User from "./models/user.model.js";
+import MongoStore from "connect-mongo";
 
 dotenv.config();
 const app = express();
@@ -74,14 +76,19 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL, // MongoDB connection
+      collectionName: "sessions",
+    }),
     cookie: {
       maxAge: 1000 * 60 * 10,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production", // Set true if HTTPS
     },
   })
 );
+
 app.use(express.json({ limit: "5mb" }));
 app.use(
   cors({

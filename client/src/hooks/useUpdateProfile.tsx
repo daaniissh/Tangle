@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 interface UserProfileFormData {
   fullName?: string;
@@ -11,6 +12,7 @@ interface UserProfileFormData {
   profileImg?: string
 }
 const useUpdateUserProfile = () => {
+  const navigate = useNavigate()
   const queryClient = useQueryClient();
   const APIURL = import.meta.env.VITE_API_URL;
 
@@ -36,7 +38,7 @@ const useUpdateUserProfile = () => {
       }
     },
     onSuccess: (data) => {
-
+    navigate(-1)
       Promise.all([
         queryClient.invalidateQueries({ queryKey: ["authUser"] }),
         queryClient.invalidateQueries({ queryKey: ["profile"] }),

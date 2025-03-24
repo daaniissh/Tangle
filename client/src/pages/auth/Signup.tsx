@@ -10,7 +10,7 @@ import { SignUpSchema } from '@/schemas/SignupSchemas';
 import Cirql from '@/logos/Cirql';
 import { useMutation } from '@tanstack/react-query';
 import { SignupResponse } from '@/types/api/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const SignUp = () => {
   const APIURL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate()
@@ -130,7 +130,7 @@ const SignUp = () => {
         </Form>
       </div>
       <div className="flex justify-center items-center w-[340px] mt-3 dark:border-stone-700 h-[78px] border-insta-border border-[1px]">
-        <p className='text-[15px] font-thin font-instagram text-insta-text dark:text-gray-300' >Have an account?<a href="" className='text-insta-link font-medium' > Log In</a></p>
+        <p className='text-[15px] font-thin font-instagram text-insta-text dark:text-gray-300' >Have an account?<Link to="/login" className='text-insta-link font-medium' > Log In</Link></p>
       </div>
 
     </div>
