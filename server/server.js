@@ -98,6 +98,9 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.get("/debug-session", (req, res) => {
+  res.json({ session: req.session });
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
