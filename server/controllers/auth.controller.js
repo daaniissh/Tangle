@@ -253,20 +253,34 @@ export const forgotPassword = async (req, res) => {
 export const otpVerification = async (req, res) => {
   try {
     const { otpNumber } = req.body;
-    const storedOtp = req.session.otp;
+    
+    if (!req.session) {
+      return res.status(500).json({ error: "Session not initialized" });
+    }
+
+    console.log('Stored OTP:', req.session.otp); // Debug log
+    
     if (!otpNumber) {
       return res.status(400).json({ error: "OTP is required." });
     }
 
-    if (otpNumber != storedOtp) {
+    if (otpNumber != req.session.otp) {
       return res.status(400).json({ error: "Invalid OTP. Please try again." });
     }
+    
     req.session.otpVerified = true;
-    return res.status(200).json({ message: "OTP successfully verified." });
+    await new Promise((resolve) => req.session.save(resolve)); // Ensure session is saved
+    
+    return res.status(200).json({ 
+      message: "OTP successfully verified.",
+      sessionId: req.sessionID 
+    });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Server Error", error: error.message });
+    console.error('Verification error:', error);
+    return res.status(500).json({ 
+      message: "Server Error", 
+      error: error.message 
+    });
   }
 };
 
