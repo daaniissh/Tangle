@@ -38,8 +38,14 @@ function App() {
 
   const [socket, setSocket] = useState(null);
 
+
   useEffect(() => {
-    setSocket(io("http://localhost:3000"));
+    setSocket(
+      io("https://tangle-nrfd.onrender.com", {
+        transports: ["websocket", "polling"], // Ensure WebSocket & polling
+        withCredentials: true,
+      })
+    );
   }, []);
 
   const [showStatusBar, setShowStatusBar] = useState<boolean>(false);
