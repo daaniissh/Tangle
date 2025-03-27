@@ -437,7 +437,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
             ref={inpRef}
             type="text"
             value={comment}
-            onChange={(e) => setComment(e.target.value)}
+            onChange={(e:any) => setComment(e.target.value)}
             placeholder="Add a comment..."
             className="flex-1 bg-gray-100 dark:bg-black dark:text-white rounded-lg px-4 py-2 outline-none"
           />
