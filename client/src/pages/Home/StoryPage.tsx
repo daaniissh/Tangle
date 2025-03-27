@@ -330,7 +330,7 @@ const StoryPage = ({ socket }: { socket: Socket | null }) => {
                   const isLiked = item?.likes?.some((like) => like._id === authUser?._id);
 
                   return (<SwiperSlide className="w-full rounded-[8px]">
-                    <div className="absolute inset-x-0 bottom-10 md:bottom-0 md:bg-gradient-to-t from-black/70 via-black/40 to-transparent z-50 p-4">
+                    <div className="absolute inset-x-0 bottom-16 md:bottom-0 md:bg-gradient-to-t from-black/70 via-black/40 to-transparent z-50 p-4">
                       <div className="flex items-center justify-between px-4 md:px-0 ">
                         {/* Delete Button (owner only) */}
                         {owner && (
@@ -395,7 +395,7 @@ const StoryPage = ({ socket }: { socket: Socket | null }) => {
                       src={item.img}
                       alt="Story 1"
                     />
-                    <div className="absolute w-full bg-black/50 text-white font-medium bottom-24 flex justify-center">
+                    <div className="absolute w-full bg-black/50 text-white font-medium bottom-32 md:bottom-24 flex justify-center">
                       <p className="text-center text-base">{item.text}</p>
                     </div>
                   </SwiperSlide>)
