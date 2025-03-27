@@ -125,7 +125,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 : "w-28 pl-5 py-1 items-start justify-start"
                 } rounded-xl cursor-pointer flex mt-6`}
             >
-              {isNotification || searchOpen ? <Cirql_logo_w className="dark:stroke-white  stroke-black"  /> : <Cirql className="dark:fill-white  fill-black" />}
+              {isNotification || searchOpen ? <Cirql_logo_w className="dark:stroke-white  stroke-black" /> : <Cirql className="dark:fill-white  fill-black" />}
             </div>
             <ul
               className={`${searchOpen || isNotification
@@ -147,7 +147,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 isNotification={isNotification}
                 searchOpen={searchOpen}
               />
-            <Li
+              <Li
                 Icon={Search}
                 className={`${!searchOpen && isNotification && "border-none"}`}
                 is_border="border"
@@ -165,7 +165,7 @@ const Sidebar: React.FC<SideBarProps> = ({
                 searchOpen={searchOpen}
               />
               <Li
-              route="/message"
+                route="/message"
                 Icon={MessageCircle}
                 onClick={closeAllComp}
                 text="Message"
@@ -199,7 +199,7 @@ const Sidebar: React.FC<SideBarProps> = ({
               >
                 <Avatar className="size-7 group-hover:scale-110 duration-150">
                   <AvatarImage src={authUser?.profileImg || "https://i.pinimg.com/736x/9e/83/75/9e837528f01cf3f42119c5aeeed1b336.jpg"} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>    {authUser?.username?.charAt(0)}</AvatarFallback>
                 </Avatar>
                 {!searchOpen && !isNotification && <h1>Profile</h1>}
               </Link>

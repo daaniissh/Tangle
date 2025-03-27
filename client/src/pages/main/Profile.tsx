@@ -117,7 +117,7 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
           <div className="w-full max-w-xl text-center">
             <div className="relative mb-4">
               {/* Profile Picture Placeholder */}
-              <Link   to={`/story/${profileData?.username}/${profileData?._id}`}
+              <Link   to={profileData.is_story ? `/story/${profileData?.username}/${profileData?._id} ` : `/profile/${profileData?.username}`}
               
                 className={`w-32 h-32 mx-auto rounded-full flex items-center justify-center ${profileData?.is_story
                     ? "p-1 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500"
