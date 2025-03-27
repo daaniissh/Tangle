@@ -20,7 +20,7 @@ export default function ShareDialog({ children, username, id,story }: { children
   const CopyLink = async () => {
     try {
 
-      await copy(story ? `http://localhost:5173/story/${username}/${id}` : `http://localhost:5173/post/${username}/${id}`);
+      await copy(story ? `https://tanglee.vercel.app/story/${username}/${id}` : `https://tanglee.vercel.app/post/${username}/${id}`);
       await setLoading(true)
     } catch (error) {
       setLoading(false)
@@ -52,7 +52,7 @@ export default function ShareDialog({ children, username, id,story }: { children
             </Label>
             <Input
               id="link"
-              defaultValue={story ? `http://localhost:5173/story/${username}/${id}` : `http://localhost:5173/post/${username}/${id}`}
+              defaultValue={story ? `https://tanglee.vercel.app/${username}/${id}` : `https://tanglee.vercel.app/${username}/${id}`}
               readOnly
             />
           </div>

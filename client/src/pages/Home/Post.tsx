@@ -25,7 +25,7 @@ const Post = ({ data }: PostProps) => {
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const {  refetch } = useQuery<AuthUser>({ queryKey: ["following"] });
-  const { mutate: likePost, isPending: isLiking } = useMutation({
+  const { mutate: likePost, isPending: isLiking, data:likeData } = useMutation({
     mutationFn: async () => {
       if (!data?._id) return
       try {
@@ -69,7 +69,23 @@ const Post = ({ data }: PostProps) => {
   });
 
   const handleLikePost = async () => {
+    console.log(likeData, "like====")
     if (isLiking) return;
+    if (likeData == "like" || likeData == undefined) {
+      // Only send notification when likeData is "like"
+      try {
+        await socket?.emit("sendNotification", {
+          from: authUser?._id,
+          to: post?.user?._id,
+          type: "like",
+        });
+        setIslike(false)
+
+
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
+      }
+    }
     setIsAnime(false);
     likePost();
   };
