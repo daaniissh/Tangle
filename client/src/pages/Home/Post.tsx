@@ -13,10 +13,12 @@ import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
 import  { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {  formatSmallPostData } from '@/lib/utils/dateFunction'
+import { Socket } from 'socket.io-client'
 interface PostProps {
+  socket:Socket | null
   data: PostDetails; // Assuming PostDetails is the correct type
 }
-const Post = ({ data }: PostProps) => {
+const Post = ({ data ,socket}: PostProps) => {
   // const {comments,content,isLiked,isSaved,isStory,likesCount,postImg,profileImg,timeAgo,username,stories,id}:Post = data
   const [more, setMore] = useState(false)
 
@@ -24,7 +26,7 @@ const Post = ({ data }: PostProps) => {
   const [isAnima, setIsAnime] = useState(false);
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
-  const {  refetch } = useQuery<AuthUser>({ queryKey: ["following"] });
+  const {  refetch,data:post } = useQuery<PostDetails>({ queryKey: ["following"] });
   const { mutate: likePost, isPending: isLiking, data:likeData } = useMutation({
     mutationFn: async () => {
       if (!data?._id) return
@@ -69,23 +71,23 @@ const Post = ({ data }: PostProps) => {
   });
 
   const handleLikePost = async () => {
-    console.log(likeData, "like====")
-    // if (isLiking) return;
-    // if (likeData == "like" || likeData == undefined) {
-    //   // Only send notification when likeData is "like"
-    //   try {
-    //     await socket?.emit("sendNotification", {
-    //       from: authUser?._id,
-    //       to: post?.user?._id,
-    //       type: "like",
-    //     });
-    //     setIslike(false)
+    console.log("likingg...", "==likee")
+    console.log(socket,"==likee")
+    
+      // Only send notification when likeData is "like"
+      try {
+        await socket?.emit("sendNotification", {
+          from: authUser?._id,
+          to: post?.user?._id,
+          type: "like",
+        });
+    
 
 
-    //   } catch (error) {
-    //     console.log("Error while sending like notification:", error);
-    //   }
-    // }
+      } catch (error) {
+        console.log("Error while sending like notification:", error);
+      }
+    
     setIsAnime(false);
     likePost();
   };

@@ -104,7 +104,7 @@ const HomePage = ({ socket }: { socket: Socket | null }) => {
 
           {/* Posts Section */}
           <div className="w-full flex justify-center">
-            <Posts />
+            <Posts socket={socket} />
           </div>
         </div>
 
