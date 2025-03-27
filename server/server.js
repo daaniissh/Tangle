@@ -24,7 +24,7 @@ const server = createServer(app);
 // Attach Socket.io to the server
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173","https://tanglee.vercel.app/"], // Allow frontend
+    origin: ["http://localhost:5173","https://tanglee.vercel.app"], // Allow frontend
     credentials: true,
   },
   transports: ["websocket", "polling"],
