@@ -1,16 +1,16 @@
-import React from 'react'
+
 import Post from './Post'
 import PostSkeleton from '@/components/skeletons/PostSkeleton'
-import { PostData } from '@/lib/mock/post'
+
 import { useQuery } from '@tanstack/react-query'
-import { AuthUser, PostDetails } from '@/types/QueryTypes/queary'
+import {  PostDetails } from '@/types/QueryTypes/queary'
 import { QueryKey } from '@/types/QueryKey/key'
 import { Compass } from 'lucide-react'
-import { Button } from '@/components/ui/Button'
+
 import { Link } from 'react-router-dom'
 
 const Posts = () => {
-  const { data: allPosts, isLoading, isPending } = useQuery<PostDetails>({ queryKey: ["following"] as QueryKey });
+  const { data: allPosts, isLoading, isPending } = useQuery<PostDetails[]>({ queryKey: ["following"] as QueryKey });
 
   const Posts = Array.isArray(allPosts) ? allPosts : [];
   if (isLoading || isPending) {

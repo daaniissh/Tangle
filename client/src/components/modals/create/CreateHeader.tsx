@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormProps, Forms } from './types'
+import {  Forms } from './types'
 import { MoveLeft } from 'lucide-react';
 
 interface CreateHeaderProps {

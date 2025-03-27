@@ -6,12 +6,14 @@ import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'
 import CirqlG from '@/logos/Cirql-g'
+import { Socket } from 'socket.io-client'
 
 type HeaderProps = {
   searchOpen: boolean;
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
   searchRef: React.RefObject<HTMLDivElement>;
   show: boolean;
+  socket: Socket | null
   SearchOpen: () => void
 }
 const Header = ({ inputRef, searchOpen, show, SearchOpen, searchRef }: HeaderProps) => {

@@ -3,11 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/Button'
 import useFollow from '@/hooks/useFollow'
 import { formatSmallPostData } from '@/lib/utils/dateFunction'
-import { AuthUser } from '@/types/QueryTypes/queary'
+import { AuthUser, NotificationType } from '@/types/QueryTypes/queary'
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+
 import { Link } from 'react-router-dom'
-const FollowPost = ({ FollowPost}) => {
+const FollowPost = ({ FollowPost}:{FollowPost:NotificationType; OncloseAllComp?: () => void,}) => {
   const formateData = formatSmallPostData(FollowPost?.createdAt)
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const { follow, isFollowing } = useFollow()

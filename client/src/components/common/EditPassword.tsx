@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog"
 import { Input } from "@/components/ui/Input"
-import { Label } from "@/components/ui/label"
+import { Label } from "@/components/ui/Label"
 import { Button } from "../ui/Button";
 import useUpdateUserProfile from "@/hooks/useUpdateProfile";
 import { useState } from "react";
@@ -20,7 +20,7 @@ function ChangePasswordDialog() {
 
   const [current, setCurrent] = useState()
   const [newPassword, setNewPassword] = useState()
-  const [confirm, setConfirm] = useState()
+  // const [confirm, setConfirm] = useState()
   const { isUpdatingProfile, updateProfile} = useUpdateUserProfile()
   const handleSubmit = async () => {
 
@@ -58,6 +58,7 @@ function ChangePasswordDialog() {
               id="current-password"
               type="password"
               value={current}
+              // @ts-ignore
               onChange={(e) => setCurrent(e.target.value)}
               placeholder="Enter current password"
               className="col-span-3 rounded-lg"
@@ -71,6 +72,8 @@ function ChangePasswordDialog() {
             <Input
               id="new-password"
               value={newPassword}
+              // @ts-ignore
+
               onChange={(e) => setNewPassword(e.target.value)}
               type="password"
               placeholder="Enter new password"

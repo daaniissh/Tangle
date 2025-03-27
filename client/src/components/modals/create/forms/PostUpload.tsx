@@ -20,7 +20,7 @@ const PostUpload = ({ formsState, onSubmit, setIsOpen, gotoForm }: FormProps) =>
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] as QueryKey });
   const queryClient = useQueryClient();
 
-  const { mutate: CreatePost, isPending, error } = useMutation({
+  const { mutate: CreatePost, isPending } = useMutation({
     mutationFn: async ({ image, caption }: { image: string, caption: string }) => {
       try {
         const res = await fetch(`${APIURL}/posts/create`, {

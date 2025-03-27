@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import { SignUpSchema } from '@/schemas/SignupSchemas';
 
-import Cirql from '@/logos/Cirql';
+import Cirql from '@/logos/cirql';
 import { useMutation } from '@tanstack/react-query';
 import { SignupResponse } from '@/types/api/auth';
 import { Link, useNavigate } from 'react-router-dom';

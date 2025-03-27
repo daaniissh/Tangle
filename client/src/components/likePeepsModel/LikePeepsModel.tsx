@@ -1,14 +1,12 @@
 import { ReactNode, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+
 import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/Dialog';
-import { X, Heart } from 'lucide-react'; // Import Heart icon
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Dialog';
+import {  Heart } from 'lucide-react'; // Import Heart icon
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import VerifyTick from '@/logos/VerifyTick';
-import SpinnerIcon from '@/components/loaders/LoadingSpinner';
-import { FollowSkelton } from '../skeletons/FollowList';
 
 type User = {
   _id: string;

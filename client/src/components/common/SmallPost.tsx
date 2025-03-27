@@ -1,5 +1,5 @@
 import { Heart, MessageCircle } from 'lucide-react';
-import React from 'react'
+
 import { Link } from 'react-router-dom';
 type Props = {
   img: string;

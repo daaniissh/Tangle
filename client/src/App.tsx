@@ -24,9 +24,9 @@ import { useQuery } from '@tanstack/react-query'
 import { QueryKey } from './types/QueryKey/key'
 
 import CirqlG from './logos/Cirql-g.tsx'
-import Cirql from './logos/Cirql.tsx'
+import Cirql from './logos/cirql.tsx'
 import { PostDetails as post } from './types/QueryTypes/queary'
-import { io } from 'socket.io-client'
+import { io, Socket } from 'socket.io-client'
 import Message from './pages/main/Message.tsx'
 
 // import { Sidebar } from 'lucide-react'
@@ -36,7 +36,7 @@ function App() {
   const location = useLocation();
  
 
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
 
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function App() {
     retry: false
 
   })
-  const { data } = useQuery({
+  const {  } = useQuery({
       queryKey: ["notificationsMain"] as QueryKey,
       queryFn: async () => {
         try {

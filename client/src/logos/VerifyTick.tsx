@@ -1,8 +1,8 @@
-import React from 'react';
 
-const VerifyTick = ({classname}:{className:string}) => {
+
+const VerifyTick = ({className}:{className:string}) => {
   return (
-    <svg  className={classname}  width="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+    <svg  className={className}  width="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
       <rect width="24" height="24" stroke="none" fill="#000000" opacity="0" />
       <g transform="matrix(0.42 0 0 0.42 12 12)">
         <g>

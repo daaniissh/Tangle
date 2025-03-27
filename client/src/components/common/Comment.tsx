@@ -1,7 +1,7 @@
 import { type Comment } from '@/lib/mock/post'
 import UserAvatar from './UserAvatar'
 import { AuthUser, CommentPost } from '@/types/QueryTypes/queary'
-import { Delete, Trash } from 'lucide-react'
+import {  Trash } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 interface Cmnt {
   data: CommentPost,

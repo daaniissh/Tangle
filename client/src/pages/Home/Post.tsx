@@ -6,25 +6,25 @@ import UserAvatar from '@/components/common/UserAvatar'
 
 import { type Post } from '@/lib/mock/post'
 import { AuthUser, PostDetails } from '@/types/QueryTypes/queary'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useDoubleTap } from 'use-double-tap';
 
 import { Heart, MessageCircle, Send, Bookmark } from 'lucide-react'
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatPostDate, formatSmallPostData } from '@/lib/utils/dateFunction'
+import {  formatSmallPostData } from '@/lib/utils/dateFunction'
 interface PostProps {
   data: PostDetails; // Assuming PostDetails is the correct type
 }
 const Post = ({ data }: PostProps) => {
   // const {comments,content,isLiked,isSaved,isStory,likesCount,postImg,profileImg,timeAgo,username,stories,id}:Post = data
   const [more, setMore] = useState(false)
-  const queryClient = useQueryClient();
+
   const APIURL = import.meta.env.VITE_API_URL;
   const [isAnima, setIsAnime] = useState(false);
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
-  const { data: follow, refetch } = useQuery<AuthUser>({ queryKey: ["following"] });
+  const {  refetch } = useQuery<AuthUser>({ queryKey: ["following"] });
   const { mutate: likePost, isPending: isLiking } = useMutation({
     mutationFn: async () => {
       if (!data?._id) return
@@ -42,6 +42,7 @@ const Post = ({ data }: PostProps) => {
     },
     onSuccess: (updatedLikes) => {
       refetch();
+      //@ts-ignore
       if (updatedLikes?.length === 0) {
         setIsAnime(false);
       }
@@ -50,7 +51,7 @@ const Post = ({ data }: PostProps) => {
     },
   });
 
-  const { mutate: savePost, isPending: isSaving } = useMutation({
+  const { mutate: savePost } = useMutation({
     mutationFn: async () => {
       try {
         await fetch(`${APIURL}/posts/save/${data?._id}`, {
@@ -85,7 +86,7 @@ const Post = ({ data }: PostProps) => {
       }
     }
   };
-  const bind = useDoubleTap((event) => {
+  const bind = useDoubleTap(() => {
     if (!isLiked) {
     
       if (isLiking) return;

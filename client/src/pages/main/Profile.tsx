@@ -1,25 +1,25 @@
 import PageNotAvailable from '@/components/common/BrokenLink';
 import EmptyPost from '@/components/common/EmptyPost';
-import PostDetails from '@/components/common/PostDeatils';
+
 import SmallPost from '@/components/common/SmallPost';
-import ExplorePost from '@/components/common/SmallPost';
+
 import FollowersModal from '@/components/followrsPeepsModel/FollowPeeps';
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import ProgressLoader from '@/components/progressLoader/ProgressLoader';
 import { Button } from '@/components/ui/Button';
 import useFollow from '@/hooks/useFollow';
-import { PostData } from '@/lib/mock/post';
+
 import VerifyTick from '@/logos/VerifyTick';
 import { QueryKey } from '@/types/QueryKey/key';
 import { AuthUser, Post } from '@/types/QueryTypes/queary';
 import { useQuery } from '@tanstack/react-query';
-import { Bookmark, Grid3x3, Loader2, Link as WebLink } from 'lucide-react';
-import React, { useState } from 'react';
+import { Bookmark, Grid3x3, Link as WebLink } from 'lucide-react';
+import  { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 
 interface ProfilePageProps {
-  socket: Socket;
+  socket: Socket | null;
 }
 
 const ProfilePage = ({ socket }: ProfilePageProps) => {
@@ -53,7 +53,7 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
     retry: false
 
   })
-  const { data: postData } = useQuery<Post>({
+  const { data: postData } = useQuery<Post[]>({
     queryKey: ["posts", username] as QueryKey,
     queryFn: async () => {
       try {
@@ -77,7 +77,7 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
 
 
   })
-  const { data: saveData } = useQuery<Post>({
+  const { data: saveData } = useQuery<Post[]>({
     queryKey: ["posts", [activeTab, username]] as QueryKey,
     queryFn: async () => {
       try {
@@ -222,7 +222,7 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
           ">
             {activeTab === "posts" ? (
               <>
-                {postData?.length < 1 ? (
+                {(postData && postData.length < 1) ? (
                   <EmptyPost profileData={profileData._id} />
                 ) : (
                   <div className="grid gap-1 grid-cols-3 md:grid-rows-8 lg:grid-rows-3 text-gray-500 dark:text-gray-400">
@@ -239,7 +239,7 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
               </>
             ) : (
               <>
-                {saveData?.length < 1 ? (
+                {(saveData && saveData.length < 1) ? (
                   <div className="text-center text-gray-500 dark:text-gray-400">
                     <p className="font-extrabold">No Saved Posts Yet</p>
                   </div>

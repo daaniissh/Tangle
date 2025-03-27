@@ -1,6 +1,6 @@
-import { ArrowBigRight, ArrowRight, Images } from "lucide-react";
+import {  Images } from "lucide-react";
 import React, { useRef, useState } from "react";
-import { FormProps, FormSubmitData } from "../types";
+import { FormProps } from "../types";
 
 
 const ImageSelect = ({ onSubmit, gotoForm }: FormProps) => {

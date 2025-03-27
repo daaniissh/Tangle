@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent } from '@/components/ui/card';
+
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/Dialog';
-import { X } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Dialog';
+
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage } from '../ui/avatar';
 import VerifyTick from '@/logos/VerifyTick';

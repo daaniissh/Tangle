@@ -1,13 +1,13 @@
 import { useScreenDevice } from '@/hooks/use_screen_device';
 import { Heart, MessageCircle, User } from 'lucide-react';
-import React from 'react';
+
 type Notification = {
   from: string;
   to: string;
   type: string;
 };
 
-const LikeTooltip = ({ obj }: { obj: Notification }) => {
+const LikeTooltip = ({ obj }: { obj: Notification[] }) => {
   const latestNotification = obj[obj?.length - 1];
   const { isTablet, isDesktop } = useScreenDevice()
   const GetNotificationTypeMessage = (type: string) => {

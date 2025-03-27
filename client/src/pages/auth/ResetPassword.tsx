@@ -1,7 +1,7 @@
-import React from 'react'
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/Form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { z } from "zod";
@@ -22,7 +22,7 @@ const ResetPassword = () => {
   });
 
   type passSchema = z.infer<typeof passSchema>;
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async ({ password, confirmPassword }: passSchema) => {
       try {
         const res = await fetch(`${APIURL}/auth/resetpassword`, {

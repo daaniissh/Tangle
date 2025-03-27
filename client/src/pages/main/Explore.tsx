@@ -4,12 +4,12 @@ import ProgressLoader from '@/components/progressLoader/ProgressLoader';
 import { QueryKey } from '@/types/QueryKey/key';
 import { AuthUser, Post } from '@/types/QueryTypes/queary';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+
 
 
 const Explore = () => {
 
-  const APIURL = import.meta.env.VITE_API_URL;
+
 
   
   const { data: allPosts,isLoading ,isRefetching} = useQuery<AuthUser>({ queryKey: ["posts"] as QueryKey });

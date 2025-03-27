@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 
 
 import {
@@ -8,8 +7,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/InputOtp"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/Input";
+
 import { Button } from "@/components/ui/Button";
 
 
@@ -75,8 +73,11 @@ const OtpVerfication = () => {
           OTP has been sent to your registered email 
         </p>
         <div className='bg-insta-border w-full h-[0.5px] mb-4' ></div>
-
-        <form onSubmit={(e) => handleOtp(e)} className="space-y-3 flex flex-col w-full justify-center items-center">
+        
+        <form onSubmit={(e) => 
+        // @ts-ignore
+          handleOtp(e)
+          } className="space-y-3 flex flex-col w-full justify-center items-center">
 
 
           <InputOTP maxLength={6} value={otpValue}
@@ -98,9 +99,7 @@ const OtpVerfication = () => {
         </form>
 
       </div>
-      {/* <div className="flex justify-center items-center w-[340px] mt-3  h-[78px] border-insta-border border-[1px]">
-        <p className='text-[15px] font-thin font-instagram' >Don't have account?<a href="" className='text-insta-link font-medium' > Sign Up</a></p>
-      </div> */}
+    
 
     </div>
   )

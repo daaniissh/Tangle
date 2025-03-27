@@ -37,7 +37,7 @@ const useUpdateUserProfile = () => {
 
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
     navigate(-1)
       Promise.all([
         queryClient.invalidateQueries({ queryKey: ["authUser"] }),

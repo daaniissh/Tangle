@@ -1,18 +1,17 @@
-import React, { useState } from 'react'
+
 import RightPanelSkeleton from '../skeletons/RightPanelSkeleton'
 import { Link } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { users } from '@/lib/mock/user';
+
 import { useQuery } from '@tanstack/react-query';
 import { QueryKey } from '@/types/QueryKey/key';
 import { AuthUser } from '@/types/QueryTypes/queary';
 import useFollow from '@/hooks/useFollow';
 import SpinnerIcon from '../loaders/LoadingSpinner';
 import VerifyTick from '@/logos/VerifyTick';
-type Data = {
- profileData:AuthUser
-};
-const RightPanel = (socket) => {
+import { Socket } from 'socket.io-client';
+
+const RightPanel = ({socket}:{socket:Socket | null}) => {
 
   const APIURL = import.meta.env.VITE_API_URL;
     const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
@@ -41,7 +40,7 @@ const RightPanel = (socket) => {
 
   })
 
-  const { follow, followData, isFollowing } = useFollow(socket)
+  const { follow, isFollowing } = useFollow(socket)
 
   return (
     <div className="hidden dark:bg-black   h-auto xl:block my-8 w-80 ">

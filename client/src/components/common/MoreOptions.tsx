@@ -1,7 +1,7 @@
 import React from 'react'
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/Dialog'
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
 import { Button } from '../ui/Button'
-import { DotSquare, Ellipsis } from 'lucide-react'
+import {  Ellipsis } from 'lucide-react'
 import SpinnerIcon from '../loaders/LoadingSpinner';
 interface Props {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;

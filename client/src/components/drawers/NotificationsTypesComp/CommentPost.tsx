@@ -1,9 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { formatSmallPostData } from '@/lib/utils/dateFunction';
-import React from 'react'
+import { NotificationType } from '@/types/QueryTypes/queary';
+
 import { Link } from 'react-router-dom'
 type CommentProps = {
-
+  commentPost:NotificationType
   OncloseAllComp?: () => void,
   // NotificationOpen: () => void;
 };

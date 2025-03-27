@@ -5,7 +5,7 @@ import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import useUpdateUserProfile from '@/hooks/useUpdateProfile';
 import { AuthUser } from '@/types/QueryTypes/queary';
 import { useQuery } from '@tanstack/react-query';
-import { Sun } from 'lucide-react';
+
 import React, { useState } from 'react';
 
 interface Props {
@@ -102,7 +102,7 @@ const ProfileEdit: React.FC<Props> = ({ handleCheckedChange, showStatusBar }) =>
               maxLength={50}
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{username.length} / 50</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{username?.length} / 50</p>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1 dark:text-gray-300" htmlFor="fullName">
@@ -116,7 +116,7 @@ const ProfileEdit: React.FC<Props> = ({ handleCheckedChange, showStatusBar }) =>
               maxLength={50}
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{fullName.length} / 50</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{fullName?.length} / 50</p>
           </div>
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1 dark:text-gray-300" htmlFor="email">
@@ -145,7 +145,7 @@ const ProfileEdit: React.FC<Props> = ({ handleCheckedChange, showStatusBar }) =>
               className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
               rows={3}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{bio.length} / 150</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{bio?.length} / 150</p>
           </div>
 
           <button

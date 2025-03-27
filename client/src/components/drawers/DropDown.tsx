@@ -23,11 +23,12 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu"
-import { Label } from "@radix-ui/react-label";
+
 import { Switch } from "@/components/ui/Switch"
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu";
+
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AuthUser } from "@/types/QueryTypes/queary";
 type DropdownMenuDemoProps = {
   children: React.ReactNode;
   showStatusBar: boolean;
@@ -75,7 +76,7 @@ export function ThemeSwitch({ handleCheckedChange, showStatusBar }: ThemeProps) 
 }
 
 export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: DropdownMenuDemoProps) {
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] })
+  const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] })
 
   const queryClient = useQueryClient();
 
@@ -93,6 +94,7 @@ export function MenuDropDown({ children, handleCheckedChange, showStatusBar }: D
   });
 
   const handleLogout = () => {
+    localStorage.setItem('dark-mode',"false");
     logoutMutation.mutate();
   };
   // const [showActivityBar, setShowActivityBar] = useState<Checked>(false)

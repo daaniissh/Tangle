@@ -1,23 +1,13 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import {
-  Compass,
-  Heart,
-  Home,
-  Menu,
-  MessageCircle,
-  PlusCircle,
-  Search,
-  XCircle,
-} from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 
 
 
-import { Link } from "react-router-dom";
+
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
 // import { DropdownMenuSeparator } from "../ui/dropdown-";
 import { useScreenDevice } from "@/hooks/use_screen_device";
-import { Button } from "../ui/Button";
+
 import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "@/types/QueryKey/key";
 import LikePost from "./NotificationsTypesComp/LikePost";
@@ -41,13 +31,13 @@ const NotificationCom = ({
 
 }: NotificationProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const { isDesktop, isTablet } = useScreenDevice();
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [inp, setInp] = useState("");
+  const { isDesktop } = useScreenDevice();
+  const [_, setShow] = useState(false);
+
+
   const APIURL = import.meta.env.VITE_API_URL;
 
-  const { data, isPending, refetch, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["notifications", isNotification] as QueryKey,
     queryFn: async () => {
       try {
@@ -103,10 +93,10 @@ const NotificationCom = ({
 
                 <div className="w-full h-[600px] max-h-[900px]"> {/* Enable vertical scrolling */}
                   {/* notifications */}
-                  {!isLoading  ? (
+                  {!isLoading ? (
                     <ul className="h-full mt-3">
                       {data
-                        ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                        ?.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                         .map((item: NotificationType) => {
                           switch (item.type) {
                             case 'like':
@@ -125,7 +115,7 @@ const NotificationCom = ({
                       {[...Array(8)].map((_, index) => (
                         <li key={`like-skeleton-${index}`}><SearchSkelton /></li>
                       ))}
-                      
+
                     </ul>
                   )}
 

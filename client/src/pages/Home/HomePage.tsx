@@ -1,19 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Story from './Story';
+import { useEffect, useRef, useState } from 'react';
+;
 import RightPanel from '@/components/common/RightPanel';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import Posts from './Posts';
-import { stories } from '@/lib/mock/story';
-import { useQuery } from '@tanstack/react-query';
-import { Post } from '@/lib/mock/post';
-import { QueryKey } from '@/types/QueryKey/key';
-import { AuthUser, PostDetails } from '@/types/QueryTypes/queary';
-import ProgressLoader from '@/components/progressLoader/ProgressLoader';
 
-const HomePage = ({ socket }) => {
+import { useQuery } from '@tanstack/react-query';
+
+import { AuthUser, StoryType } from '@/types/QueryTypes/queary';
+import ProgressLoader from '@/components/progressLoader/ProgressLoader';
+import { Socket } from 'socket.io-client';
+import Story from './Story';
+
+const HomePage = ({ socket }: { socket: Socket | null }) => {
   const [isArrowHide, setIsArrowHide] = useState(false);
-  const { data: stories, isLoading } = useQuery({ queryKey: ["story"] })
-  const { data: authUser, isLoading: isAuthUser,isRefetching } = useQuery<AuthUser>({ queryKey: ["authUser"] })
+  const { data: stories, isLoading } = useQuery<StoryType>({ queryKey: ["story"] })
+  const { data: authUser, isLoading: isAuthUser, isRefetching } = useQuery<AuthUser>({ queryKey: ["authUser"] })
 
   console.log(stories)
 
@@ -73,34 +74,37 @@ const HomePage = ({ socket }) => {
               ref={scrollableDivRef}
               className="flex relative px-1 md:px-auto overflow-x-hidden max-w-[650px] scrollbar-hide md:gap-5 gap-1 py-[1px] md:py-2"
             >
+              {stories && Array.isArray(stories) &&
+                stories
+                  .filter((story: StoryType) => story.username === authUser?.username)
+                  .map((story: StoryType) => (
+                    <Story
+                      key={story._id}
+                      username={story.username}
+                      name={story.username}
+                      id={story._id.toString()}
+                      img={story.profileImg}
+                    />
+                  ))}
+
               {stories
-                ?.filter((story) => story?.username == authUser?.username)
-                .map((story) => (
-                  <Story
-                    key={story._id}
-                    username={story?.username}
-                    name={story.username}
-                    id={story._id.toString()}
-                    img={story.profileImg}
-                  />
-                ))}
-              {stories
-                ?.filter((story) => story.username !== authUser?.username)
-                .map((story) => (
-                  <Story
-                    key={story._id}
-                    username={story.username}
-                    name={story.username}
-                    id={story._id.toString()}
-                    img={story.profileImg}
-                  />
-                ))}
+                && Array.isArray(stories) &&
+                stories.filter((story) => story.username !== authUser?.username)
+                  .map((story) => (
+                    <Story
+                      key={story._id}
+                      username={story.username}
+                      name={story.username}
+                      id={story._id.toString()}
+                      img={story.profileImg}
+                    />
+                  ))}
             </div>
           </div>
 
           {/* Posts Section */}
           <div className="w-full flex justify-center">
-            <Posts socket={socket} />
+            <Posts />
           </div>
         </div>
 

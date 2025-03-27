@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchema } from "../../schemas/LoginSchemas";
@@ -6,21 +6,21 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
-import Cirql from '@/logos/Cirql';
+import Cirql from '@/logos/cirql';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { LoginResponse, SignupResponse } from '@/types/api/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { LoginResponse } from '@/types/api/auth';
+import { Link } from 'react-router-dom';
 import { QueryKey } from '@/types/QueryKey/key';
-import CirqlG from '@/logos/Cirql-g';
+
 const Login = () => {
   const APIURL = import.meta.env.VITE_API_URL;
-  const Navigate = useNavigate()
+
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
   const queryClient = useQueryClient()
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async ({ password, username }: LoginSchema) => {
       try {
         const res = await fetch(`${APIURL}/auth/login`, {

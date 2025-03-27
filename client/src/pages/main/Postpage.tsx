@@ -1,11 +1,12 @@
 import PostDetails from "@/components/common/PostDeatils";
 import { useScreenDevice } from "@/hooks/use_screen_device";
-import React from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
 import PostMobilePage from "./PostMobilePage";
+import { Socket } from "socket.io-client";
 // import PostDetails from "./PostDetails"; // Your dialog component
 
-const PostPage = ({ socket }) => {
+const PostPage = ({ socket }:{socket:Socket | null}) => {
   const { username, postId } = useParams();
   const navigate = useNavigate();
 

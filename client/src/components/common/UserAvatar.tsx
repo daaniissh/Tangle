@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Link } from 'react-router-dom';
 import VerifyTick from '@/logos/VerifyTick';

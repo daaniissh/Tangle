@@ -1,5 +1,5 @@
 import { Camera } from 'lucide-react'
-import React from 'react'
+
 import { PostDialog } from '../modals/create/Form'
 import { useQuery } from '@tanstack/react-query';
 import { AuthUser } from '@/types/QueryTypes/queary';

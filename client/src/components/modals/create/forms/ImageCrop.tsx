@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { FormProps } from '../types'
 import Cropper from 'react-easy-crop'
 
@@ -10,7 +10,7 @@ const ImageCrop = ({ formsState, onSubmit, gotoForm }: FormProps) => {
   const [croppedArea, setCroppedArea] = useState(null)
 
   const [aspectRatio, setAspectRatio] = useState(9 / 16)
-  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+  const onCropComplete = (_: any, croppedAreaPixels: any) => {
     setCroppedArea(croppedAreaPixels)
   }
   const image = formsState.SelectImage.image
@@ -32,7 +32,7 @@ const ImageCrop = ({ formsState, onSubmit, gotoForm }: FormProps) => {
     imageObj1.src = formsState.SelectImage.image as string;
     imageObj1.onload = function () {
       // Draw the cropped portion of the image onto the canvas
-      context.drawImage(
+      context?.drawImage(
         imageObj1,
         imgCroppedArea.x,
         imgCroppedArea.y,
@@ -64,7 +64,8 @@ const ImageCrop = ({ formsState, onSubmit, gotoForm }: FormProps) => {
   return (
     <div className=' h-[600px] flex justify-center items-end rounded-lg' >
 
-
+ 
+      {/* @ts-ignore */}
       <Cropper
         image={image}
         crop={crop}

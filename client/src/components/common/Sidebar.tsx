@@ -16,25 +16,28 @@ import SearchCom from "../drawers/SearchCom";
 import NotificationCom from "../drawers/NotificationCom";
 import Li from "./Li";
 import Header from "./Header";
-import Cirql from "@/logos/Cirql";
-import Cirql_logo_w from "@/logos/Cirql_logo_w";
+import Cirql from "@/logos/cirql";
+import Cirql_logo_w from "@/logos/cirql_logo_w";
 import { Link } from "react-router-dom";
 
-import Create from "../modals/create/Comps";
+
 import { PostDialog } from "../modals/create/Form";
-import { AuthUser, NotificationType } from "@/types/QueryTypes/queary";
+import { AuthUser, } from "@/types/QueryTypes/queary";
 import { useQuery } from "@tanstack/react-query";
-import { QueryKey } from "@/types/QueryKey/key";
+
+import { Socket } from 'socket.io-client';
 
 interface SideBarProps {
   showStatusBar: boolean;
   handleCheckedChange: () => void;
+  socket: Socket | null;
 }
 
 const Sidebar: React.FC<SideBarProps> = ({
   handleCheckedChange,
   showStatusBar,
   socket
+
 }) => {
 
   const [searchOpen, setSearchOpen] = useState<boolean>(false);

@@ -2,10 +2,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { formatSmallPostData } from '@/lib/utils/dateFunction'
 import VerifyTick from '@/logos/VerifyTick'
 import { NotificationType } from '@/types/QueryTypes/queary'
-import React from 'react'
+
 import { Link } from 'react-router-dom'
 type likeProps = {
-
+likePost:NotificationType
   OncloseAllComp?: () => void,
   // NotificationOpen: () => void;
 };

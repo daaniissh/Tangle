@@ -41,6 +41,13 @@ interface Post {
   updatedAt: string; // ISO date string
   __v: number;
 }
+export type StoryType = {
+  username: string;
+  name: string;
+  _id: string;
+  img: string;
+  profileImg:string
+};
 
 export type PostDetails = {
   _id: string;
@@ -65,6 +72,7 @@ export type NotificationType = {
   };
   post: PostDetails;
   to: string;
+  comment:string;
   type: string;
   read: boolean;
   createdAt: string;

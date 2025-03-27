@@ -1,9 +1,4 @@
-type Data = {
-  username: string;
-  is_followed: boolean;
-  image: string;
-  name: string;
-};
+
 
 export const users= [
   {

@@ -3,11 +3,8 @@ import Comment from '@/components/common/Comment'
 import LikeHeart from '@/components/common/LikeHeart'
 import MoreOptions from '@/components/common/MoreOptions'
 import UserAvatar from '@/components/common/UserAvatar'
-import PostDetailsSkeleton from '@/components/skeletons/PostDetailSkelton'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Post, PostData } from '@/lib/mock/post'
 import { formatPostDate } from '@/lib/utils/dateFunction'
 import { useDoubleTap } from 'use-double-tap';
 import { QueryKey } from '@/types/QueryKey/key'
@@ -15,16 +12,12 @@ import { AuthUser, CommentPost, PostDetails } from '@/types/QueryTypes/queary'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Bookmark, Heart, MessageCircle, Send } from 'lucide-react'
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import { Skeleton } from '@/components/ui/Skeleton'
 import ShareDialog from '@/components/common/Share'
 import SpinnerIcon from '@/components/loaders/LoadingSpinner'
 import useFollow from '@/hooks/useFollow'
-interface PostDetailsProps {
 
-  username?: string;
-  postId?: string;
-}
 const PostMobilePage = ({ postId, socket }: any) => {
   const queryClient = useQueryClient();
 
@@ -36,7 +29,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
   const [isEdit, setIsEdit] = useState(false);
   const navigate = useNavigate()
   console.log(postId, "====postID");
-  const inpRef = useRef()
+  const inpRef = useRef<HTMLInputElement | null>(null);
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
 
@@ -85,7 +78,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
     },
   });
 
-  const { mutate: savePost, isPending: isSaving } = useMutation({
+  const { mutate: savePost } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`${APIURL}/posts/save/${postId}`, {
@@ -142,7 +135,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
 
     },
   });
-  const { mutate: commentPost, data: cmData, isPending: isCommenting } = useMutation({
+  const { mutate: commentPost, isPending: isCommenting } = useMutation({
     mutationFn: async () => {
       try {
         if (!comment) return
@@ -165,7 +158,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
         console.log(error)
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       setComment("");
       if(!comment) return
       refetch()
@@ -173,11 +166,11 @@ const PostMobilePage = ({ postId, socket }: any) => {
 
     },
 
-    onError: (error) => {
+    onError: () => {
 
     },
   });
-  const { mutate: deleteComment, isPending: isCommentDeleteing } = useMutation({
+  const { mutate: deleteComment } = useMutation({
     mutationFn: async (commentID: string) => {
       try {
 
@@ -287,7 +280,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
     });
 
   }
-  function handleChangeEdit(e) {
+  function handleChangeEdit(e:React.ChangeEvent<HTMLInputElement>) {
     setEditInp(e.target.value)
     if (editInp?.length !== postData?.text?.length) {
       setBtn(false)
@@ -295,7 +288,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
       setBtn(true)
     }
   }
-  function submitEdit(e) {
+  function submitEdit() {
     editPost()
 
   }
@@ -304,7 +297,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
     console.log(followData?.type, "===follow")
    
   }
-  const bind = useDoubleTap(async (event) => {
+  const bind = useDoubleTap(async () => {
     console.log(likeData, "like====")
     if (!isLiked) {
       setLocalLike(localLike);
@@ -416,7 +409,7 @@ const PostMobilePage = ({ postId, socket }: any) => {
                   className="border border-insta-darkBorder !outline-none rounded-md"
                   type="text"
                   value={editInp}
-                  onChange={handleChangeEdit}
+                  onChange={(e)=>handleChangeEdit(e)}
                 />
               </div>
             }

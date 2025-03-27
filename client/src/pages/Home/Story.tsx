@@ -1,7 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { AuthUser } from '@/types/QueryTypes/queary'
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+
 import { Link } from 'react-router-dom'
 type Pros = {
   username: string,

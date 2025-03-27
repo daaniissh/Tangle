@@ -3,17 +3,14 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
+
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { useState } from "react";
 import { Input } from "../ui/Input";
 
-export function PhotoActionDialog({ setProfileImg }) {
-  const [fileName, setFileName] = useState('');
+export function PhotoActionDialog({ setProfileImg }:{setProfileImg:any}) {
+
   const [op, setOp] = useState(false)
 
   // Handle file change

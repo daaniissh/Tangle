@@ -1,24 +1,23 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React, { ReactNode, useRef, useState } from "react";
+
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { Bookmark, Edit, Heart, MessageCircle, Send, X } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, Send, X } from "lucide-react";
 import Comment from "./Comment";
 import UserAvatar from "./UserAvatar";
 import ShareDialog from "./Share";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, } from "@tanstack/react-query";
 import { QueryKey } from "@/types/QueryKey/key";
 import { AuthUser, CommentPost, PostDetails as post } from "@/types/QueryTypes/queary";
-import PostSkeleton from "../skeletons/PostSkeleton";
-import PostDetailsSkeleton from "../skeletons/PostDetailSkelton";
+
 import { Skeleton } from "../ui/Skeleton";
-import { spawn } from "child_process";
+
 import SpinnerIcon from "../loaders/LoadingSpinner";
 import { formatPostDate } from "@/lib/utils/dateFunction";
 import LikeHeart from "./LikeHeart";
 import MoreOptions from "./MoreOptions";
 import useFollow from "@/hooks/useFollow";
-import { io } from "socket.io-client";
+import { Socket } from "socket.io-client";
 
 
 
@@ -28,10 +27,11 @@ interface PostDetailsProps {
   onClose: () => void;
   username?: string;
   postId?: string;
+  socket:Socket | null
 }
 
 const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClose, postId, socket }) => {
-  const queryClient = useQueryClient();
+ ;
 
   if (!isDialogOpen) return null;
   const APIURL = import.meta.env.VITE_API_URL;
@@ -39,12 +39,12 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
 
   const [isAnima, setIsAnime] = useState(false);
   const [comment, setComment] = useState("");
-  const [isLike, setIslike] = useState(false);
+  const [_, setIslike] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const { follow, isFollowing, followData } = useFollow(socket)
   console.log(postId, "====postID");
 
-  const inpRef = useRef()
+  const inpRef = useRef<HTMLInputElement | null>(null);
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
 
@@ -98,7 +98,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
     },
   });
 
-  const { mutate: savePost, isPending: isSaving } = useMutation({
+  const { mutate: savePost } = useMutation({
     mutationFn: async () => {
       try {
         const res = await fetch(`${APIURL}/posts/save/${postId}`, {
@@ -147,7 +147,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
 
     },
   });
-  const { mutate: commentPost, data: cmData, isPending: isCommenting } = useMutation({
+  const { mutate: commentPost, isPending: isCommenting } = useMutation({
     mutationFn: async () => {
       try {
         if (!comment) return
@@ -170,18 +170,18 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
         console.log(error)
       }
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       setComment("");
       refetch()
 
 
     },
 
-    onError: (error) => {
+    onError: () => {
 
     },
   });
-  const { mutate: deleteComment, isPending: isCommentDeleteing } = useMutation({
+  const { mutate: deleteComment } = useMutation({
     mutationFn: async (commentID: string) => {
       try {
 
@@ -266,7 +266,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
     if (likeData == "like" || likeData == undefined) {
       // Only send notification when likeData is "like"
       try {
-        await socket.emit("sendNotification", {
+        await socket?.emit("sendNotification", {
           from: authUser?._id,
           to: post?.user?._id,
           type: "like",
@@ -288,7 +288,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
       if (likeData == "like" || likeData == undefined) {
         setIsAnime(true);
         try {
-          await socket.emit("sendNotification", {
+          await socket?.emit("sendNotification", {
             from: authUser?._id,
             to: post?.user?._id,
             type: "like",
@@ -303,7 +303,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
   async function commentOnPost() {
 
     commentPost()
-    await socket.emit("sendNotification", {
+    await socket?.emit("sendNotification", {
       from: authUser?._id,
       to: post?.user?._id,
       type: "comment",

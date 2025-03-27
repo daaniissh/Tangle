@@ -2,20 +2,18 @@ import CommentPost from '@/components/drawers/NotificationsTypesComp/CommentPost
 import FollowPost from '@/components/drawers/NotificationsTypesComp/FollowPost'
 import LikePost from '@/components/drawers/NotificationsTypesComp/LikePost'
 import { SearchSkelton } from '@/components/skeletons/SearchSkeleton'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/Avatar'
-import { Button } from '@/components/ui/Button'
+
 import { QueryKey } from '@/types/QueryKey/key'
 import { NotificationType } from '@/types/QueryTypes/queary'
 import { useQuery } from '@tanstack/react-query'
 
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+
 
 const Notification = () => {
-  const [loading, setLoading] = useState(true)
+
   const APIURL = import.meta.env.VITE_API_URL;
 
-  const { data, isPending, refetch, isLoading } = useQuery({
+  const { data,  isLoading } = useQuery({
     queryKey: ["notifications"] as QueryKey,
     queryFn: async () => {
       try {
@@ -48,7 +46,7 @@ const Notification = () => {
                 {!isLoading ? (
                   <ul className="h-full mt-3">
                     {data
-                      ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                      ?.sort((a:any, b:any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                       .map((item: NotificationType) => {
                         switch (item.type) {
                           case 'like':

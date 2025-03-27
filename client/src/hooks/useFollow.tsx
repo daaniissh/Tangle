@@ -2,7 +2,7 @@ import { AuthUser } from "@/types/QueryTypes/queary";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Socket } from "socket.io-client"; // Import Socket type if needed
 
-const useFollow = (socket: Socket) => {
+const useFollow = (socket?: Socket | null) => {
 	console.log(socket)
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ const useFollow = (socket: Socket) => {
 
       // Send notification if followData.type is undefined or "follow"
       if (data.type === undefined || data.type !== "follow") {
-        socket.emit("sendNotification", {
+        socket?.emit("sendNotification", {
           from: authUser?._id, // Use the authenticated user's ID
           to: userId, // The user being followed (passed as argument)
           type: "follow",

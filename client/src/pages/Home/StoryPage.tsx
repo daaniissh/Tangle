@@ -1,20 +1,28 @@
 import ShareDialog from '@/components/common/Share';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
-import { Post } from '@/lib/mock/post';
+
 import { stories } from '@/lib/mock/story';
+//@ts-ignore
 import 'swiper/css';
+//@ts-ignore
+
 import 'swiper/css/navigation';
+//@ts-ignore
+
 import 'swiper/css/pagination';
+//@ts-ignore
+
 import 'swiper/css/scrollbar';
-import { formatDistanceToNow } from 'date-fns';
 
 
-import Cirql from '@/logos/Cirql';
+
+
+import Cirql from '@/logos/cirql';
 import { QueryKey } from '@/types/QueryKey/key';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { ChevronLeftCircle, ChevronRightCircle, Heart, Send, Plus, TrashIcon, ActivityIcon } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -25,19 +33,15 @@ import useFollow from '@/hooks/useFollow';
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import VerifyTick from '@/logos/VerifyTick';
 import LikesModal from '@/components/likePeepsModel/LikePeepsModel';
+import { Socket } from 'socket.io-client';
 
-const StoryPage = ({ socket }) => {
+const StoryPage = ({ socket }: { socket: Socket | null }) => {
 
 
   const { id, username } = useParams();
   const navigate = useNavigate();
   const user = stories.find((story) => story.id.toString() === id);
   const APIURL = import.meta.env.VITE_API_URL;
-
-  function formatPostDate(createdAt: string) {
-    const createdDate = new Date(createdAt);
-    return formatDistanceToNow(createdDate, { addSuffix: true });
-  }
 
 
   // Fetch progress from the backend and store it in progressValues
@@ -67,7 +71,7 @@ const StoryPage = ({ socket }) => {
 
 
   const { mutate: deletePost, isPending: isDeleting } = useMutation({
-    mutationFn: async (id) => {
+    mutationFn: async (id: string) => {
       try {
         const res = await fetch(`${APIURL}/posts/story/${id}`, {
           method: "DELETE",
@@ -87,7 +91,7 @@ const StoryPage = ({ socket }) => {
     },
   });
   const { mutate: likePost, isPending: isLiking, data: likeData } = useMutation({
-    mutationFn: async (postId) => {
+    mutationFn: async (postId: string) => {
       try {
         const res = await fetch(`${APIURL}/posts/like/${postId}`, {
           method: "POST",
@@ -102,20 +106,20 @@ const StoryPage = ({ socket }) => {
         return data;
       } catch (error) { }
     },
-    onSuccess: (updatedLikes) => {
+    onSuccess: () => {
 
       refetch()
     },
   });
 
-  const handleLikePost = async (id) => {
+  const handleLikePost = async (id: string) => {
     console.log(likeData, "like====")
     if (isLiking) return;
     if (likeData == "like" || likeData == undefined) {
       // Only send notification when likeData is "like"
       console.log("like====")
       try {
-        await socket.emit("sendNotification", {
+        await socket?.emit("sendNotification", {
           from: authUser?._id,
           to: storyData?._id,
           type: "like",
@@ -134,7 +138,8 @@ const StoryPage = ({ socket }) => {
 
   const progressInterval = 8000; // 8 seconds per story
   const [activeIndex, setActiveIndex] = useState(0);
-  const [progressValues, setProgressValues] = useState([]);
+  const [progressValues, setProgressValues] = useState<number[]>([]);
+
 
   useEffect(() => {
     const totalStories = storyData?.usersStories?.length || 0;
@@ -151,7 +156,7 @@ const StoryPage = ({ socket }) => {
     return () => clearInterval(timer);
   }, [activeIndex, progressValues.length]);
 
-  const resetProgressOnSlideChange = (swiper) => {
+  const resetProgressOnSlideChange = (swiper: any) => {
     const newProgressValues = progressValues.map((_, idx) => {
       if (idx < swiper.activeIndex) return 100;
       if (idx === swiper.activeIndex) return 0;
@@ -309,39 +314,79 @@ const StoryPage = ({ socket }) => {
                 resetProgressOnSlideChange(swiper);
               }}
               speed={0}
-              onBeforeInit={(swiper) => {
-                swiper.params.navigation.nextEl = nextButtonRef.current;
-                swiper.params.navigation.prevEl = prevButtonRef.current;
+              onBeforeInit={() => {
+                // if (swiper && swiper.params && swiper.params.navigation) {
+                //   swiper.params.navigation.nextEl = nextButtonRef.current;
+                //   swiper.params.navigation.prevEl = prevButtonRef.current;
+                // }
+
               }}
             >
               {storyData?.usersStories
-                ?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                ?.sort((a: PostDetails, b: PostDetails) =>
+                  new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+                )
                 .map((item: PostDetails) => {
                   const isLiked = item?.likes?.some((like) => like._id === authUser?._id);
 
                   return (<SwiperSlide className="w-full rounded-[8px]">
-                    <div className="absolute bg-gradient-to-t from-black/50 to-transparent
-   z-50 left-0 bottom-1 flex justify-between w-full">
-                      {owner && (
-                        <Button
-                          onClick={() => deletePost(item?._id)}
-                          variant="ghost"
-                          className="text-white mb-8 font-semibold mx-2 cursor-pointer"
-                        >
-                          {isDeleting ? <SpinnerIcon /> : "Delete"}
-                        </Button>
-                      )}
-                      <div className="flex justify-end items-center md:px-4 pb-8 px-10 gap-5 w-full  ">
-                        {owner ? <LikesModal users={item.likes} > <button className='font-bold  text-white text-sm cursor-pointer' >view activity</button></LikesModal> : <Heart
-                          onClick={() => handleLikePost(item._id)}
-                          className={`${isLiked && "fill-red-700 !text-red-700"
-                            } w-5 h-5 md:w-6 md:h-6 text-white cursor-pointer hover:text-white/50`}
-                        />}
-                        <ShareDialog story username={storyData?.username} id={storyData?._id}>
-                          <button>
-                            <Send className="cursor-pointer text-white" />
-                          </button>
-                        </ShareDialog>
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent z-50 p-4">
+                      <div className="flex items-center justify-between px-4 md:px-0 ">
+                        {/* Delete Button (owner only) */}
+                        {owner && (
+                          <Button
+                            onClick={() => deletePost(item?._id)}
+                            variant="ghost"
+                            className="text-white hover:bg-white/10 hover:text-white/60 transition-colors rounded-full p-2"
+                            aria-label="Delete post"
+                          >
+                            {isDeleting ? (
+                              <SpinnerIcon className="h-5 w-5" />
+                            ) : (
+                              <TrashIcon className="h-5 w-5" />
+                            )}
+                          </Button>
+                        )}
+
+                        {/* Actions Container */}
+                        <div className="flex items-center gap-4 ml-auto">
+                          {/* Like/Activity Button */}
+                          {owner ? (
+                            <LikesModal users={item.likes}>
+                              <button
+                                className="flex items-center gap-1 text-white hover:text-white/80 transition-colors"
+                                aria-label="View activity"
+                              >
+                                <ActivityIcon className="h-5 w-5" />
+                                <span className="text-sm font-medium hidden sm:inline">Activity</span>
+                              </button>
+                            </LikesModal>
+                          ) : (
+                            <button
+                              onClick={() => handleLikePost(item._id)}
+                              className="group flex items-center gap-1"
+                              aria-label={isLiked ? "Unlike post" : "Like post"}
+                            >
+                              <Heart
+                                className={`h-5 w-5 transition-all ${isLiked
+                                    ? "fill-red-600 text-red-600 scale-110"
+                                    : "text-white group-hover:text-white/80"
+                                  }`}
+                              />
+
+                            </button>
+                          )}
+
+                          {/* Share Button */}
+                          <ShareDialog story username={storyData?.username} id={storyData?._id}>
+                            <button
+                              className="text-white hover:text-white/80 transition-colors"
+                              aria-label="Share post"
+                            >
+                              <Send className="h-5 w-5" />
+                            </button>
+                          </ShareDialog>
+                        </div>
                       </div>
                     </div>
                     <img
