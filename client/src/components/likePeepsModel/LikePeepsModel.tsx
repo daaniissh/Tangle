@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 
 import { Input } from '@/components/ui/Input';
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import {  Heart } from 'lucide-react'; // Import Heart icon
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarImage } from '../ui/avatar';

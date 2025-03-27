@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/Dialog';
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/Button'
 import {  Ellipsis } from 'lucide-react'
 import SpinnerIcon from '../loaders/LoadingSpinner';

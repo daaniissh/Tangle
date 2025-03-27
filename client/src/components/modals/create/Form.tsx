@@ -3,7 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from "@/components/ui/Dialog"; // Assuming Dialog is updated as shown above
+} from "@/components/ui/dialog"; // Assuming Dialog is updated as shown above
 
 import forms from "./Comps";
 import { Forms, FormsState, FormSubmitData } from "./types";

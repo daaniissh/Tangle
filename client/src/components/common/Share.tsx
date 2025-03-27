@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/Dialog"
+} from "@/components/ui/dialog"
 import { Input } from "@/components/ui/Input"
 import { Label } from "@/components/ui/Label"
 import copy from 'copy-text-to-clipboard';
