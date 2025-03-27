@@ -1,10 +1,10 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Search, XCircle } from "lucide-react";
 import  { useEffect, useRef, useState } from "react";
-import { Input } from "../ui/Input";
+import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
-import { DropdownMenuSeparator } from "../ui/DropdownMenu";
+import { DropdownMenuSeparator } from "../ui/dropdownMenu";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 import { AuthUser } from "@/types/QueryTypes/queary";
 import VerifyTick from "@/logos/VerifyTick";

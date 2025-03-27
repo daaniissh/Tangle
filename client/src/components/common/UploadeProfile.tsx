@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Input } from "../ui/Input";
+import { Input } from "../ui/input";
 
 export function PhotoActionDialog({ setProfileImg }:{setProfileImg:any}) {
 

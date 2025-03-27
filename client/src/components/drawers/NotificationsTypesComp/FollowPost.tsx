@@ -1,6 +1,6 @@
 import SpinnerIcon from '@/components/loaders/LoadingSpinner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import useFollow from '@/hooks/useFollow'
 import { formatSmallPostData } from '@/lib/utils/dateFunction'
 import { AuthUser, NotificationType } from '@/types/QueryTypes/queary'

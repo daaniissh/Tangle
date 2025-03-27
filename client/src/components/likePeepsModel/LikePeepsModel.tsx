@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import {  Heart } from 'lucide-react'; // Import Heart icon

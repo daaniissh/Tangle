@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FormProps } from '../types'
 import UserAvatar from '@/components/common/UserAvatar'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QueryKey } from '@/types/QueryKey/key'
 import SpinnerIcon from '@/components/loaders/LoadingSpinner'

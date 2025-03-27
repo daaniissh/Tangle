@@ -28,7 +28,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AuthUser, PostDetails } from '@/types/QueryTypes/queary';
 
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import useFollow from '@/hooks/useFollow';
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import VerifyTick from '@/logos/VerifyTick';

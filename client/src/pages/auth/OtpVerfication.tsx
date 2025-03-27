@@ -8,7 +8,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/InputOtp"
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';

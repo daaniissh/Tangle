@@ -22,9 +22,9 @@ import {
   DropdownMenuSeparator,
 
   DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdownMenu"
 
-import { Switch } from "@/components/ui/Switch"
+import { Switch } from "@/components/ui/switch"
 
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

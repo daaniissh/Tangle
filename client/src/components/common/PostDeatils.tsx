@@ -1,7 +1,7 @@
 import React, { ReactNode, useRef, useState } from "react";
 
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Bookmark, Heart, MessageCircle, Send, X } from "lucide-react";
 import Comment from "./Comment";
 import UserAvatar from "./UserAvatar";
@@ -10,7 +10,7 @@ import { useMutation, useQuery, } from "@tanstack/react-query";
 import { QueryKey } from "@/types/QueryKey/key";
 import { AuthUser, CommentPost, PostDetails as post } from "@/types/QueryTypes/queary";
 
-import { Skeleton } from "../ui/Skeleton";
+import { Skeleton } from "../ui/skeleton";
 
 import SpinnerIcon from "../loaders/LoadingSpinner";
 import { formatPostDate } from "@/lib/utils/dateFunction";

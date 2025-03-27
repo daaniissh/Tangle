@@ -6,7 +6,7 @@ import SmallPost from '@/components/common/SmallPost';
 import FollowersModal from '@/components/followrsPeepsModel/FollowPeeps';
 import SpinnerIcon from '@/components/loaders/LoadingSpinner';
 import ProgressLoader from '@/components/progressLoader/ProgressLoader';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import useFollow from '@/hooks/useFollow';
 
 import VerifyTick from '@/logos/VerifyTick';

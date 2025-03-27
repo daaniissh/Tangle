@@ -1,7 +1,7 @@
 import { Heart, Search, XCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
-import { Input } from '../ui/Input'
+import { Input } from '../ui/input'
 import SearchCom from '../drawers/SearchCom'
 import { Link, useLocation } from 'react-router-dom'
 import SubHeader from './SubHeader'

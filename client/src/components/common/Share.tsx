@@ -1,6 +1,6 @@
 import { Check, Copy } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogClose,
@@ -11,8 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/Input"
-import { Label } from "@/components/ui/Label"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import copy from 'copy-text-to-clipboard';
 import { useState } from "react"
 export default function ShareDialog({ children, username, id,story }: { children: React.ReactNode, username?: string, id?: number | string ,story?:boolean}) {
