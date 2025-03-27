@@ -84,7 +84,7 @@ app.use(
       autoRemove: 'native' // Automatic cleanup
     }),
     cookie: {
-      maxAge: 1000 * 60 * 10, // 10 minutes
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true,
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production'

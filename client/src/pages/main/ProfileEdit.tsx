@@ -33,17 +33,25 @@ const ProfileEdit: React.FC<Props> = ({ handleCheckedChange, showStatusBar }) =>
 
   const { isUpdatingProfile, updateProfile } = useUpdateUserProfile()
   function handleSubmit() {
-    console.log(profileImg,"==profile")
+    console.log(profileImg, "==profile");
+  
     let formData = {
       fullName,
       username,
       email,
       link: website,
       bio,
-      profileImg,
+    };
+  
+    // Only include profileImg if it's different from authUser.profileImg
+    if (authUser?.profileImg !== profileImg) {
+      // @ts-ignore
+      formData.profileImg = profileImg; // Add to existing object instead of replacing
     }
-    updateProfile(formData)
-  }
+  
+    console.log(formData, "==formdata");
+    updateProfile(formData);
+}
   return (
     <div className="min-h-screen   md:p-0 w-full bg-gray-100 dark:bg-black">
       <div className="w-full md:p-6  overflow-y-scroll max-h-screen ">
