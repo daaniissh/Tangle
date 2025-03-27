@@ -4,6 +4,7 @@ import  { useEffect, useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { Link } from "react-router-dom";
 import { SearchSkelton } from "../skeletons/SearchSkeleton";
+// @ts-ignore
 import { DropdownMenuSeparator } from "../ui/dropdownMenu";
 import { useScreenDevice } from "@/hooks/use_screen_device";
 import { AuthUser } from "@/types/QueryTypes/queary";

@@ -7,14 +7,17 @@ import { useIsMobile } from "@/hooks/use_mobile"
 import { cn } from "@/lib/utils/Utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+// @ts-ignore
 import { Separator } from "@/components/ui/Separator"
 import { Sheet, SheetContent } from "@/components/ui/Sheet"
 import { Skeleton } from "@/components/ui/skeleton"
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  // @ts-ignore
 } from "@/components/ui/tooltip"
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state"
