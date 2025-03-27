@@ -27,7 +27,7 @@ const Post = ({ data ,socket}: PostProps) => {
 
   const { data: authUser } = useQuery<AuthUser>({ queryKey: ["authUser"] });
   const {  refetch,data:post } = useQuery<PostDetails>({ queryKey: ["following"] });
-  const { mutate: likePost, isPending: isLiking, data:likeData } = useMutation({
+  const { mutate: likePost, isPending: isLiking } = useMutation({
     mutationFn: async () => {
       if (!data?._id) return
       try {
