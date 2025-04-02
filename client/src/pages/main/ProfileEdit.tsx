@@ -35,27 +35,22 @@ const ProfileEdit: React.FC<Props> = ({ handleCheckedChange, showStatusBar }) =>
   function handleSubmit() {
     console.log(profileImg, "==profile");
   
-    let formData = {
+    const formData = {
       fullName,
       username,
       email,
       link: website,
       bio,
+      ...(authUser?.profileImg !== profileImg && { profileImg }), // Conditionally add profileImg
     };
-  
-    // Only include profileImg if it's different from authUser.profileImg
-    if (authUser?.profileImg !== profileImg) {
-      // @ts-ignore
-      formData.profileImg = profileImg; // Add to existing object instead of replacing
-    }
   
     console.log(formData, "==formdata");
     updateProfile(formData);
-}
+  }
   return (
     <div className="min-h-screen   md:p-0 w-full bg-gray-100 dark:bg-black">
       <div className="w-full md:p-6  overflow-y-scroll max-h-screen ">
-        <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 md:rounded-lg shadow-lg mt-10 md:mt-0 mb-10 p-6">
+        <div className="max-w-2xl mx-auto bg-white dark:bg-zinc-900 md:rounded-lg shadow-lg mt-10 md:mt-0 mb-20 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold dark:text-white">Settings</h2>
             <div className="dark:text-white font-extrabold">

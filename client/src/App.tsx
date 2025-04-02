@@ -203,7 +203,7 @@ function App() {
         </div>
 
         {/* Cirql at the center-bottom */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-12 md:bottom-8 left-1/2 transform -translate-x-1/2">
           <Cirql className="dark:fill-white size-14 fill-black" />
         </div>
       </div>

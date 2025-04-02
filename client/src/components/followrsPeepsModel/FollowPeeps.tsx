@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { Input } from '@/components/ui/input';
@@ -67,12 +67,20 @@ const FollowersModal = ({ children, username, type }: FollowersModalProps) => {
 
   const { follow, isFollowing } = useFollow();
 
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+useEffect(() => {
+  if (searchInputRef.current) {
+    searchInputRef.current.blur(); // Remove focus when modal opens
+  }
+}, []);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-sm px-0 dark:!bg-[#262626] dark:text-white">
+      <DialogContent  onOpenAutoFocus={(e) => e.preventDefault()}  className="max-w-sm px-0 dark:!bg-[#262626] dark:text-white">
         <DialogHeader className="flex items-center border-b border-stone-600 -mt-2 pb-3 h-full">
           <DialogTitle className="text-lg font-bold mb-1">
             {type === "FOLLOWERS" ? "Followers" : "Following"}
@@ -80,8 +88,10 @@ const FollowersModal = ({ children, username, type }: FollowersModalProps) => {
         </DialogHeader>
         <div className="px-2">
           <Input
+          autoFocus={false}
             placeholder="Search"
             value={search}
+            ref={searchInputRef}
             onChange={(e) => setSearch(e.target.value)}
             className="mb-4 rounded-lg  dark:!bg-[#363636] dark:!text-white placeholder-gray-400"
           />

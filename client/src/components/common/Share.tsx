@@ -52,7 +52,7 @@ export default function ShareDialog({ children, username, id,story }: { children
             </Label>
             <Input
               id="link"
-              defaultValue={story ? `https://tanglee.vercel.app/${username}/${id}` : `https://tanglee.vercel.app/${username}/${id}`}
+              defaultValue={story ? `https://tanglee.vercel.app/story/${username}/${id}` : `https://tanglee.vercel.app/post/${username}/${id}`}
               readOnly
             />
           </div>

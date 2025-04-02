@@ -40,7 +40,7 @@ const Notification = () => {
         <div className="w-full flex flex-col items-center">
           <div className="w-full">
             {/* Notification Container */}
-            <div className="flex justify-center overflow-auto  h-[calc(100vh-100px)] max-h-screen w-full">
+            <div className="flex justify-center   overflow-auto  h-[calc(100vh-100px)] max-h-screen w-full">
               <div className="w-full">
                 {/* Loading Check */}
                 {!isLoading ? (

@@ -178,7 +178,8 @@ const ProfilePage = ({ socket }: ProfilePageProps) => {
             {profileData?.link && (
               <a
                 href={profileData?.link}
-                about="*/"
+                about="*/" 
+                target="_blank"
                 className="flex justify-center items-center gap-1 hover:underline text-insta-link font-semibold text-sm"
               >
                 <WebLink

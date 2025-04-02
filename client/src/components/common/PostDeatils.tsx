@@ -452,7 +452,7 @@ const PostDetails: React.FC<PostDetailsProps> = ({ children, isDialogOpen, onClo
                 }
               </div>
 
-              <div className={`py-2 px-2 ${post?.text && "border-t"} flex flex-col gap-4 scrollbar-none dark:border-gray-800 overflow-y-auto flex-1`}>
+              <div className={`py-2 mb- px-2 ${post?.text && "border-t"} flex flex-col gap-4 scrollbar-none dark:border-gray-800 overflow-y-auto flex-1`}>
                 {post?.comments?.map((data: CommentPost) => (
                   !isLoading ? <Comment key={data._id} deleteComment={deleteComment} data={data} /> :
                     <div className="flex items-center gap-2 ">
